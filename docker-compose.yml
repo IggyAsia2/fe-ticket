@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    image: ticket-vintrip/react:v1
+    container_name: ticket-vintrip-fe
+    ports:
+      - '8001:8001'
+    restart: unless-stopped
+networks:
+  default:
+    name: ols
+    external: true
