@@ -8,5 +8,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canAdmin: role === 'admin',
     canSale: role === 'sale',
     canSeeOrder: role === 'admin' || role === 'accountant',
+    canSeeProduct: role === 'admin' || role === 'sale',
   };
 }

@@ -1,11 +1,11 @@
-import { ModalForm, ProFormSelect } from '@ant-design/pro-components';
-import { Card, Image, Row, Typography, QRCode, Divider, Button, Space, message, Form, Input } from 'antd';
+import { ModalForm, ProFormSelect, ProFormDigit } from '@ant-design/pro-components';
+import { Card, Image, Row, Typography, QRCode, Divider, Button, Space, message } from 'antd';
 import { getProductToLink } from '@/api/product';
 import { useRequest } from '@umijs/max';
 import React, { useEffect, useRef, useState } from 'react';
 import { convertDepartToC, getDate, getPrice } from '@/helper/helper';
 import { useReactToPrint } from 'react-to-print';
-import { CloseOutlined, PrinterFilled } from '@ant-design/icons';
+import { PrinterFilled } from '@ant-design/icons';
 import Cookies from 'js-cookie';
 import BillTemplate from './billTemplate';
 const { Text } = Typography;
@@ -28,6 +28,9 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
     name: Cookies.get('departName') || '',
     phone: Cookies.get('departPhone') || '',
   });
+  const [nl, setNL] = useState<any>(null);
+  const [te, setTE] = useState<any>(null);
+  console.log(props.values);
 
   const listBig = props.values.map((el: any) => el.groupTicket.bigTicket._id);
 
@@ -109,41 +112,61 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
             >
               Bill ck
             </Button>
-            <ProFormSelect
-              style={{ width: '250px' }}
-              name="departID"
-              label="Chọn địa điểm"
-              onChange={(_, options: any) => {
-                setDepartInfo({
-                  name: options.label,
-                  phone: options.phone,
-                });
-                Cookies.set('departPhone', options.phone);
-                Cookies.set('departName', options.label);
-              }}
-              fieldProps={{
-                defaultValue: Cookies.get('departName'),
-                options: props.departList && convertDepartToC(props.departList),
-              }}
-              showSearch
-              placeholder="Chọn địa điểm"
-              allowClear={false}
-              rules={[
-                {
-                  // type: 'array',
-                  required: true,
-                  message: 'Bạn chưa chọn quầy vé!',
-                },
-              ]}
-            />
-
-
-
+            <Space direction="horizontal">
+              <ProFormSelect
+                style={{ width: '250px' }}
+                name="departID"
+                label="Chọn địa điểm"
+                onChange={(_, options: any) => {
+                  setDepartInfo({
+                    name: options.label,
+                    phone: options.phone,
+                  });
+                  Cookies.set('departPhone', options.phone);
+                  Cookies.set('departName', options.label);
+                }}
+                fieldProps={{
+                  defaultValue: Cookies.get('departName'),
+                  options: props.departList && convertDepartToC(props.departList),
+                }}
+                showSearch
+                placeholder="Chọn địa điểm"
+                allowClear={false}
+                rules={[
+                  {
+                    // type: 'array',
+                    required: true,
+                    message: 'Bạn chưa chọn quầy vé!',
+                  },
+                ]}
+              />
+              <ProFormDigit
+                name="nl"
+                label="Vé cổng NL"
+                fieldProps={{
+                  onChange: (e) => setNL(e),
+                }}
+                // disabled={!props.groupQuan[index]}
+                width="xs"
+                min={1}
+              />
+              <ProFormDigit
+                name="te"
+                label="Vé cổng TE"
+                fieldProps={{
+                  onChange: (e) => setTE(e),
+                }}
+                // disabled={!props.groupQuan[index]}
+                width="xs"
+                min={1}
+              />
+            </Space>
           </Space>
         }
       >
         <div style={{ display: 'none' }}>
           <BillTemplate
+            options={{ nl, te }}
             actionBillRef={actionBillRef}
             departInfo={departInfo}
             data={props.values}
@@ -153,6 +176,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
         </div>
         <div style={{ display: 'none' }}>
           <BillTemplate
+            options={{ nl, te }}
             actionBillRef={actionBillRefDC}
             departInfo={departInfo}
             data={props.values}

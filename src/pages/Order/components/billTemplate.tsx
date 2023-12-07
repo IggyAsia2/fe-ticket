@@ -2,9 +2,41 @@ import { getDateTime, getPrice } from '@/helper/helper';
 import React from 'react';
 
 const BillTemplate: React.FC<any> = (props) => {
-  const { actionBillRef, departInfo, data, takePrice, isDiscount } = props;
+  const { actionBillRef, departInfo, data, takePrice, isDiscount, options } = props;
   const { customerName, customerPhone, exportUser } = data[0];
   const newDate = new Date();
+  const nlPrice = 10000;
+  const tePrice = 5000;
+  const newArr = [...data];
+  let total = 0;
+
+  const isFound = (val: any, str: string) =>
+    val.some((el: any) => {
+      if (el.groupTicket.name === str) {
+        return true;
+      }
+      return false;
+    });
+
+  if (options.nl && !isFound(newArr, 'VÉ CỔNG (NL)'))
+    newArr.unshift({
+      groupTicket: {
+        name: 'VÉ CỔNG (NL)',
+      },
+      price: nlPrice,
+      quantity: options.nl,
+      subTotal: options.nl * nlPrice,
+    });
+
+  if (options.te && !isFound(newArr, 'VÉ CỔNG (TE)'))
+    newArr.unshift({
+      groupTicket: {
+        name: 'VÉ CỔNG (TE)',
+      },
+      price: tePrice,
+      quantity: options.te,
+      subTotal: options.te * tePrice,
+    });
 
   return (
     <>
@@ -35,20 +67,23 @@ const BillTemplate: React.FC<any> = (props) => {
             <th style={{ textAlign: 'left' }}>SL</th>
             <th style={{ textAlign: 'right' }}>Thành tiền</th>
           </tr>
-          {data.map((el: any) => (
-            <>
-              <tr style={{ borderBottom: '1px dashed' }}>
-                <td style={{ paddingBottom: '30px' }}>
-                  <div>{el.groupTicket.name}</div>
-                  <div>{getPrice(el.price)}</div>
-                </td>
-                <td style={{ paddingBottom: '30px' }}>{el.quantity}</td>
-                <td style={{ paddingBottom: '30px', textAlign: 'right' }}>
-                  {getPrice(el.subTotal)}
-                </td>
-              </tr>
-            </>
-          ))}
+          {newArr.map((el: any) => {
+            total += el.subTotal;
+            return (
+              <>
+                <tr style={{ borderBottom: '1px dashed' }}>
+                  <td style={{ paddingBottom: '30px' }}>
+                    <div>{el.groupTicket.name}</div>
+                    <div>{getPrice(el.price)}</div>
+                  </td>
+                  <td style={{ paddingBottom: '30px' }}>{el.quantity}</td>
+                  <td style={{ paddingBottom: '30px', textAlign: 'right' }}>
+                    {getPrice(el.subTotal)}
+                  </td>
+                </tr>
+              </>
+            );
+          })}
         </table>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
           <div style={{ display: 'flex', width: '50%', justifyContent: 'space-between' }}>
@@ -58,13 +93,9 @@ const BillTemplate: React.FC<any> = (props) => {
               <div>Tổng cộng:</div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <div>{getPrice(takePrice.total)}</div>
+              <div>{getPrice(total)}</div>
               <div>{isDiscount ? getPrice(takePrice.discount) : 0}</div>
-              <strong>
-                {isDiscount
-                  ? getPrice(takePrice.total - takePrice.discount)
-                  : getPrice(takePrice.total)}
-              </strong>
+              <strong>{isDiscount ? getPrice(total - takePrice.discount) : getPrice(total)}</strong>
             </div>
           </div>
         </div>

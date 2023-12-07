@@ -22,6 +22,7 @@ export default [
     icon: 'cloud',
     path: '/san-pham',
     component: './Product',
+    access: 'canSeeProduct'
   },
   {
     name: 'list.ticket-list',
