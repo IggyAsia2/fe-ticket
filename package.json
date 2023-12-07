@@ -8,7 +8,7 @@
     "analyze": "cross-env ANALYZE=1 max build",
     "build": "max build",
     "docker:build": "docker build -t ticket-vintrip/react:v1 .",
-    "deploy": "cp -r dist optimus/ && cd optimus && docker-compose down && docker build -t ticket-vintrip/react:v1 . && docker-compose up -d",
+    "deploy": "cp -r dist optimus/ && cd optimus && npm install && docker-compose down && docker build -t ticket-vintrip/react:v1 . && docker-compose up -d",
     "deploy-pini": "docker-compose down && docker build -t ticket-vintrip-pini-fe . && docker-compose up -d",
     "dev": "npm run start:dev",
     "gh-pages": "gh-pages -d dist",
