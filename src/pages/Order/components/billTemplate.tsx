@@ -3,7 +3,7 @@ import React from 'react';
 
 const BillTemplate: React.FC<any> = (props) => {
   const { actionBillRef, departInfo, data, takePrice, isDiscount, options } = props;
-  const { customerName, customerPhone, exportUser } = data[0];
+  const { customerName, customerPhone, customerCar, exportUser } = data[0];
   const newDate = new Date();
   const nlPrice = 10000;
   const tePrice = 5000;
@@ -54,6 +54,7 @@ const BillTemplate: React.FC<any> = (props) => {
             {customerName}
           </div>
           <div>Điện thoại: {customerPhone}</div>
+          <div>Biển số xe: {customerCar}</div>
           <div>Thời gian: {getDateTime(newDate.toString())}</div>
           <div>
             <strong>Người bán: </strong>
