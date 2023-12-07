@@ -5,7 +5,8 @@
   "description": "An out-of-box UI solution for enterprise applications",
   "homepage": "https://iggyasia2.github.io/fe-ticket",
   "scripts": {
-    "deploy": "docker-compose down && docker build -t ticket-vintrip/react:v1 . && docker-compose up -d"
+    "deploy": "docker-compose down && docker build -t ticket-vintrip/react:v1 . && docker-compose up -d",
+    "pm2": "pm2-runtime server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
