@@ -1,0 +1,340 @@
+import { productList } from '@/api/product';
+import { userList } from '@/api/user';
+import { rangePresets } from '@/components/Table/constValue';
+import {
+  convertArrayToCascader,
+  convertArrayToObject,
+  convertDepartToCascader,
+  getPrice,
+  timeStamp,
+} from '@/helper/helper';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { PageContainer, ProTable } from '@ant-design/pro-components';
+import { request, useModel, useRequest } from '@umijs/max';
+import { Button, Table, Tag, Typography } from 'antd';
+import moment from 'moment';
+import React, { useEffect, useRef, useState } from 'react';
+import { Excel } from 'antd-table-saveas-excel';
+import dayjs from 'dayjs';
+import { getAuth } from '@/services/authHelper';
+const { Text } = Typography;
+
+/**
+ * @param fields
+ */
+
+const state: any = {
+  Finished: {
+    name: 'Hoàn thành',
+    color: 'Green',
+  },
+  Canceled: {
+    name: 'Hủy',
+    color: 'red',
+  },
+  Pending: {
+    name: 'Pending',
+    color: 'yellow',
+  },
+};
+
+const unit: any = {
+  Adult: {
+    name: 'Người lớn',
+  },
+  Child: {
+    name: 'Trẻ em',
+  },
+  Elder: {
+    name: 'Người cao tuổi',
+  },
+};
+
+const ReportList: React.FC = () => {
+  const { initialState } = useModel('@@initialState');
+  const { departList }: any = initialState;
+  const [excelData, setExcelData] = useState<string[]>([]);
+  const { data: userData, run: runUser } = useRequest(userList, {
+    manual: true,
+    formatResult: (res: any) =>
+      res.data.map((el: any) => {
+        return { label: `${el.name}`, value: el.email };
+      }),
+  });
+
+  const { data: productData, run: runProduct } = useRequest(productList, {
+    manual: true,
+    formatResult: (res: any) => res.data,
+  });
+
+  useEffect(() => {
+    // runReport({ current: 1, pageSize: 1000 });
+    runUser({ current: 1, pageSize: 100 });
+    runProduct({ current: 1, pageSize: 100 });
+  }, []);
+
+  const actionRef = useRef<ActionType>();
+
+  const columns: ProColumns<ORDER_API.OrderListItem>[] = [
+    {
+      title: 'Ngày xuất vé',
+      dataIndex: 'updatedAt',
+      valueType: 'dateRange',
+      hideInTable: true,
+      fieldProps: () => ({
+        format: 'DD/MM/YYYY',
+        // span: 20,
+        presets: rangePresets,
+        placeholder: ['Từ ngày', 'Đến ngày'],
+        defaultValue: [dayjs(), dayjs()],
+      }),
+      search: {
+        transform: (value: any) => ({
+          'updatedAt[gte]': timeStamp(value[0]),
+          'updatedAt[lte]': moment(value[1], 'DD/MM/YYYY').add(1, 'days').toISOString(),
+          // sort: 'updatedAt',
+        }),
+      },
+      render: () => null,
+    },
+    {
+      title: 'Tên người xuất',
+      dataIndex: 'exportUser',
+      valueType: 'select',
+      valueEnum: userData && convertArrayToObject(userData, 'value'),
+      fieldProps: {
+        showSearch: true,
+        placeholder: 'Chọn người xuất vé',
+      },
+    },
+    {
+      title: 'Địa điểm',
+      dataIndex: 'groupTicket',
+      valueType: 'cascader',
+      fieldProps: {
+        options: productData && convertArrayToCascader(productData),
+        fieldNames: {
+          children: 'ticket',
+          label: 'field',
+        },
+        // expandTrigger: 'hover',
+        changeOnSelect: true,
+        placeholder: 'Chọn địa điểm',
+      },
+      search: {
+        transform: (value) => {
+          if (value.length === 2) {
+            return {
+              groupTicket: value[1],
+            };
+          } else {
+            return {
+              bigTicket: value,
+            };
+          }
+        },
+      },
+      render: (_, record: any) => {
+        return record.groupTicket.bigTicket.name;
+      },
+    },
+    {
+      title: 'Loại vé',
+      hideInSearch: true,
+      render: (_, record: any) => {
+        return `${record.groupTicket.name} - ${unit[record.groupTicket.unit].name}`;
+      },
+    },
+    {
+      title: 'Số lượng',
+      hideInSearch: true,
+      render: (_, record: any) => `${record.quantity} x ${getPrice(record.price)}`,
+    },
+    {
+      title: 'Tổng',
+      dataIndex: 'subTotal',
+      hideInSearch: true,
+      renderText: (value) => getPrice(value),
+    },
+    // {
+    //   title: 'Ngày xuất vé',
+    //   dataIndex: 'updatedAt',
+    //   hideInSearch: true,
+    //   renderText: (value) => getDateTime(value),
+    // },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'state',
+      valueType: 'select',
+      valueEnum: {
+        Finished: 'Hoàn thành',
+        Canceled: 'Hủy',
+        Pending: 'Pending',
+      },
+      fieldProps: {
+        placeholder: 'Chọn trạng thái',
+        defaultValue: 'Hoàn Thành',
+      },
+      render: (_, record: any) => (
+        <div>
+          <Tag color={state[record.state].color} key={state[record.state].name}>
+            {state[record.state].name}
+          </Tag>
+        </div>
+      ),
+    },
+    {
+      title: 'Quầy vé',
+      dataIndex: 'departID',
+      hideInTable: true,
+      valueType: 'select',
+      fieldProps: {
+        options: convertDepartToCascader(departList),
+        placeholder: 'Chọn quầy vé',
+      },
+    },
+  ];
+
+  const columns2 = [
+    {
+      title: 'Tên người xuất',
+      dataIndex: 'exportUser',
+    },
+    {
+      title: 'Địa điểm',
+      dataIndex: 'groupTicket',
+      render: (_: any, record: any) => record.groupTicket.bigTicket.name,
+    },
+    {
+      title: 'Loại vé',
+      dataIndex: 'unit',
+      render: (_: any, record: any) =>
+        `${record.groupTicket.name} - ${unit[record.groupTicket.unit].name}`,
+    },
+    {
+      title: 'Số lượng',
+      dataIndex: 'quantity',
+    },
+    {
+      title: 'Giá',
+      dataIndex: 'price',
+    },
+    {
+      title: 'Tổng',
+      dataIndex: 'subTotal',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'state',
+      render: (_: any, record: any) => state[record.state].name,
+    },
+  ];
+
+  const handleExporttoExcel = async () => {
+    const excel = await new Excel();
+    excel
+      .addSheet('Sheet')
+      // .setRowHeight(2, 'cm')
+      .addColumns(columns2)
+      .addDataSource(excelData, {
+        str2Percent: true,
+      })
+      .saveAs('Report-File.xlsx');
+  };
+
+  return (
+    <PageContainer>
+      <ProTable<ORDER_API.OrderListItem, API.PageParams>
+        pagination={{
+          pageSize: 1000,
+          // showSizeChanger: true,
+        }}
+        toolBarRender={() => [
+          <>
+            <Button type="primary" onClick={() => handleExporttoExcel()}>
+              Xuất file
+            </Button>
+          </>,
+        ]}
+        dateFormatter="string"
+        actionRef={actionRef}
+        rowKey="_id"
+        search={{
+          labelWidth: 100,
+          defaultCollapsed: false,
+          searchText: 'Tìm',
+          resetText: 'Đặt lại',
+          collapseRender: () => {
+            return true;
+          },
+        }}
+        request={async (
+          params: {
+            // query
+            /** Current page number */
+            current?: number;
+            /** Page size */
+            pageSize?: number;
+            exportUser?: string;
+            state?: string;
+            'updatedAt[gte]'?: string;
+            'updatedAt[lte]'?: string;
+          },
+          options?: { [key: string]: any },
+        ) => {
+          const getState = !params.state ? '&state=Finished' : '';
+
+          const getGte = !params['updatedAt[gte]']
+            ? `&updatedAt[gte]=${timeStamp(dayjs().format('DD/MM/YYYY'))}`
+            : '';
+          const getLte = !params['updatedAt[lte]']
+            ? `&updatedAt[lte]=${timeStamp(dayjs().add(1, 'day').format('DD/MM/YYYY'))}`
+            : '';
+          const result: any = await request<ORDER_API.OrderList>(
+            `${API_URL}/orders/report?sort=updatedAt${getState}${getGte}${getLte}`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${getAuth()}`,
+              },
+              params: {
+                ...params,
+              },
+              ...(options || {}),
+            },
+          );
+          setExcelData(result?.data);
+          return result;
+        }}
+        // dataSource={reportData}
+        columns={columns}
+        summary={(pageData) => {
+          let totalSub = 0;
+          let totalQuantity = 0;
+          pageData.forEach(({ subTotal, quantity, state }: any) => {
+            totalQuantity += state === 'Finished' && quantity;
+            totalSub += state === 'Finished' && subTotal;
+          });
+
+          return (
+            <>
+              <Table.Summary.Row>
+                <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                <Table.Summary.Cell index={0}>Tổng cộng</Table.Summary.Cell>
+                <Table.Summary.Cell index={0}>
+                  <Text type="success">{totalQuantity} vé</Text>
+                </Table.Summary.Cell>
+                <Table.Summary.Cell index={0}>
+                  <Text type="success">{getPrice(totalSub)}</Text>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </>
+          );
+        }}
+      />
+    </PageContainer>
+  );
+};
+
+export default ReportList;

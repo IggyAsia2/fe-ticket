@@ -7,25 +7,26 @@
 _roadhog-api-doc
 
 # production
-# /dist
-.husky
-config
-mock
-public
-src
-tests
-types
-.editorconfig
+
+dist
+# .husky
+# config
+# mock
+# public
+# src
+# tests
+# types
+# .editorconfig
 .env
-.eslintignore
-.eslintrc.js
-.prettierignore
-.prettierrc.js
-jest.config.ts
-jsconfig.json
-package.json
-README.md
-tsconfig.json
+# .eslintignore
+# .eslintrc.js
+# .prettierignore
+# .prettierrc.js
+# jest.config.ts
+# jsconfig.json
+# package.json
+# README.md
+# tsconfig.json
 
 # misc
 .DS_Store
