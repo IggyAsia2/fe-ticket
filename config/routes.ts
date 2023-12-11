@@ -44,11 +44,17 @@ export default [
     component: './Order',
   },
   {
+    path: '/agent/printticketlink/:orderId',
+    component: './LinkOrder',
+    layout: false,
+    hideInMenu: true
+  },
+  {
     name: 'list.report-list',
     icon: 'cloud',
     path: '/bao-cao',
     component: './Report',
-    access:'canSeeOrder',
+    access: 'canSeeOrder',
   },
   {
     name: 'list.depart-list',

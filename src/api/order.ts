@@ -64,6 +64,19 @@ export async function reportList(
   });
 }
 
+/** Get Order Get /api/v1/orders */
+export async function getOrder(options?: { [key: string]: any }) {
+  return request<ORDER_API.OrderListItem>(`${API_URL}/orders/link-order/${options?.oid}`, {
+    method: 'GET',
+    // headers: {
+    //   Authorization: `Bearer ${getAuth()}`
+    // },
+    data: {
+      ...(options || {}),
+    }
+  });
+}
+
 /** Update user PUT /api/v1/orders */
 export async function updateOrder(options?: { [key: string]: any }) {
   return request<ORDER_API.OrderListItem>(`${API_URL}/orders/${options?.oid}`, {

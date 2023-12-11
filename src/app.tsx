@@ -12,6 +12,7 @@ import Cookies from 'js-cookie';
 import { departListQuery } from './api/depart';
 const isDev = process.env.NODE_ENV === 'developments';
 const loginPath = '/login';
+const linkOrderPath = '/agent/printticketlink/';
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -52,7 +53,7 @@ export async function getInitialState(): Promise<{
   const { location } = history;
   const jwt = Cookies.get('jwt');
   // console.log(jwt);
-  if (location.pathname !== loginPath) {
+  if (location.pathname !== loginPath && !location.pathname.includes(linkOrderPath)) {
     const currentUser = await fetchUserInfo({ token: jwt });
     const departList = await fetchDepart({ token: jwt });
     return {
@@ -87,7 +88,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
-      if (!initialState?.currentUser && location.pathname !== loginPath) {
+      console.log(location);
+      if (
+        (!initialState?.currentUser && location.pathname !== loginPath)
+      ) {
         history.push(loginPath);
       }
     },

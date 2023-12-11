@@ -30,7 +30,6 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
   });
   const [nl, setNL] = useState<any>(null);
   const [te, setTE] = useState<any>(null);
-  console.log(props.values);
 
   const listBig = props.values.map((el: any) => el.groupTicket.bigTicket._id);
 

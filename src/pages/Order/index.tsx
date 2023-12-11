@@ -342,7 +342,7 @@ const OrderList: React.FC = () => {
       valueType: 'text',
       dataIndex: 'customerPhone',
       fieldProps: {
-        placeholder: 'Nhập sđt khách hàng'
+        placeholder: 'Nhập sđt khách hàng',
       },
       render: (_, record: any) => {
         return (
@@ -518,15 +518,15 @@ const OrderList: React.FC = () => {
             </a>
           </Popconfirm>
         </>,
-        // <a
-        //   hidden={record.state !== 'Finished'}
-        //   key="mail"
-        //   onClick={() => {
-        //     handleSendEmail(record);
-        //   }}
-        // >
-        //   Gửi mail
-        // </a>,
+        <a
+          hidden={record.state !== 'Finished'}
+          key="mail"
+          href={`/agent/printticketlink/${record._id}-${record.groupTicket.bigTicket.id}`}
+          target='_blank'
+          rel="noreferrer"
+        >
+          Link
+        </a>,
       ],
     },
   ];
