@@ -17,6 +17,8 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
       modalProps={{
         destroyOnClose: true,
         onCancel: () => props.onCancel(),
+        cancelText: 'Hủy',
+        okText: 'OK',
       }}
       onFinish={props.onFinish}
       title="Tạo Role"
@@ -24,11 +26,12 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
       <ProFormText
         name="name"
         label="Role"
+        placeholder="Bạn chưa nhập tên"
         width="md"
         rules={[
           {
             required: true,
-            message: "Bạn chưa nhập tên role"
+            message: 'Bạn chưa nhập tên role',
           },
         ]}
       />

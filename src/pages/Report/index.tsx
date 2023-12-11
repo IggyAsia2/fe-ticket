@@ -9,14 +9,15 @@ import {
   timeStamp,
 } from '@/helper/helper';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { PageContainer, ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProProvider, ProTable, createIntl } from '@ant-design/pro-components';
 import { request, useModel, useRequest } from '@umijs/max';
 import { Button, Table, Tag, Typography } from 'antd';
 import moment from 'moment';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Excel } from 'antd-table-saveas-excel';
 import dayjs from 'dayjs';
 import { getAuth } from '@/services/authHelper';
+import enLocale from '@/locales/table-en';
 const { Text } = Typography;
 
 /**
@@ -51,6 +52,8 @@ const unit: any = {
 };
 
 const ReportList: React.FC = () => {
+  const enUSIntl = createIntl('en_US', enLocale);
+  const values = useContext(ProProvider);
   const { initialState } = useModel('@@initialState');
   const { departList }: any = initialState;
   const [excelData, setExcelData] = useState<string[]>([]);
@@ -244,95 +247,98 @@ const ReportList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<ORDER_API.OrderListItem, API.PageParams>
-        pagination={{
-          pageSize: 1000,
-          // showSizeChanger: true,
-        }}
-        toolBarRender={() => [
-          <>
-            <Button type="primary" onClick={() => handleExporttoExcel()}>
-              Xuất file
-            </Button>
-          </>,
-        ]}
-        dateFormatter="string"
-        actionRef={actionRef}
-        rowKey="_id"
-        search={{
-          labelWidth: 100,
-          defaultCollapsed: false,
-          searchText: 'Tìm',
-          resetText: 'Đặt lại',
-          collapseRender: () => {
-            return true;
-          },
-        }}
-        request={async (
-          params: {
-            // query
-            /** Current page number */
-            current?: number;
-            /** Page size */
-            pageSize?: number;
-            exportUser?: string;
-            state?: string;
-            'updatedAt[gte]'?: string;
-            'updatedAt[lte]'?: string;
-          },
-          options?: { [key: string]: any },
-        ) => {
-          const getState = !params.state ? '&state=Finished' : '';
-
-          const getGte = !params['updatedAt[gte]']
-            ? `&updatedAt[gte]=${timeStamp(dayjs().format('DD/MM/YYYY'))}`
-            : '';
-          const getLte = !params['updatedAt[lte]']
-            ? `&updatedAt[lte]=${timeStamp(dayjs().add(1, 'day').format('DD/MM/YYYY'))}`
-            : '';
-          const result: any = await request<ORDER_API.OrderList>(
-            `${API_URL}/orders/report?sort=updatedAt${getState}${getGte}${getLte}`,
-            {
-              method: 'GET',
-              headers: {
-                Authorization: `Bearer ${getAuth()}`,
-              },
-              params: {
-                ...params,
-              },
-              ...(options || {}),
-            },
-          );
-          setExcelData(result?.data);
-          return result;
-        }}
-        // dataSource={reportData}
-        columns={columns}
-        summary={(pageData) => {
-          let totalSub = 0;
-          let totalQuantity = 0;
-          pageData.forEach(({ subTotal, quantity, state }: any) => {
-            totalQuantity += state === 'Finished' && quantity;
-            totalSub += state === 'Finished' && subTotal;
-          });
-
-          return (
+      <ProProvider.Provider value={{ ...values, intl: enUSIntl }}>
+        <ProTable<ORDER_API.OrderListItem, API.PageParams>
+          pagination={{
+            pageSize: 1000,
+            showTotal: (total) => `Tổng ${total}`,
+            // showSizeChanger: true,
+          }}
+          toolBarRender={() => [
             <>
-              <Table.Summary.Row>
-                <Table.Summary.Cell index={0}></Table.Summary.Cell>
-                <Table.Summary.Cell index={0}></Table.Summary.Cell>
-                <Table.Summary.Cell index={0}>Tổng cộng</Table.Summary.Cell>
-                <Table.Summary.Cell index={0}>
-                  <Text type="success">{totalQuantity} vé</Text>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={0}>
-                  <Text type="success">{getPrice(totalSub)}</Text>
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-            </>
-          );
-        }}
-      />
+              <Button type="primary" onClick={() => handleExporttoExcel()}>
+                Xuất file
+              </Button>
+            </>,
+          ]}
+          dateFormatter="string"
+          actionRef={actionRef}
+          rowKey="_id"
+          search={{
+            labelWidth: 100,
+            defaultCollapsed: false,
+            searchText: 'Tìm',
+            resetText: 'Đặt lại',
+            collapseRender: () => {
+              return true;
+            },
+          }}
+          request={async (
+            params: {
+              // query
+              /** Current page number */
+              current?: number;
+              /** Page size */
+              pageSize?: number;
+              exportUser?: string;
+              state?: string;
+              'updatedAt[gte]'?: string;
+              'updatedAt[lte]'?: string;
+            },
+            options?: { [key: string]: any },
+          ) => {
+            const getState = !params.state ? '&state=Finished' : '';
+
+            const getGte = !params['updatedAt[gte]']
+              ? `&updatedAt[gte]=${timeStamp(dayjs().format('DD/MM/YYYY'))}`
+              : '';
+            const getLte = !params['updatedAt[lte]']
+              ? `&updatedAt[lte]=${timeStamp(dayjs().add(1, 'day').format('DD/MM/YYYY'))}`
+              : '';
+            const result: any = await request<ORDER_API.OrderList>(
+              `${API_URL}/orders/report?sort=updatedAt${getState}${getGte}${getLte}`,
+              {
+                method: 'GET',
+                headers: {
+                  Authorization: `Bearer ${getAuth()}`,
+                },
+                params: {
+                  ...params,
+                },
+                ...(options || {}),
+              },
+            );
+            setExcelData(result?.data);
+            return result;
+          }}
+          // dataSource={reportData}
+          columns={columns}
+          summary={(pageData) => {
+            let totalSub = 0;
+            let totalQuantity = 0;
+            pageData.forEach(({ subTotal, quantity, state }: any) => {
+              totalQuantity += state === 'Finished' && quantity;
+              totalSub += state === 'Finished' && subTotal;
+            });
+
+            return (
+              <>
+                <Table.Summary.Row>
+                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}>Tổng cộng</Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}>
+                    <Text type="success">{totalQuantity} vé</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}>
+                    <Text type="success">{getPrice(totalSub)}</Text>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+              </>
+            );
+          }}
+        />
+      </ProProvider.Provider>
     </PageContainer>
   );
 };

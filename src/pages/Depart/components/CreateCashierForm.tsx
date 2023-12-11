@@ -17,6 +17,7 @@ const CreateCashierForm: React.FC<CreateFormProps> = (props) => {
         destroyOnClose: true,
         onCancel: () => props.onCancel(),
         cancelText: 'Hủy',
+        okText: 'OK',
       }}
       onFinish={props.onFinish}
       title="Tạo quầy"

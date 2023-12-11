@@ -17,6 +17,7 @@ const UpdateCashierForm: React.FC<CreateFormProps> = (props) => {
         destroyOnClose: true,
         onCancel: () => props.onCancel(),
         cancelText: 'Hủy',
+        okText: 'OK',
       }}
       onFinish={props.onFinish}
       initialValues={{

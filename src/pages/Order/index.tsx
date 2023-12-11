@@ -18,16 +18,23 @@ import {
   timeStamp,
 } from '@/helper/helper';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { FooterToolbar, PageContainer, ProTable } from '@ant-design/pro-components';
+import {
+  FooterToolbar,
+  PageContainer,
+  ProProvider,
+  ProTable,
+  createIntl,
+} from '@ant-design/pro-components';
 import { request, useRequest, useAccess, useModel } from '@umijs/max';
 import { Button, InputNumber, Popconfirm, Space, Tag, Typography, message } from 'antd';
 import { Excel } from 'antd-table-saveas-excel';
 import moment from 'moment';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 // import LinkForm from './components/LinkForm';
 import { getAuth } from '@/services/authHelper';
 import { userList } from '@/api/user';
 import ManyLinkForm from './components/ManyLinkForm';
+import enLocale from '@/locales/table-en';
 
 /**
  * @param fields
@@ -64,6 +71,8 @@ const unit: any = {
 };
 
 const OrderList: React.FC = () => {
+  const enUSIntl = createIntl('en_US', enLocale);
+  const values = useContext(ProProvider);
   const { initialState } = useModel('@@initialState');
   const { departList }: any = initialState;
   const newArrDepart = departList
@@ -522,7 +531,7 @@ const OrderList: React.FC = () => {
           hidden={record.state !== 'Finished'}
           key="mail"
           href={`/agent/printticketlink/${record._id}-${record.groupTicket.bigTicket.id}`}
-          target='_blank'
+          target="_blank"
           rel="noreferrer"
         >
           Link
@@ -533,116 +542,119 @@ const OrderList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<ORDER_API.OrderListItem, API.PageParams>
-        pagination={{
-          // pageSize: 10,
-          showSizeChanger: true,
-          showTotal: (total) => `Tổng ${total} đơn hàng`,
-        }}
-        // scroll={{ y: 440 }}
-        dateFormatter="string"
-        actionRef={actionRef}
-        rowKey={(record) => {
-          return record.state + ',' + record._id;
-        }}
-        search={{
-          labelWidth: 100,
-          defaultCollapsed: false,
-          searchText: 'Tìm',
-          resetText: 'Đặt lại',
-          collapseRender: () => {
-            return true;
-          },
-        }}
-        toolBarRender={() => [
-          <>
-            <Button hidden={access.canSale} type="primary" onClick={() => handleExporttoExcel()}>
-              Xuất file
-            </Button>
-          </>,
-        ]}
-        request={async (
-          params: {
-            current?: number;
-            pageSize?: number;
-            exportUser?: string;
-            state?: string;
-          },
-          options?: { [key: string]: any },
-        ) => {
-          const result: any = await request<ORDER_API.OrderList>(`${API_URL}/orders`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${getAuth()}`,
+      <ProProvider.Provider value={{ ...values, intl: enUSIntl }}>
+        <ProTable<ORDER_API.OrderListItem, API.PageParams>
+          pagination={{
+            // pageSize: 10,
+            showSizeChanger: true,
+            showTotal: (total) => `Tổng ${total} đơn hàng`,
+          }}
+          // scroll={{ y: 440 }}
+          dateFormatter="string"
+          actionRef={actionRef}
+          rowKey={(record) => {
+            return record.state + ',' + record._id;
+          }}
+          search={{
+            labelWidth: 100,
+            defaultCollapsed: false,
+            searchText: 'Tìm',
+            resetText: 'Đặt lại',
+            collapseRender: () => {
+              return true;
             },
+          }}
+          toolBarRender={() => [
+            <>
+              <Button hidden={access.canSale} type="primary" onClick={() => handleExporttoExcel()}>
+                Xuất file
+              </Button>
+            </>,
+          ]}
+          request={async (
             params: {
-              ...params,
+              current?: number;
+              pageSize?: number;
+              exportUser?: string;
+              state?: string;
             },
-            ...(options || {}),
-          });
-          setExcelData(result?.data);
-          return result;
-        }}
-        columns={columns}
-        tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
-          const subtotal = selectedRows.reduce((pre, item: any) => pre + item.subTotal, 0);
-          const subdiscount = selectedRows.reduce(
-            (pre, item: any) => pre + item.discountSubtotal,
-            0,
-          );
-          return (
-            <Space size={24}>
-              <span>
-                Chọn {selectedRowKeys.length} đơn
-                <a style={{ marginInlineStart: 8 }} onClick={onCleanSelected}>
-                  Bỏ chọn
-                </a>
-              </span>
-              <span>{`Tổng: ${getPrice(subtotal)}`}</span>
-              <span>-</span>
-              <span>{`Chiết khấu: ${getPrice(subdiscount)}`}</span>
-              <span>=</span>
-              <span>{`${getPrice(subtotal - subdiscount)}`}</span>
-            </Space>
-          );
-        }}
-        tableAlertOptionRender={({ selectedRows }) => {
-          if (selectedRows.every((el) => el.state === 'Finished'))
+            options?: { [key: string]: any },
+          ) => {
+            const result: any = await request<ORDER_API.OrderList>(`${API_URL}/orders`, {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${getAuth()}`,
+              },
+              params: {
+                ...params,
+              },
+              ...(options || {}),
+            });
+            setExcelData(result?.data);
+            return result;
+          }}
+          columns={columns}
+          tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
+            const subtotal = selectedRows.reduce((pre, item: any) => pre + item.subTotal, 0);
+            const subdiscount = selectedRows.reduce(
+              (pre, item: any) => pre + item.discountSubtotal,
+              0,
+            );
             return (
-              <Space size={16}>
-                <Button
-                  type="default"
-                  color="#34ebc0"
-                  onClick={() => {
-                    setLinkRow(selectedRowsState);
-                    handleManyLinkModalOpen(true);
-                  }}
-                >
-                  Link
-                </Button>
+              <Space size={24}>
+                <span>
+                  Chọn {selectedRowKeys.length} đơn
+                  <a style={{ marginInlineStart: 8 }} onClick={onCleanSelected}>
+                    Bỏ chọn
+                  </a>
+                </span>
+                <span>{`Tổng: ${getPrice(subtotal)}`}</span>
+                <span>-</span>
+                <span>{`Chiết khấu: ${getPrice(subdiscount)}`}</span>
+                <span>=</span>
+                <span>{`${getPrice(subtotal - subdiscount)}`}</span>
               </Space>
             );
-        }}
-        rowSelection={{
-          onChange: (_, selectedRows: any) => {
-            const total = selectedRows.reduce((accumulator: any, b: any) => {
-              return accumulator + b.subTotal;
-            }, 0);
-            const discount = selectedRows.reduce((accumulator: any, b: any) => {
-              return accumulator + b.discountSubtotal;
-            }, 0);
-            setTakePrice({
-              total,
-              discount,
-            });
-            setSelectedRows(selectedRows);
-          },
-          getCheckboxProps: (record) => ({
-            disabled: record.state === 'Canceled', // Column configuration not to be checked
-            // name: record.email,
-          }),
-        }}
-      />
+          }}
+          tableAlertOptionRender={({ selectedRows }) => {
+            if (selectedRows.every((el) => el.state === 'Finished'))
+              return (
+                <Space size={16}>
+                  <Button
+                    type="default"
+                    color="#34ebc0"
+                    onClick={() => {
+                      setLinkRow(selectedRowsState);
+                      handleManyLinkModalOpen(true);
+                    }}
+                  >
+                    Link
+                  </Button>
+                </Space>
+              );
+          }}
+          rowSelection={{
+            onChange: (_, selectedRows: any) => {
+              const total = selectedRows.reduce((accumulator: any, b: any) => {
+                return accumulator + b.subTotal;
+              }, 0);
+              const discount = selectedRows.reduce((accumulator: any, b: any) => {
+                return accumulator + b.discountSubtotal;
+              }, 0);
+              setTakePrice({
+                total,
+                discount,
+              });
+              setSelectedRows(selectedRows);
+            },
+            getCheckboxProps: (record) => ({
+              disabled: record.state === 'Canceled', // Column configuration not to be checked
+              // name: record.email,
+            }),
+          }}
+        />
+      </ProProvider.Provider>
+
       {selectedRowsState?.length > 0 && (
         <FooterToolbar>
           {selectedRowsState.every((el) => el.state === 'Pending') && (

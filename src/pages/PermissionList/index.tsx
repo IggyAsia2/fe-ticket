@@ -1,13 +1,20 @@
 import { addRole, removeRole, role, updateRole } from '@/api/permission';
 import { rightGroupList } from '@/api/right/rightGroup';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
-import { PageContainer, ProDescriptions, ProTable } from '@ant-design/pro-components';
+import {
+  PageContainer,
+  ProDescriptions,
+  ProProvider,
+  ProTable,
+  createIntl,
+} from '@ant-design/pro-components';
 import { Button, Drawer, Popconfirm, message } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 import { useRequest } from '@umijs/max';
+import enLocale from '@/locales/table-en';
 
 /**
  * @param fields
@@ -43,6 +50,8 @@ const handleRemove = async (selectedRows: PERM_API.PermListItem[]) => {
 };
 
 const PermissionList: React.FC = () => {
+  const enUSIntl = createIntl('en_US', enLocale);
+  const values = useContext(ProProvider);
   const { data: rightGroupData, run } = useRequest(rightGroupList, {
     manual: true,
     formatResult: (res: any) =>
@@ -96,7 +105,7 @@ const PermissionList: React.FC = () => {
       title: 'Tên',
       dataIndex: 'name',
       fieldProps: {
-        placeholder: 'Nhập tên'
+        placeholder: 'Nhập tên',
       },
       render: (dom, entity) => {
         return (
@@ -145,33 +154,38 @@ const PermissionList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<PERM_API.PermListItem, API.PageParams>
-        dateFormatter="string"
-        actionRef={actionRef}
-        rowKey="_id"
-        search={{
-          labelWidth: 120,
-          defaultCollapsed: false,
-          searchText: 'Tìm',
-          resetText: 'Đặt lại',
-          collapseRender: () => {
-            return true;
-          },
-        }}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalOpen(true);
-            }}
-          >
-            Tạo
-          </Button>,
-        ]}
-        request={role}
-        columns={columns}
-      />
+      <ProProvider.Provider value={{ ...values, intl: enUSIntl }}>
+        <ProTable<PERM_API.PermListItem, API.PageParams>
+          dateFormatter="string"
+          actionRef={actionRef}
+          rowKey="_id"
+          search={{
+            labelWidth: 120,
+            defaultCollapsed: false,
+            searchText: 'Tìm',
+            resetText: 'Đặt lại',
+            collapseRender: () => {
+              return true;
+            },
+          }}
+          pagination={{
+            showTotal: (total) => `Tổng ${total}`,
+          }}
+          toolBarRender={() => [
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                handleModalOpen(true);
+              }}
+            >
+              Tạo
+            </Button>,
+          ]}
+          request={role}
+          columns={columns}
+        />
+      </ProProvider.Provider>
 
       <CreateForm
         onFinish={async (value) => {

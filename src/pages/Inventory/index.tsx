@@ -3,16 +3,19 @@ import { productList } from '@/api/product';
 import { ticketList2 } from '@/api/ticket';
 import ExcelReader from '@/helper/ExcelReader';
 import { convertArrayToCascader, getDate, getDateTime } from '@/helper/helper';
+import enLocale from '@/locales/table-en';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
   FooterToolbar,
   PageContainer,
   ProDescriptions,
+  ProProvider,
   ProTable,
+  createIntl,
 } from '@ant-design/pro-components';
 import { useRequest } from '@umijs/max';
 import { Button, Drawer, Tag, message } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 /**
  * @en-US Add node
@@ -53,6 +56,8 @@ const handleRemove = async (selectedRows: INVEN_API.InvenListItem[]) => {
 };
 
 const InventoryList: React.FC = () => {
+  const enUSIntl = createIntl('en_US', enLocale);
+  const values = useContext(ProProvider);
   const { data, run } = useRequest(productList, {
     manual: true,
     formatResult: (res: any) => res.data,
@@ -93,7 +98,7 @@ const InventoryList: React.FC = () => {
         },
         expandTrigger: 'hover',
         changeOnSelect: true,
-        placeholder: 'Chọn sản phẩm'
+        placeholder: 'Chọn sản phẩm',
         // multiple: true,
       },
       search: {
@@ -172,7 +177,7 @@ const InventoryList: React.FC = () => {
         Pending: 'Chưa xuất',
       },
       fieldProps: {
-        placeholder: 'Chọn trạng thái vé'
+        placeholder: 'Chọn trạng thái vé',
       },
       render: (_, record: any) => (
         <div>
@@ -187,32 +192,35 @@ const InventoryList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<INVEN_API.InvenListItem, API.PageParams>
-        pagination={{
-          // pageSize: 10,
-          showSizeChanger: true,
-          showTotal: (total) => `Tổng ${total} vé`
-        }}
-        dateFormatter="string"
-        actionRef={actionRef}
-        rowKey="_id"
-        search={{
-          labelWidth: 120,
-          defaultCollapsed: false,
-          searchText: 'Tìm',
-          resetText: 'Đặt lại',
-          collapseRender: () => {
-            return true;
-          },
-        }}
-        toolBarRender={() => [
-          <>
-            <ExcelReader checkData={data2} actionRef={actionRef} />
-          </>,
-        ]}
-        request={inventoryList}
-        columns={columns}
-      />
+      <ProProvider.Provider value={{ ...values, intl: enUSIntl }}>
+        <ProTable<INVEN_API.InvenListItem, API.PageParams>
+          pagination={{
+            // pageSize: 10,
+            showSizeChanger: true,
+            showTotal: (total) => `Tổng ${total} vé`,
+          }}
+          dateFormatter="string"
+          actionRef={actionRef}
+          rowKey="_id"
+          search={{
+            labelWidth: 120,
+            defaultCollapsed: false,
+            searchText: 'Tìm',
+            resetText: 'Đặt lại',
+            collapseRender: () => {
+              return true;
+            },
+          }}
+          toolBarRender={() => [
+            <>
+              <ExcelReader checkData={data2} actionRef={actionRef} />
+            </>,
+          ]}
+          request={inventoryList}
+          columns={columns}
+        />
+      </ProProvider.Provider>
+
       {selectedRowsState?.length > 0 && (
         <FooterToolbar>
           <Button

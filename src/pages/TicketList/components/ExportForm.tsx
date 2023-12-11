@@ -66,6 +66,8 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
       modalProps={{
         destroyOnClose: true,
         onCancel: () => props.onCancel(),
+        cancelText: 'Hủy',
+        okText: 'OK'
       }}
       submitter={{
         render: (props, defaultDoms) => {

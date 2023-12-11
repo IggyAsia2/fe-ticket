@@ -8,13 +8,14 @@ import {
   updateCashier,
 } from '@/api/depart';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
-import { PageContainer, ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProProvider, ProTable, createIntl } from '@ant-design/pro-components';
 import { Button, Popconfirm, message } from 'antd';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 import CreateCashierForm from './components/CreateCashierForm';
 import UpdateCashierForm from './components/UpdateCashierForm';
+import enLocale from '@/locales/table-en';
 
 export type TableListItem = {
   key: number;
@@ -66,6 +67,8 @@ const handleRemoveCashier = async (departID: string, cashierID: string) => {
 };
 
 export default () => {
+  const enUSIntl = createIntl('en_US', enLocale);
+  const values = useContext(ProProvider);
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<DEPART_API.DepartListItem>();
   const [currentCashier, setCurrentCashier] = useState<DEPART_API.DepartListItem>();
@@ -236,25 +239,31 @@ export default () => {
 
   return (
     <PageContainer>
-      <ProTable<TableListItem>
-        columns={columns}
-        actionRef={actionRef}
-        request={departList}
-        rowKey="_id"
-        expandable={{ expandedRowRender, defaultExpandAllRows: true }}
-        search={false}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalOpen(true);
-            }}
-          >
-            <PlusOutlined /> Tạo
-          </Button>,
-        ]}
-      />
+      <ProProvider.Provider value={{ ...values, intl: enUSIntl }}>
+        <ProTable<TableListItem>
+          columns={columns}
+          pagination={{
+            showTotal: (total) => `Tổng ${total}`,
+          }}
+          actionRef={actionRef}
+          request={departList}
+          rowKey="_id"
+          expandable={{ expandedRowRender, defaultExpandAllRows: true }}
+          search={false}
+          toolBarRender={() => [
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                handleModalOpen(true);
+              }}
+            >
+              <PlusOutlined /> Tạo
+            </Button>,
+          ]}
+        />
+      </ProProvider.Provider>
+
       <UpdateForm
         onSubmit={async (value) => {
           const success = await handleUpdate(value, 'PATCH');

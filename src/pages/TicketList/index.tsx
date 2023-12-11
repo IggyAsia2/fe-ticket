@@ -14,17 +14,20 @@ import {
   FooterToolbar,
   PageContainer,
   ProDescriptions,
+  ProProvider,
   ProTable,
+  createIntl,
 } from '@ant-design/pro-components';
 import { useRequest } from '@umijs/max';
 import { Button, Drawer, Popconfirm, Table, message, Typography } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import ExportForm from './components/ExportForm';
 import type { FormValueType } from './components/UpdateForm';
 import type { ExportFormValueType } from './components/ExportForm';
 import UpdateForm from './components/UpdateForm';
 import { useAccess } from '@umijs/max';
+import enLocale from '@/locales/table-en';
 
 /**
  * @en-US Add node
@@ -81,6 +84,8 @@ const handleRemove = async (selectedRows: TICKET_API.TicketListItem[]) => {
 // { ticketId, numberTickets }: any
 
 const TicketList: React.FC = () => {
+  const enUSIntl = createIntl('en_US', enLocale);
+  const values = useContext(ProProvider);
   const access = useAccess();
   const { data, run } = useRequest(productList, {
     manual: true,
@@ -304,77 +309,80 @@ const TicketList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<TICKET_API.TicketListItem, API.PageParams>
-        dateFormatter="string"
-        actionRef={actionRef}
-        rowKey="_id"
-        search={{
-          defaultCollapsed: false,
-          // span: 7,
-          searchText: 'Tìm',
-          resetText: 'Đặt lại',
-          labelWidth: 'auto',
-          // filterType: 'light',
-        }}
-        pagination={{
-          showSizeChanger: true,
-          showTotal: (total) => `Tổng ${total} mã vé`,
-        }}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            hidden={!access.canAdmin}
-            onClick={() => {
-              handleModalOpen(true);
-            }}
-          >
-            <PlusOutlined /> Tạo
-          </Button>,
-        ]}
-        request={ticketList}
-        columns={columns}
-        rowSelection={
-          access.canAdmin && {
-            onChange: (_, selectedRows) => {
-              setSelectedRows(selectedRows);
-            },
+      <ProProvider.Provider value={{ ...values, intl: enUSIntl }}>
+        <ProTable<TICKET_API.TicketListItem, API.PageParams>
+          dateFormatter="string"
+          actionRef={actionRef}
+          rowKey="_id"
+          search={{
+            defaultCollapsed: false,
+            // span: 7,
+            searchText: 'Tìm',
+            resetText: 'Đặt lại',
+            labelWidth: 'auto',
+            // filterType: 'light',
+          }}
+          pagination={{
+            showSizeChanger: true,
+            showTotal: (total) => `Tổng ${total} mã vé`,
+          }}
+          toolBarRender={() => [
+            <Button
+              type="primary"
+              key="primary"
+              hidden={!access.canAdmin}
+              onClick={() => {
+                handleModalOpen(true);
+              }}
+            >
+              <PlusOutlined /> Tạo
+            </Button>,
+          ]}
+          request={ticketList}
+          columns={columns}
+          rowSelection={
+            access.canAdmin && {
+              onChange: (_, selectedRows) => {
+                setSelectedRows(selectedRows);
+              },
+            }
           }
-        }
-        summary={(pageData) => {
-          let totalDelivered = 0;
-          let totalPending = 0;
-          let totalTicket = 0;
-          pageData.forEach(({ delivered, pending }: any) => {
-            totalDelivered += delivered;
-            totalPending += pending;
-            totalTicket = totalDelivered + totalPending;
-          });
+          summary={(pageData) => {
+            let totalDelivered = 0;
+            let totalPending = 0;
+            let totalTicket = 0;
+            pageData.forEach(({ delivered, pending }: any) => {
+              totalDelivered += delivered;
+              totalPending += pending;
+              totalTicket = totalDelivered + totalPending;
+            });
 
-          return (
-            <>
-              <Table.Summary.Row>
-                {access.canAdmin && <Table.Summary.Cell index={0}></Table.Summary.Cell>}
-                <Table.Summary.Cell index={0}></Table.Summary.Cell>
-                <Table.Summary.Cell index={0}></Table.Summary.Cell>
-                <Table.Summary.Cell index={0}></Table.Summary.Cell>
-                <Table.Summary.Cell index={0}></Table.Summary.Cell>
-                <Table.Summary.Cell index={0}></Table.Summary.Cell>
-                <Table.Summary.Cell index={0}>Tổng</Table.Summary.Cell>
-                <Table.Summary.Cell index={0}>
-                  <Typography.Text type="success">{totalDelivered} </Typography.Text>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={0}>
-                  <Typography.Text type="success">{totalPending}</Typography.Text>
-                </Table.Summary.Cell>
-                <Table.Summary.Cell index={0}>
-                  <Typography.Text type="success">{totalTicket}</Typography.Text>
-                </Table.Summary.Cell>
-              </Table.Summary.Row>
-            </>
-          );
-        }}
-      />
+            return (
+              <>
+                <Table.Summary.Row>
+                  {access.canAdmin && <Table.Summary.Cell index={0}></Table.Summary.Cell>}
+                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}>Tổng</Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}>
+                    <Typography.Text type="success">{totalDelivered} </Typography.Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}>
+                    <Typography.Text type="success">{totalPending}</Typography.Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}>
+                    <Typography.Text type="success">{totalTicket}</Typography.Text>
+                  </Table.Summary.Cell>
+                </Table.Summary.Row>
+              </>
+            );
+          }}
+        />
+      </ProProvider.Provider>
+
       {selectedRowsState?.length > 0 && (
         <FooterToolbar>
           <Button

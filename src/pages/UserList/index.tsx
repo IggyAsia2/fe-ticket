@@ -7,14 +7,17 @@ import {
   FooterToolbar,
   PageContainer,
   ProDescriptions,
+  ProProvider,
   ProTable,
+  createIntl,
 } from '@ant-design/pro-components';
 import { FormattedMessage, useRequest } from '@umijs/max';
 import { Button, Drawer, message } from 'antd';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
+import enLocale from '@/locales/table-en';
 
 /**
  * @en-US Add node
@@ -23,21 +26,21 @@ import UpdateForm from './components/UpdateForm';
  */
 
 const handleAdd = async (fields: USER_API.UserListItem) => {
-  const hide = message.loading('Adding');
+  const hide = message.loading('Đang tạo');
   try {
     await addUser({ ...fields });
     hide();
-    message.success('Added successfully');
+    message.success('Thêm mới thành công');
     return true;
   } catch (error) {
     hide();
-    message.error('Adding failed, please try again!');
+    message.error('Thêm mới thất bại, xin vui lòng thử lại!');
     return false;
   }
 };
 
 const handleRemove = async (selectedRows: USER_API.UserListItem[]) => {
-  const hide = message.loading('Deleting');
+  const hide = message.loading('Đang xóa');
   if (!selectedRows) return true;
   try {
     if (selectedRows.length > 1) {
@@ -48,16 +51,18 @@ const handleRemove = async (selectedRows: USER_API.UserListItem[]) => {
       await removeUser(selectedRows[0]);
     }
     hide();
-    message.success('Deleted successfully and will refresh soon');
+    message.success('Đã xóa thành công!');
     return true;
   } catch (error) {
     hide();
-    message.error('Delete failed, please try again');
+    message.error('Xóa thất bại, xin vui lòng thử lại!');
     return false;
   }
 };
 
 const UserList: React.FC = () => {
+  const enUSIntl = createIntl('en_US', enLocale);
+  const values = useContext(ProProvider);
   const { data, run } = useRequest(ristLole, {
     manual: true,
     formatResult: (res) => res,
@@ -77,7 +82,7 @@ const UserList: React.FC = () => {
   const [selectedRowsState, setSelectedRows] = useState<USER_API.UserListItem[]>([]);
 
   const handleUpdate = async (fields: FormValueType) => {
-    const hide = message.loading('Đang xử lý');
+    const hide = message.loading('Đang cập nhật');
     let { _id, email, role, name }: any = currentRow;
     const doc: any = {};
     if (name !== fields.name) doc.name = fields.name;
@@ -91,11 +96,11 @@ const UserList: React.FC = () => {
         });
         hide();
 
-        message.success('Update is successful');
+        message.success('Cập nhật thành công!');
         return true;
       } catch (error) {
         hide();
-        message.error('Update failed, please try again!');
+        message.error('Cập nhật thất bại, xin vui lòng thử lại!');
         return false;
       }
     } else {
@@ -226,42 +231,48 @@ const UserList: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<USER_API.UserListItem, API.PageParams>
-        dateFormatter="string"
-        actionRef={actionRef}
-        rowKey="_id"
-        search={{
-          labelWidth: 120,
-          defaultCollapsed: false,
-          searchText: 'Tìm',
-          resetText: 'Đặt lại',
-          collapseRender: () => {
-            return true;
-          },
-        }}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            onClick={() => {
-              handleModalOpen(true);
-            }}
-          >
-            <PlusOutlined /> Tạo
-          </Button>,
-        ]}
-        request={userList}
-        columns={columns}
-        rowSelection={{
-          onChange: (_, selectedRows) => {
-            setSelectedRows(selectedRows);
-          },
-          getCheckboxProps: (record) => ({
-            disabled: record.email === 'pcvbaoit@gmail.com', // Column configuration not to be checked
-            name: record.email,
-          }),
-        }}
-      />
+      <ProProvider.Provider value={{ ...values, intl: enUSIntl }}>
+        <ProTable<USER_API.UserListItem, API.PageParams>
+          dateFormatter="string"
+          actionRef={actionRef}
+          rowKey="_id"
+          search={{
+            labelWidth: 120,
+            defaultCollapsed: false,
+            searchText: 'Tìm',
+            resetText: 'Đặt lại',
+            collapseRender: () => {
+              return true;
+            },
+          }}
+          pagination={{
+            showTotal: (total) => `Tổng ${total} người dùng`,
+          }}
+          toolBarRender={() => [
+            <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                handleModalOpen(true);
+              }}
+            >
+              <PlusOutlined /> Tạo
+            </Button>,
+          ]}
+          request={userList}
+          columns={columns}
+          rowSelection={{
+            onChange: (_, selectedRows) => {
+              setSelectedRows(selectedRows);
+            },
+            getCheckboxProps: (record) => ({
+              disabled: record.email === 'pcvbaoit@gmail.com', // Column configuration not to be checked
+              name: record.email,
+            }),
+          }}
+        />
+      </ProProvider.Provider>
+
       {selectedRowsState?.length > 0 && (
         <FooterToolbar>
           <Button

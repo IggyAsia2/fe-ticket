@@ -26,6 +26,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         destroyOnClose: true,
         onCancel: () => props.onCancel(),
         cancelText: 'Hủy',
+        okText: 'OK',
       }}
       onFinish={props.onSubmit}
       initialValues={{

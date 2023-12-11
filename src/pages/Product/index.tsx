@@ -13,16 +13,19 @@ import {
   PageContainer,
   ProDescriptions,
   ProTable,
+  ProProvider,
+  createIntl,
 } from '@ant-design/pro-components';
 import { Button, Drawer, Popconfirm, message, Image } from 'antd';
 import type { ExportFormValueType } from './components/ExportForm';
 import ExportForm from './components/ExportForm';
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 import { useAccess } from '@umijs/max';
 import Cookies from 'js-cookie';
+import enLocale from '@/locales/table-en';
 /**
  * @param fields
  */
@@ -63,6 +66,8 @@ const handleRemove = async (selectedRows: PRODUCT_API.ProductListItem[]) => {
 };
 
 const ListProduct: React.FC = () => {
+  const enUSIntl = createIntl('en_US', enLocale);
+  const values = useContext(ProProvider);
   const access = useAccess();
   // const { data, run } = useRequest(ristLole, {
   //   manual: true,
@@ -304,41 +309,47 @@ const ListProduct: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<PRODUCT_API.ProductListItem, API.PageParams>
-        dateFormatter="string"
-        actionRef={actionRef}
-        rowKey="_id"
-        search={{
-          labelWidth: 120,
-          defaultCollapsed: false,
-          searchText: 'Tìm',
-          resetText: 'Đặt lại',
-          collapseRender: () => {
-            return true;
-          },
-        }}
-        toolBarRender={() => [
-          <Button
-            type="primary"
-            key="primary"
-            hidden={!access.canAdmin}
-            onClick={() => {
-              handleModalOpen(true);
-            }}
-          >
-            Tạo
-          </Button>,
-        ]}
-        request={productList}
-        columns={columns}
-        rowSelection={
-          access.canAdmin && {
-            onChange: (_, selectedRows) => {
-              setSelectedRows(selectedRows);
+      <ProProvider.Provider value={{ ...values, intl: enUSIntl }}>
+        <ProTable<PRODUCT_API.ProductListItem, API.PageParams>
+          dateFormatter="string"
+          actionRef={actionRef}
+          rowKey="_id"
+          search={{
+            labelWidth: 120,
+            defaultCollapsed: false,
+            searchText: 'Tìm',
+            resetText: 'Đặt lại',
+            collapseRender: () => {
+              return true;
             },
+          }}
+          toolBarRender={() => [
+            <Button
+              type="primary"
+              key="primary"
+              hidden={!access.canAdmin}
+              onClick={() => {
+                handleModalOpen(true);
+              }}
+            >
+              Tạo
+            </Button>,
+          ]}
+          pagination={{
+            showTotal: (total) => `Tổng ${total} sản phẩm`,
+          }}
+          request={productList}
+          columns={columns}
+          rowSelection={
+            access.canAdmin && {
+              onChange: (_, selectedRows) => {
+                setSelectedRows(selectedRows);
+              },
+            }
           }
-        }
-      />
+        />
+      </ProProvider.Provider>
+
       {selectedRowsState?.length > 0 && (
         <FooterToolbar>
           <Button

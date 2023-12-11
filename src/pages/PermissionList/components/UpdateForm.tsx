@@ -28,6 +28,8 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       modalProps={{
         destroyOnClose: true,
         onCancel: () => props.onCancel(),
+        cancelText: 'Hủy',
+        okText: 'OK',
       }}
       onFinish={props.onSubmit}
       initialValues={{
@@ -42,6 +44,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         name="name"
         label="Role"
         width="md"
+        placeholder="Bạn chưa nhập tên"
         rules={[
           {
             required: true,

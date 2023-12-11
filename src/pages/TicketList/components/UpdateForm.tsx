@@ -25,6 +25,8 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       modalProps={{
         destroyOnClose: true,
         onCancel: () => props.onCancel(),
+        cancelText: 'Hủy',
+        okText: 'OK',
       }}
       onFinish={props.onSubmit}
       initialValues={{
@@ -41,6 +43,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         name="sku"
         label="Sku"
         width="md"
+        placeholder="Nhập mã sku"
         rules={[
           {
             required: true,
@@ -51,6 +54,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       <ProFormText
         name="name"
         label="Tên loại vé"
+        placeholder="Nhập tên loại vé"
         width="md"
         rules={[
           {
@@ -63,6 +67,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       <ProFormSelect<ROLE_API.RistLole>
         name="bigTicket"
         label="Địa điểm"
+        placeholder="Chọn địa điểm"
         options={props.productList}
         rules={[
           {
@@ -76,6 +81,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       <ProFormSelect<ROLE_API.RistLole>
         name="unit"
         label="Unit"
+        placeholder="Chọn unit"
         options={[
           { label: 'Người lớn', value: 'Adult' },
           { label: 'Trẻ em', value: 'Child' },
@@ -93,6 +99,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       <ProFormMoney
         label="Giá"
         name="price"
+        placeholder="Nhập giá"
         locale="vi-VN"
         rules={[
           {
@@ -105,6 +112,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       <ProFormMoney
         label="Chiết khấu"
         name="discountPrice"
+        placeholder="Nhập chiết khấu"
         max={props.values.price}
         locale="vi-VN"
         rules={[

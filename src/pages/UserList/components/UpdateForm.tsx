@@ -1,5 +1,4 @@
 import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-components';
-import { FormattedMessage, useIntl } from '@umijs/max';
 import React from 'react';
 
 export type FormValueType = {
@@ -19,7 +18,6 @@ export type UpdateFormProps = {
 };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
-  const intl = useIntl();
   return (
     <ModalForm
       width={380}
@@ -28,6 +26,8 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       modalProps={{
         destroyOnClose: true,
         onCancel: () => props.onCancel(),
+        cancelText: 'Hủy',
+        okText: 'OK',
       }}
       onFinish={props.onSubmit}
       initialValues={{
@@ -36,65 +36,41 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         email: props.values.email,
         role: props.values.role?._id,
       }}
-      title={intl.formatMessage({
-        id: 'pages.searchTable.updateForm.userConfig',
-        defaultMessage: 'Update User',
-      })}
+      title="Cập nhật người dùng"
     >
       <ProFormText
         name="name"
-        label={intl.formatMessage({
-          id: 'pages.searchTable.updateForm.userName.nameLabel',
-          defaultMessage: 'Update',
-        })}
+        label="Họ và tên"
+        placeholder="Nhập tên người dùng"
         width="md"
         rules={[
           {
             required: true,
-            message: (
-              <FormattedMessage
-                id="pages.searchTable.updateForm.userName.nameUsers"
-                defaultMessage="Update"
-              />
-            ),
+            message: 'Bạn chưa nhập tên',
           },
         ]}
       />
       <ProFormText
         name="email"
-        label={intl.formatMessage({
-          id: 'pages.searchTable.updateForm.userEmail.emailLabel',
-          defaultMessage: 'Update',
-        })}
+        label="Email"
+        placeholder="Nhập email"
         width="md"
         rules={[
           {
             required: true,
-            message: (
-              <FormattedMessage
-                id="pages.searchTable.updateForm.userEmail.emailPlaceholder"
-                defaultMessage="Update"
-              />
-            ),
+            message: 'Bạn chưa nhập email',
           },
         ]}
       />
       <ProFormSelect<ROLE_API.RistLole>
         name="role"
-        label={intl.formatMessage({
-          id: 'pages.searchTable.updateForm.role',
-          defaultMessage: 'Role',
-        })}
+        label="Role"
+        placeholder="Chọn role"
         options={props.roleList}
         rules={[
           {
             required: true,
-            message: (
-              <FormattedMessage
-                id="pages.searchTable.updateForm.rolePlaceholder"
-                defaultMessage="Role"
-              />
-            ),
+            message: 'Bạn chưa chọn role',
           },
         ]}
         width="md"

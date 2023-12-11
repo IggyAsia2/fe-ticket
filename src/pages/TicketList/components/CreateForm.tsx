@@ -19,6 +19,8 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
       modalProps={{
         destroyOnClose: true,
         onCancel: () => props.onCancel(),
+        cancelText: 'Hủy',
+        okText: 'OK'
       }}
       onFinish={props.onFinish}
       title="Tạo vé"
@@ -33,6 +35,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
       <ProFormText
         name="sku"
         label="Sku"
+        placeholder="Nhập mã sku"
         width="md"
         rules={[
           {
@@ -44,6 +47,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
       <ProFormText
         name="name"
         label="Tên loại vé"
+        placeholder="Nhập tên loại vé"
         width="md"
         rules={[
           {
@@ -56,6 +60,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
       <ProFormSelect<ROLE_API.RistLole>
         name="bigTicket"
         label="Địa điểm"
+        placeholder="Chọn địa điểm"
         options={props.productList}
         rules={[
           {
@@ -69,6 +74,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
       <ProFormSelect<ROLE_API.RistLole>
         name="unit"
         label="Unit"
+        placeholder="Chọn unit"
         options={[
           { label: 'Người lớn', value: 'Adult' },
           { label: 'Trẻ em', value: 'Child' },
@@ -89,6 +95,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
         fieldProps={{
           onChange: (e: any) => setPrice(e),
         }}
+        placeholder="Nhập giá"
         locale="vi-VN"
         rules={[
           {
@@ -103,6 +110,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
         fieldProps={{
           disabled: price === 0,
         }}
+        placeholder="Nhập chiết khấu"
         max={price}
         name="discountPrice"
         locale="vi-VN"
