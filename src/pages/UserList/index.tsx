@@ -106,10 +106,10 @@ const UserList: React.FC = () => {
 
   const columns: ProColumns<USER_API.UserListItem>[] = [
     {
-      title: "Tên",
+      title: 'Tên',
       dataIndex: 'name',
       fieldProps: {
-        placeholder: 'Nhập tên'
+        placeholder: 'Nhập tên',
       },
       render: (dom, entity) => {
         return (
@@ -128,7 +128,7 @@ const UserList: React.FC = () => {
       title: 'Email',
       dataIndex: 'email',
       fieldProps: {
-        placeholder: 'Nhập email'
+        placeholder: 'Nhập email',
       },
       valueType: 'textarea',
     },
@@ -137,6 +137,7 @@ const UserList: React.FC = () => {
       dataIndex: 'role',
       // sorter: true,
       hideInForm: true,
+      hideInSearch: true,
       renderText: (val: USER_API.RoleItem) => {
         return val && val.name;
       },
@@ -145,6 +146,7 @@ const UserList: React.FC = () => {
       title: 'Trạng thái',
       dataIndex: 'active',
       hideInForm: true,
+      hideInSearch: true,
       valueEnum: {
         true: {
           text: 'Hoạt động',
@@ -159,6 +161,7 @@ const UserList: React.FC = () => {
     {
       title: 'Ngày tạo',
       dataIndex: 'createdAt',
+      hideInSearch: true,
       renderText: (val: string) => {
         return getDateTime(val);
       },
@@ -185,6 +188,7 @@ const UserList: React.FC = () => {
     {
       title: 'Ngày cập nhật',
       // sorter: true,
+      hideInSearch: true,
       dataIndex: 'updatedAt',
       renderText: (val: string) => {
         return getDateTime(val);
@@ -228,6 +232,12 @@ const UserList: React.FC = () => {
         rowKey="_id"
         search={{
           labelWidth: 120,
+          defaultCollapsed: false,
+          searchText: 'Tìm',
+          resetText: 'Đặt lại',
+          collapseRender: () => {
+            return true;
+          },
         }}
         toolBarRender={() => [
           <Button

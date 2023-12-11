@@ -151,6 +151,12 @@ const PermissionList: React.FC = () => {
         rowKey="_id"
         search={{
           labelWidth: 120,
+          defaultCollapsed: false,
+          searchText: 'Tìm',
+          resetText: 'Đặt lại',
+          collapseRender: () => {
+            return true;
+          },
         }}
         toolBarRender={() => [
           <Button
