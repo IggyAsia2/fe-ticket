@@ -9,7 +9,7 @@ import { PrinterFilled } from '@ant-design/icons';
 import Cookies from 'js-cookie';
 import BillTemplate from './billTemplate';
 const { Text } = Typography;
-const beou = { fontSize: '12px', fontWeight: 'bold', lineHeight: 1.1 };
+const beou = { fontSize: '11px', fontWeight: 'bold', lineHeight: 1.1 };
 
 export type CreateFormProps = {
   onCancel: (flag?: boolean) => void;
@@ -145,6 +145,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                 label="Vé cổng NL"
                 fieldProps={{
                   onChange: (e) => setNL(e),
+                  placeholder: 'Nhập số vé',
                 }}
                 // disabled={!props.groupQuan[index]}
                 width="xs"
@@ -155,6 +156,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                 label="Vé cổng TE"
                 fieldProps={{
                   onChange: (e) => setTE(e),
+                  placeholder: 'Nhập số vé',
                 }}
                 // disabled={!props.groupQuan[index]}
                 width="xs"
@@ -227,9 +229,11 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                             style={{
                               margin: '10px',
                               padding: '5px',
-                              width: 270,
+                              width: 260,
                               borderRadius: 0,
+                              borderColor: '#ccc',
                               pageBreakBefore: 'always',
+                              fontFamily: 'Arial',
                             }}
                             bodyStyle={{ padding: 0 }}
                           >
@@ -237,7 +241,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                               <Row
                                 align="middle"
                                 justify="space-between"
-                                style={{ padding: '0.2rem' }}
+                                style={{ padding: '0.2rem 0.2rem 0 0.2rem' }}
                               >
                                 <Image
                                   width={120}
@@ -261,8 +265,10 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                                     alignItems: 'center',
                                   }}
                                 >
-                                  <QRCode size={110} bordered={false} value={item.serial}></QRCode>
-                                  <Text strong>{item.serial}</Text>
+                                  <QRCode size={100} bordered={false} value={item.serial}></QRCode>
+                                  <Text style={{ fontSize: '11px' }} strong>
+                                    {item.serial}
+                                  </Text>
                                 </div>
                                 <div style={{ paddingTop: '10px' }}>
                                   <div
@@ -280,10 +286,10 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                                   <p style={{ fontSize: '11px' }}>Giá: {getPrice(price)}</p>
                                 </div>
                               </div>
-                              <Divider dashed style={{ margin: '0' }} />
+                              <Divider dashed style={{ margin: '0', borderColor: '#ccc' }} />
                               <div style={{ padding: '5px' }}>
                                 <div style={{ marginBottom: '7px' }}>
-                                  <strong>Hướng dẫn sử dụng</strong>
+                                  <strong style={{fontSize: '13px'}}>Hướng dẫn sử dụng</strong>
                                   <br />
                                   <div style={{ lineHeight: 1.2 }}>
                                     {manual.split('\n').map((el: any) => {
@@ -296,7 +302,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                                   </div>
                                 </div>
                                 <div>
-                                  <strong>Lưu ý</strong>
+                                  <strong style={{fontSize: '13px'}}>Lưu ý</strong>
                                   <br />
                                   <div style={{ lineHeight: 1.2 }}>
                                     {note.split('\n').map((el: any) => {
@@ -309,14 +315,14 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                                   </div>
                                 </div>
                               </div>
-                              <Divider dashed style={{ margin: '5px 0' }} />
+                              <Divider dashed style={{ margin: '5px 0', borderColor: '#ccc' }} />
                               <div style={{ padding: '5px' }}>
-                                <div style={beou}>Vintrip</div>
+                                <div style={beou}>VINTRIP</div>
                                 <div style={beou}>Hotline: 0906897705</div>
                                 <div style={beou}>Mã đặt vé: {orderId}</div>
                               </div>
 
-                              <Divider dashed style={{ margin: '5px 0' }} />
+                              <Divider dashed style={{ margin: '5px 0', borderColor: '#ccc' }} />
                               <div style={{ ...beou, textAlign: 'center' }}>{`${index + 1}/${
                                 bigItem.allOfTicket.length
                               }`}</div>
