@@ -285,10 +285,21 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                                   <p style={{ fontSize: '11px' }}>Giá: {getPrice(price)}</p>
                                 </div>
                               </div>
-                              <Divider dashed style={{ margin: '0 0 4px 0', borderColor: '#ccc' }} />
+                              <Divider
+                                dashed
+                                style={{ margin: '0 0 4px 0', borderColor: '#ccc' }}
+                              />
                               <div style={{ padding: '5px' }}>
                                 <div style={{ marginBottom: '7px' }}>
-                                  <div style={{fontSize: '13px', fontWeight: 'bolder', lineHeight: 1}}>Hướng dẫn sử dụng</div>
+                                  <div
+                                    style={{
+                                      fontSize: '13px',
+                                      fontWeight: 'bolder',
+                                      lineHeight: 1,
+                                    }}
+                                  >
+                                    Hướng dẫn sử dụng
+                                  </div>
                                   <div style={{ lineHeight: 1.0 }}>
                                     {manual.split('\n').map((el: any) => {
                                       return (
@@ -300,7 +311,15 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                                   </div>
                                 </div>
                                 <div>
-                                <div style={{fontSize: '13px', fontWeight: 'bolder', lineHeight: 1}}>Lưu ý</div>
+                                  <div
+                                    style={{
+                                      fontSize: '13px',
+                                      fontWeight: 'bolder',
+                                      lineHeight: 1,
+                                    }}
+                                  >
+                                    Lưu ý
+                                  </div>
                                   <div style={{ lineHeight: 1.2 }}>
                                     {note.split('\n').map((el: any) => {
                                       return (
@@ -320,11 +339,14 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                               </div>
 
                               <Divider dashed style={{ margin: '5px 0', borderColor: '#ccc' }} />
-                              <div style={{ ...beou, textAlign: 'center' }}>{`${index + 1}/${
-                                bigItem.allOfTicket.length
-                              }`}</div>
+                              <div style={{ ...beou, textAlign: 'center' }}>
+                                Powered by Vintrip.vn
+                              </div>
                             </div>
                           </Card>
+                          <div style={{ ...beou, textAlign: 'center' }}>{`${index + 1}/${
+                            bigItem.allOfTicket.length
+                          }`}</div>
                         </div>
                       </>
                     ))}

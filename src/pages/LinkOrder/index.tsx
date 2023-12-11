@@ -199,11 +199,14 @@ const LinkOrder: React.FC = () => {
                               </div>
 
                               <Divider dashed style={{ margin: '5px 0', borderColor: '#ccc' }} />
-                              <div style={{ ...beou, textAlign: 'center' }}>{`${index + 1}/${
-                                bigItem.allOfTicket.length
-                              }`}</div>
+                              <div style={{ ...beou, textAlign: 'center' }}>
+                                Powered by Vintrip.vn
+                              </div>
                             </div>
                           </Card>
+                          <div style={{ ...beou, textAlign: 'center' }}>{`${index + 1}/${
+                            bigItem.allOfTicket.length
+                          }`}</div>
                         </div>
                       </>
                     ))}
