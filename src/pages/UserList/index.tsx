@@ -108,7 +108,9 @@ const UserList: React.FC = () => {
     {
       title: "Tên",
       dataIndex: 'name',
-      tip: 'The Name is the unique key',
+      fieldProps: {
+        placeholder: 'Nhập tên'
+      },
       render: (dom, entity) => {
         return (
           <a
@@ -125,6 +127,9 @@ const UserList: React.FC = () => {
     {
       title: 'Email',
       dataIndex: 'email',
+      fieldProps: {
+        placeholder: 'Nhập email'
+      },
       valueType: 'textarea',
     },
     {

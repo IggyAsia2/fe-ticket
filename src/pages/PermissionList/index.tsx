@@ -95,6 +95,9 @@ const PermissionList: React.FC = () => {
     {
       title: 'Tên',
       dataIndex: 'name',
+      fieldProps: {
+        placeholder: 'Nhập tên'
+      },
       render: (dom, entity) => {
         return (
           <a

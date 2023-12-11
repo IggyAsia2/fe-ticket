@@ -113,7 +113,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
             </Button>
             <Space direction="horizontal">
               <ProFormSelect
-                style={{ width: '250px' }}
+                style={{ width: '200px' }}
                 name="departID"
                 label="Chọn địa điểm"
                 onChange={(_, options: any) => {
