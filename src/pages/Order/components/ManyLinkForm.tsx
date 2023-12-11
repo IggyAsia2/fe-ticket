@@ -286,12 +286,11 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                                   <p style={{ fontSize: '11px' }}>Giá: {getPrice(price)}</p>
                                 </div>
                               </div>
-                              <Divider dashed style={{ margin: '0', borderColor: '#ccc' }} />
+                              <Divider dashed style={{ margin: '0 0 4px 0', borderColor: '#ccc' }} />
                               <div style={{ padding: '5px' }}>
                                 <div style={{ marginBottom: '7px' }}>
-                                  <strong style={{fontSize: '13px'}}>Hướng dẫn sử dụng</strong>
-                                  <br />
-                                  <div style={{ lineHeight: 1.2 }}>
+                                  <div style={{fontSize: '13px', fontWeight: 'bolder', lineHeight: 1}}>Hướng dẫn sử dụng</div>
+                                  <div style={{ lineHeight: 1.0 }}>
                                     {manual.split('\n').map((el: any) => {
                                       return (
                                         <>
@@ -302,8 +301,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                                   </div>
                                 </div>
                                 <div>
-                                  <strong style={{fontSize: '13px'}}>Lưu ý</strong>
-                                  <br />
+                                <div style={{fontSize: '13px', fontWeight: 'bolder', lineHeight: 1}}>Lưu ý</div>
                                   <div style={{ lineHeight: 1.2 }}>
                                     {note.split('\n').map((el: any) => {
                                       return (
