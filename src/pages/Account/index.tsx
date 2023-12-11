@@ -15,8 +15,8 @@ type SettingsState = {
 
 const Account: React.FC = () => {
   const menuMap: Record<string, React.ReactNode> = {
-    base: 'Basic Setting',
-    security: 'Security',
+    base: 'Cài đặt cơ bản',
+    security: 'Bảo mật',
   };
 
   const [initConfig, setInitConfig] = useState<SettingsState>({

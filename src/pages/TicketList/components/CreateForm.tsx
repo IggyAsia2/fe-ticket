@@ -73,8 +73,8 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
 
       <ProFormSelect<ROLE_API.RistLole>
         name="unit"
-        label="Unit"
-        placeholder="Chọn unit"
+        label="Loại vé"
+        placeholder="Chọn loại vé"
         options={[
           { label: 'Người lớn', value: 'Adult' },
           { label: 'Trẻ em', value: 'Child' },
@@ -83,7 +83,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
         rules={[
           {
             required: true,
-            message: 'Bạn chưa chọn unit!',
+            message: 'Bạn chưa chọn loại vé!',
           },
         ]}
         width="md"

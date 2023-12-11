@@ -19,46 +19,48 @@ export default [
   },
   {
     name: 'list.product-list',
-    icon: 'cloud',
+    icon: 'FileTextFilled',
     path: '/san-pham',
     component: './Product',
     access: 'canSeeProduct'
   },
   {
+    name: 'list.order-list',
+    icon: 'BookFilled',
+    path: '/don-hang',
+    component: './Order',
+  },
+  {
+    name: 'list.report-list',
+    icon: 'BookFilled',
+    path: '/bao-cao',
+    component: './Report',
+    access: 'canSeeOrder',
+  },
+  {
     name: 'list.ticket-list',
-    icon: 'cloud',
+    icon: 'TagFilled',
     path: '/kho-ve',
     component: './TicketList',
   },
   {
     name: 'list.inventory-list',
-    icon: 'cloud',
+    icon: 'TagFilled',
     path: '/ma-ve',
     component: './Inventory',
     access: 'canAdmin',
   },
-  {
-    name: 'list.order-list',
-    icon: 'cloud',
-    path: '/don-hang',
-    component: './Order',
-  },
+
   {
     path: '/agent/printticketlink/:orderId',
     component: './LinkOrder',
     layout: false,
     hideInMenu: true
   },
-  {
-    name: 'list.report-list',
-    icon: 'cloud',
-    path: '/bao-cao',
-    component: './Report',
-    access: 'canSeeOrder',
-  },
+
   {
     name: 'list.depart-list',
-    icon: 'cloud',
+    icon: 'ShopFilled',
     path: '/quay-ve',
     component: './Depart',
     access: 'canAdmin',
@@ -72,7 +74,7 @@ export default [
   },
   {
     name: 'list.permission-list',
-    icon: 'table',
+    icon: 'HddFilled',
     path: '/permission-list',
     component: './PermissionList',
     access: 'canAdmin',

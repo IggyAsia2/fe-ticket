@@ -212,7 +212,7 @@ const TicketList: React.FC = () => {
       },
     },
     {
-      title: 'Unit',
+      title: 'Loại vé',
       dataIndex: 'unit',
       valueType: 'select',
       valueEnum: {
@@ -221,7 +221,7 @@ const TicketList: React.FC = () => {
         Elder: 'Người cao tuổi',
       },
       fieldProps: {
-        placeholder: 'Chọn unit',
+        placeholder: 'Chọn loại vé',
       },
       // hideInSearch: true,
       renderText: (val) => {
@@ -324,7 +324,9 @@ const TicketList: React.FC = () => {
           }}
           pagination={{
             showSizeChanger: true,
+            // onShowSizeChange: (current, size) => `${size} / trang`,
             showTotal: (total) => `Tổng ${total} mã vé`,
+            locale: { items_per_page: "" }
           }}
           toolBarRender={() => [
             <Button

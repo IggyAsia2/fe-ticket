@@ -1,15 +1,15 @@
 import { ModalForm, ProFormSelect, ProFormDigit } from '@ant-design/pro-components';
-import { Card, Image, Row, Typography, QRCode, Divider, Button, Space, message } from 'antd';
+import { Typography, Button, Space, message } from 'antd';
 import { getProductToLink } from '@/api/product';
 import { useRequest } from '@umijs/max';
 import React, { useEffect, useRef, useState } from 'react';
-import { convertDepartToC, getDate, getPrice } from '@/helper/helper';
+import { convertDepartToC, getPrice } from '@/helper/helper';
 import { useReactToPrint } from 'react-to-print';
 import { PrinterFilled } from '@ant-design/icons';
 import Cookies from 'js-cookie';
 import BillTemplate from './billTemplate';
+import TicketPrintTemplate from '@/helper/ticketPrintTemplate';
 const { Text } = Typography;
-const beou = { fontSize: '11px', fontWeight: 'bold', lineHeight: 1.1 };
 
 export type CreateFormProps = {
   onCancel: (flag?: boolean) => void;
@@ -221,133 +221,21 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                   >
                     {bigItem.allOfTicket.map((item: any, index: any) => (
                       <>
-                        <div className="print-ticket">
-                          <Card
-                            className="superCard"
-                            key={index}
-                            style={{
-                              margin: '10px',
-                              padding: '5px',
-                              width: 260,
-                              borderRadius: 0,
-                              borderColor: '#ccc',
-                              pageBreakBefore: 'always',
-                              fontFamily: 'Arial',
-                            }}
-                            bodyStyle={{ padding: 0 }}
-                          >
-                            <div>
-                              <Row
-                                align="middle"
-                                justify="space-between"
-                                style={{ padding: '0.2rem 0.2rem 0 0.2rem' }}
-                              >
-                                <Image
-                                  width={120}
-                                  preview={false}
-                                  src={`${STATIC_URL}/BigTicket/${logo}`}
-                                  crossOrigin="anonymous"
-                                />
-                                <Image
-                                  width={70}
-                                  preview={false}
-                                  src={STATIC_URL + '/Vintrip/logo.png'}
-                                  crossOrigin="anonymous"
-                                />
-                              </Row>
-                              <hr />
-                              <div style={{ display: 'flex' }}>
-                                <div
-                                  style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                  }}
-                                >
-                                  <QRCode size={100} bordered={false} value={item.serial}></QRCode>
-                                  <Text style={{ fontSize: '11px' }} strong>
-                                    {item.serial}
-                                  </Text>
-                                </div>
-                                <div style={{ paddingTop: '10px' }}>
-                                  <div
-                                    style={{
-                                      display: 'flex',
-                                      flexDirection: 'column',
-                                      paddingBottom: '3px',
-                                    }}
-                                  >
-                                    <div style={beou}>{`${groupTicket?.name} - ${itnu.name}`}</div>
-                                    <small>{heightNote[itnu.note]}</small>
-                                  </div>
-                                  <p style={{ fontSize: '11px' }}>{place}</p>
-                                  <p style={{ fontSize: '11px' }}>Ngày: {getDate(bookDate)}</p>
-                                  <p style={{ fontSize: '11px' }}>Giá: {getPrice(price)}</p>
-                                </div>
-                              </div>
-                              <Divider
-                                dashed
-                                style={{ margin: '0 0 4px 0', borderColor: '#ccc' }}
-                              />
-                              <div style={{ padding: '5px' }}>
-                                <div style={{ marginBottom: '7px' }}>
-                                  <div
-                                    style={{
-                                      fontSize: '13px',
-                                      fontWeight: 'bolder',
-                                      lineHeight: 1,
-                                    }}
-                                  >
-                                    Hướng dẫn sử dụng
-                                  </div>
-                                  <div style={{ lineHeight: 1.0 }}>
-                                    {manual.split('\n').map((el: any) => {
-                                      return (
-                                        <>
-                                          <div style={{ fontSize: '13px' }}>{el}</div>
-                                        </>
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                                <div>
-                                  <div
-                                    style={{
-                                      fontSize: '13px',
-                                      fontWeight: 'bolder',
-                                      lineHeight: 1,
-                                    }}
-                                  >
-                                    Lưu ý
-                                  </div>
-                                  <div style={{ lineHeight: 1.2 }}>
-                                    {note.split('\n').map((el: any) => {
-                                      return (
-                                        <>
-                                          <div style={{ fontSize: '13px' }}>{el}</div>
-                                        </>
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                              </div>
-                              <Divider dashed style={{ margin: '5px 0', borderColor: '#ccc' }} />
-                              <div style={{ padding: '5px' }}>
-                                <div style={beou}>VINTRIP</div>
-                                <div style={beou}>Hotline: 0906897705</div>
-                                <div style={beou}>Mã đặt vé: {orderId}</div>
-                              </div>
-
-                              <Divider dashed style={{ margin: '5px 0', borderColor: '#ccc' }} />
-                              <div style={{ ...beou, textAlign: 'center' }}>
-                                Powered by Vintrip.vn
-                              </div>
-                            </div>
-                          </Card>
-                          <div style={{ ...beou, textAlign: 'center' }}>{`${index + 1}/${
-                            bigItem.allOfTicket.length
-                          }`}</div>
-                        </div>
+                        <TicketPrintTemplate
+                          item={item}
+                          index={index}
+                          logo={logo}
+                          groupTicket={groupTicket}
+                          itnu={itnu}
+                          heightNote={heightNote}
+                          place={place}
+                          bookDate={bookDate}
+                          price={price}
+                          manual={manual}
+                          note={note}
+                          orderId={orderId}
+                          bigItem={bigItem}
+                        />
                       </>
                     ))}
                   </div>

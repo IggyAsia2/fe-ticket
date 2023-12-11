@@ -53,6 +53,7 @@ const BaseView: React.FC = () => {
               width="md"
               name="name"
               label="Tên"
+              placeholder="Nhập tên"
               rules={[
                 {
                   required: true,
