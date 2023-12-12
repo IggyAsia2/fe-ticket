@@ -287,7 +287,7 @@ const ListProduct: React.FC = () => {
                 actionRef.current?.reloadAndRest?.();
               }}
             >
-              <a hidden={!access.canAdmin} key="delete">
+              <a hidden={!access.canDad} key="delete">
                 Xóa
               </a>
             </Popconfirm>
@@ -359,6 +359,7 @@ const ListProduct: React.FC = () => {
           <Button
             type="primary"
             danger
+            hidden={!access.canDad}
             onClick={async () => {
               await handleRemove(selectedRowsState);
               setSelectedRows([]);

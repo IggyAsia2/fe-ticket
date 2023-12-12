@@ -3,6 +3,7 @@ import { CurrentUser } from '@/helper/helper';
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Input, Space, Upload, message } from 'antd';
 import { useState } from 'react';
+import { useAccess } from '@umijs/max';
 import XLSX from 'xlsx';
 
 const SheetJSFT: string = ['xlsx']
@@ -29,6 +30,7 @@ export type CreateFormProps = {
 };
 
 const ExcelReader: React.FC<CreateFormProps> = (props) => {
+  const access = useAccess();
   const [file, setFile] = useState<any>({});
   const [isFile, setIsFile] = useState<boolean>(true);
   const { checkData, actionRef } = props;
@@ -145,9 +147,9 @@ const ExcelReader: React.FC<CreateFormProps> = (props) => {
         }}
         onRemove={() => setIsFile(true)}
       >
-        <Button icon={<UploadOutlined />}>Chọn File nhập vé</Button>
+        <Button hidden={!access.canDad} icon={<UploadOutlined />}>Chọn File nhập vé</Button>
       </Upload>
-      <Input disabled={isFile} type="submit" value="Nhập vé" onClick={handleFile} />
+      <Input hidden={!access.canDad} disabled={isFile} type="submit" value="Nhập vé" onClick={handleFile} />
     </Space>
   );
 };

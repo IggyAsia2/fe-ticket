@@ -11,7 +11,7 @@ import {
   ProTable,
   createIntl,
 } from '@ant-design/pro-components';
-import { useRequest } from '@umijs/max';
+import { useRequest, useAccess } from '@umijs/max';
 import { Button, Drawer, message } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
@@ -61,6 +61,7 @@ const handleRemove = async (selectedRows: USER_API.UserListItem[]) => {
 };
 
 const UserList: React.FC = () => {
+  const access = useAccess();
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
   const { data, run } = useRequest(ristLole, {
@@ -205,7 +206,7 @@ const UserList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => [
         <a
-          hidden={record.email === 'pcvbaoit@gmail.com'}
+          hidden={record.email === 'pcvbaoit@gmail.com' || !access.canDad}
           key="config"
           onClick={() => {
             handleUpdateModalOpen(true);
@@ -215,7 +216,7 @@ const UserList: React.FC = () => {
           Cập nhật
         </a>,
         <a
-          hidden={record.email === 'pcvbaoit@gmail.com'}
+          hidden={record.email === 'pcvbaoit@gmail.com' || !access.canDad}
           key="subscribeAlert"
           onClick={async () => {
             await handleRemove([record]);

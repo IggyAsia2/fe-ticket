@@ -15,6 +15,7 @@ import CreateForm from './components/CreateForm';
 import UpdateForm from './components/UpdateForm';
 import CreateCashierForm from './components/CreateCashierForm';
 import UpdateCashierForm from './components/UpdateCashierForm';
+import { useAccess } from '@umijs/max';
 import enLocale from '@/locales/table-en';
 
 export type TableListItem = {
@@ -67,6 +68,7 @@ const handleRemoveCashier = async (departID: string, cashierID: string) => {
 };
 
 export default () => {
+  const access = useAccess();
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
   const actionRef = useRef<ActionType>();
@@ -163,7 +165,7 @@ export default () => {
                     actionRef.current?.reloadAndRest?.();
                   }}
                 >
-                  <a key="deletec">Xóa</a>
+                  <a hidden={!access.canDad} key="deletec">Xóa</a>
                 </Popconfirm>
               </>,
             ],
@@ -229,7 +231,7 @@ export default () => {
                 actionRef.current?.reloadAndRest?.();
               }}
             >
-              <a key="delete">Xóa</a>
+              <a hidden={!access.canDad} key="delete">Xóa</a>
             </Popconfirm>
           </>
         </div>

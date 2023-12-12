@@ -288,7 +288,7 @@ const TicketList: React.FC = () => {
               actionRef.current?.reloadAndRest?.();
             }}
           >
-            <a hidden={!access.canAdmin} key="delete">
+            <a hidden={!access.canDad} key="delete">
               Xóa
             </a>
           </Popconfirm>
@@ -326,7 +326,7 @@ const TicketList: React.FC = () => {
             showSizeChanger: true,
             // onShowSizeChange: (current, size) => `${size} / trang`,
             showTotal: (total) => `Tổng ${total} mã vé`,
-            locale: { items_per_page: "" }
+            locale: { items_per_page: '' },
           }}
           toolBarRender={() => [
             <Button
@@ -391,6 +391,7 @@ const TicketList: React.FC = () => {
       {selectedRowsState?.length > 0 && (
         <FooterToolbar>
           <Button
+            hidden={!access.canDad}
             type="primary"
             danger
             onClick={async () => {

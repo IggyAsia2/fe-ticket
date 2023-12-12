@@ -13,7 +13,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
-import { useRequest } from '@umijs/max';
+import { useRequest, useAccess } from '@umijs/max';
 import enLocale from '@/locales/table-en';
 
 /**
@@ -50,6 +50,7 @@ const handleRemove = async (selectedRows: PERM_API.PermListItem[]) => {
 };
 
 const PermissionList: React.FC = () => {
+  const access = useAccess();
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
   const { data: rightGroupData, run } = useRequest(rightGroupList, {
@@ -126,7 +127,7 @@ const PermissionList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => [
         <a
-          hidden={record.name === 'admin'}
+          hidden={record.name === 'admin' || !access.canDad}
           key="config"
           onClick={() => {
             handleUpdateModalOpen(true);
@@ -143,7 +144,7 @@ const PermissionList: React.FC = () => {
               actionRef.current?.reloadAndRest?.();
             }}
           >
-            <a hidden={record.name === 'admin'} key="delete">
+            <a hidden={record.name === 'admin' || !access.canDad} key="delete">
               Xóa
             </a>
           </Popconfirm>
