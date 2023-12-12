@@ -548,6 +548,7 @@ const OrderList: React.FC = () => {
             // pageSize: 10,
             showSizeChanger: true,
             showTotal: (total) => `Tổng ${total} đơn hàng`,
+            locale: { items_per_page: "" }
           }}
           // scroll={{ y: 440 }}
           dateFormatter="string"

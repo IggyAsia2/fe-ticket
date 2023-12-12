@@ -232,6 +232,7 @@ const ListProduct: React.FC = () => {
           record.logo && (
             <Image
               width={100}
+              preview={false}
               src={STATIC_URL + '/BigTicket/' + record.logo}
               crossOrigin="anonymous"
             />

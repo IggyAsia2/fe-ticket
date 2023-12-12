@@ -198,6 +198,7 @@ const InventoryList: React.FC = () => {
             // pageSize: 10,
             showSizeChanger: true,
             showTotal: (total) => `Tổng ${total} vé`,
+            locale: { items_per_page: "" }
           }}
           dateFormatter="string"
           actionRef={actionRef}
