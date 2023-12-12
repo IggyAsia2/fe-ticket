@@ -15,7 +15,7 @@ const Settings: ProLayoutProps & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Vintrip.vn',
+  title: 'VINTRIP.VN',
   pwa: true,
   logo: 'https://vintrip.vn/wp-content/uploads/2023/09/vintrip-avatar-e1695109424371.png',
   iconfontUrl: '',
