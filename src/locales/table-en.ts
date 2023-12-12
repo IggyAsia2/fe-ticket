@@ -9,7 +9,7 @@ const enLocale = {
     selectPlaceholder: 'Mời chọn',
   },
   alert: {
-    clear: 'Xóa',
+    clear: 'Bỏ chọn',
   },
   tableToolBar: {
     leftPin: 'Ghim sang trái',

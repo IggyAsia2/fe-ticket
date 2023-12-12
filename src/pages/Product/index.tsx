@@ -336,6 +336,9 @@ const ListProduct: React.FC = () => {
               Tạo
             </Button>,
           ]}
+          tableAlertRender={({ selectedRowKeys }) => {
+            return <span>Chọn {selectedRowKeys.length}</span>;
+          }}
           pagination={{
             showTotal: (total) => `Tổng ${total} sản phẩm`,
           }}

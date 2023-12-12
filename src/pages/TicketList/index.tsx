@@ -340,6 +340,9 @@ const TicketList: React.FC = () => {
               <PlusOutlined /> Tạo
             </Button>,
           ]}
+          tableAlertRender={({ selectedRowKeys }) => {
+            return <span>Chọn {selectedRowKeys.length}</span>;
+          }}
           request={ticketList}
           columns={columns}
           rowSelection={

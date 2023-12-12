@@ -11,7 +11,7 @@ import {
   ProTable,
   createIntl,
 } from '@ant-design/pro-components';
-import { FormattedMessage, useRequest } from '@umijs/max';
+import { useRequest } from '@umijs/max';
 import { Button, Drawer, message } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
@@ -259,6 +259,9 @@ const UserList: React.FC = () => {
               <PlusOutlined /> Tạo
             </Button>,
           ]}
+          tableAlertRender={({ selectedRowKeys }) => {
+            return <span>Chọn {selectedRowKeys.length}</span>;
+          }}
           request={userList}
           columns={columns}
           rowSelection={{
@@ -284,7 +287,7 @@ const UserList: React.FC = () => {
               actionRef.current?.reloadAndRest?.();
             }}
           >
-            <FormattedMessage id="pages.searchTable.deletion" defaultMessage="Deletion" />
+            Xóa
           </Button>
         </FooterToolbar>
       )}
