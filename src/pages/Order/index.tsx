@@ -341,15 +341,32 @@ const OrderList: React.FC = () => {
             <div>
               {record.orderId} - {getDateTime(record.updatedAt)}
             </div>
-            <div>{record.exportUser}</div>
+            <div>{record.exportUser.split('@')[0]}</div>
           </div>
         );
       },
     },
     {
-      title: 'Khách hàng',
-      valueType: 'text',
+      title: 'Sđt KH',
+      dataIndex: 'customerPhone',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: 'Nhập sđt khách hàng',
+      },
+    },
+    {
+      title: 'Biến số xe',
       dataIndex: 'customerCar',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: 'Nhập biển số xe',
+      },
+    },
+    {
+      title: 'Khách hàng',
+      width: '150px',
+      valueType: 'text',
+      hideInSearch: true,
       fieldProps: {
         placeholder: 'Nhập biển số xe',
       },
@@ -367,6 +384,7 @@ const OrderList: React.FC = () => {
     {
       title: 'Quầy',
       dataIndex: 'departID',
+      width: '100px',
       valueType: 'text',
       renderText: (record: string) => departCheck[record],
       hideInSearch: true,

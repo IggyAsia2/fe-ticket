@@ -225,7 +225,7 @@ const UserList: React.FC = () => {
             cancelText="Hủy"
           >
             <a
-              hidden={record.email === 'admin@gmail.com' || !access.canDad}
+              hidden={record.email === 'admin@gmail.com' || !access.canDeleteUser}
               key="subscribeAlert"
             >
               Xóa
