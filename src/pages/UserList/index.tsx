@@ -137,6 +137,14 @@ const UserList: React.FC = () => {
       },
       valueType: 'textarea',
     },
+    // {
+    //   title: 'SĐT',
+    //   dataIndex: 'phone',
+    //   fieldProps: {
+    //     placeholder: 'Nhập email',
+    //   },
+    //   hideInSearch: true,
+    // },
     {
       title: 'Role',
       dataIndex: 'role',
@@ -163,49 +171,31 @@ const UserList: React.FC = () => {
         },
       },
     },
-    {
-      title: 'Ngày tạo',
-      dataIndex: 'createdAt',
-      hideInSearch: true,
-      renderText: (val: string) => {
-        return getDateTime(val);
-      },
-      // renderFormItem: (item, { defaultRender, ...rest }, form) => {
-      //   console.log(item);
-      //   const status = form.getFieldValue('status');
-      //   if (`${status}` === '0') {
-      //     return false;
-      //   }
-      //   if (`${status}` === '3') {
-      //     return (
-      //       <Input
-      //         {...rest}
-      //         placeholder={intl.formatMessage({
-      //           id: 'pages.searchTable.exception',
-      //           defaultMessage: 'Please enter the reason for the exception!',
-      //         })}
-      //       />
-      //     );
-      //   }
-      //   return defaultRender(item);
-      // },
-    },
-    {
-      title: 'Ngày cập nhật',
-      // sorter: true,
-      hideInSearch: true,
-      dataIndex: 'updatedAt',
-      renderText: (val: string) => {
-        return getDateTime(val);
-      },
-    },
+
+    // {
+    //   title: 'Ngày tạo',
+    //   dataIndex: 'createdAt',
+    //   hideInSearch: true,
+    //   renderText: (val: string) => {
+    //     return getDateTime(val);
+    //   },
+    // },
+    // {
+    //   title: 'Ngày cập nhật',
+    //   // sorter: true,
+    //   hideInSearch: true,
+    //   dataIndex: 'updatedAt',
+    //   renderText: (val: string) => {
+    //     return getDateTime(val);
+    //   },
+    // },
     {
       title: 'Tùy chọn',
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
         <a
-          hidden={record.email === 'admin@gmail.com' || !access.canDad}
+          hidden={record.email === 'admin@gmail.com' || !access.canDeleteUser}
           key="config"
           onClick={() => {
             handleUpdateModalOpen(true);
