@@ -39,12 +39,12 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
         label="Điện thoại"
         width="xl"
         placeholder="Nhập số điện thoại"
-        rules={[
-          {
-            required: true,
-            message: 'Nhập số điện thoại!',
-          },
-        ]}
+        // rules={[
+        //   {
+        //     required: true,
+        //     message: 'Nhập số điện thoại!',
+        //   },
+        // ]}
       />
     </ModalForm>
   );

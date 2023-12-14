@@ -52,12 +52,12 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         label="Điện thoại"
         width="xl"
         placeholder="Nhập số điện thoại"
-        rules={[
-          {
-            required: true,
-            message: 'Nhập số điện thoại!',
-          },
-        ]}
+        // rules={[
+        //   {
+        //     required: true,
+        //     message: 'Nhập số điện thoại!',
+        //   },
+        // ]}
       />
     </ModalForm>
   );

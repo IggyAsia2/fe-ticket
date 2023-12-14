@@ -175,7 +175,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
             takePrice={props.takePrice}
           />
         </div>
-        <div style={{ display: 'none' }}>
+        <div style={{ display: '' }}>
           <BillTemplate
             options={{ nl, te }}
             actionBillRef={actionBillRefDC}
