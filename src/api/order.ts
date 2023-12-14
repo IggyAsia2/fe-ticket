@@ -45,7 +45,6 @@ export async function reportList(
   options?: { [key: string]: any },
 ) {
   const getState = !params.state ? '&state=Finished' : ''
-
   const getGte = !params['updatedAt[gte]'] ?
     `&updatedAt[gte]=${timeStamp(dayjs().format('DD/MM/YYYY'))}`
     : ''

@@ -567,7 +567,7 @@ const OrderList: React.FC = () => {
             // pageSize: 10,
             showSizeChanger: true,
             showTotal: (total) => `Tổng ${total} đơn hàng`,
-            locale: { items_per_page: "" }
+            locale: { items_per_page: '' },
           }}
           // scroll={{ y: 440 }}
           dateFormatter="string"
@@ -591,15 +591,12 @@ const OrderList: React.FC = () => {
               </Button>
             </>,
           ]}
-          request={async (
-            params: {
-              current?: number;
-              pageSize?: number;
-              exportUser?: string;
-              state?: string;
-            },
-            options?: { [key: string]: any },
-          ) => {
+          request={async (params: any, options?: { [key: string]: any }) => {
+            Object.keys(params).forEach((key: any) => {
+              if (params[key] === '') {
+                delete params[key];
+              }
+            });
             const result: any = await request<ORDER_API.OrderList>(`${API_URL}/orders`, {
               method: 'GET',
               headers: {
