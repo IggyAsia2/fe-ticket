@@ -1,4 +1,5 @@
 import { getDateTime, getPrice } from '@/helper/helper';
+import { Image, Space } from 'antd';
 import React from 'react';
 
 const BillTemplate: React.FC<any> = (props) => {
@@ -40,7 +41,7 @@ const BillTemplate: React.FC<any> = (props) => {
 
   return (
     <>
-      <div className="print-bill" ref={actionBillRef}>
+      <div style={{ color: '#000000' }} className="print-bill" ref={actionBillRef}>
         <div style={{ display: 'grid', justifyItems: 'center' }}>
           <span style={{ fontSize: '16.5pt', fontWeight: 'bold' }}>
             {departInfo.name.toUpperCase()}
@@ -101,8 +102,19 @@ const BillTemplate: React.FC<any> = (props) => {
           </div>
         </div>
         <div style={{ display: 'grid', justifyItems: 'center', marginTop: '20px' }}>
-          <span>STK: 3552 5378 888</span>
-          <span>CTK: Cao Thị Cẩm Tú - TP Bank</span>
+          <Space>
+            <Space direction="vertical" style={{ textAlign: 'center' }}>
+              <span>Tên chủ TK: Cao Thị Cẩm Tú</span>
+              <strong>Số TK: 3552 5378 888</strong>
+              <div>Ngân hàng TP Bank</div>
+            </Space>
+            <Image
+              width={70}
+              preview={false}
+              src={STATIC_URL + '/Qrcode/tpbank.png'}
+              crossOrigin="anonymous"
+            />
+          </Space>
         </div>
         <hr />
         <strong>Cảm ơn quý khách</strong>

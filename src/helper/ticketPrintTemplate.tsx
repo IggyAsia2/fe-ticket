@@ -1,4 +1,4 @@
-import { Card, Divider, QRCode, Row, Image, Typography } from 'antd';
+import { Card, Divider, Row, Image, Typography } from 'antd';
 import { getDate, getPrice } from './helper';
 const { Text } = Typography;
 
@@ -35,7 +35,7 @@ const TicketPrintTemplate: any = (props: any) => {
             borderColor: '#ccc',
             pageBreakBefore: 'always',
             fontFamily: 'Arial',
-            color: '#000000'
+            color: '#000000',
           }}
           bodyStyle={{ padding: 0 }}
         >
@@ -67,17 +67,22 @@ const TicketPrintTemplate: any = (props: any) => {
                   alignItems: 'center',
                 }}
               >
-                <QRCode
+                <Image
+                  preview={false}
+                  width={100}
+                  src={`https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=${item.serial}`}
+                />
+                {/* <QRCode
                   type="svg"
                   style={{ padding: '0 12px 0 0' }}
                   size={100}
                   bordered={false}
                   value={item.serial}
-                ></QRCode>
+                ></QRCode> */}
                 <Text
                   style={{
                     fontSize: '13px',
-                    paddingRight: '12px',
+                    // paddingRight: '12px',
                     paddingBottom: '8px',
                   }}
                   strong
