@@ -84,6 +84,7 @@ const TicketPrintTemplate: any = (props: any) => {
                     fontSize: '13px',
                     // paddingRight: '12px',
                     paddingBottom: '8px',
+                    color: '#000000'
                   }}
                   strong
                 >
