@@ -31,21 +31,21 @@ import enLocale from '@/locales/table-en';
  */
 
 const handleAdd = async (fields: PRODUCT_API.ProductListItem) => {
-  const hide = message.loading('Adding');
+  const hide = message.loading('Đang tạo');
   try {
     await addProduct({ ...fields });
     hide();
-    message.success('Added successfully');
+    message.success('Tạo thành công');
     return true;
   } catch (error) {
     hide();
-    message.error('Adding failed, please try again!');
+    message.error('Tạo thất bại, xin vui lòng thử lại!');
     return false;
   }
 };
 
 const handleRemove = async (selectedRows: PRODUCT_API.ProductListItem[]) => {
-  const hide = message.loading('Deleting');
+  const hide = message.loading('Đang xóa');
   if (!selectedRows) return true;
   try {
     if (selectedRows.length > 1) {
@@ -56,11 +56,11 @@ const handleRemove = async (selectedRows: PRODUCT_API.ProductListItem[]) => {
       await removeProduct(selectedRows[0]);
     }
     hide();
-    message.success('Deleted successfully and will refresh soon');
+    message.success('Xóa thàng công');
     return true;
   } catch (error) {
     hide();
-    message.error('Delete failed, please try again');
+    message.error('Xóa thất bại vui lòng thử lại');
     return false;
   }
 };
@@ -116,11 +116,11 @@ const ListProduct: React.FC = () => {
         });
         hide();
 
-        message.success('Update is successful');
+        message.success('Cập nhật thành công');
         return true;
       } catch (error) {
         hide();
-        message.error('Update failed, please try again!');
+        message.error('Cập nhật thất bại, xin vui lòng thử lại!');
         return false;
       }
     } else {

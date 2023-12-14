@@ -113,7 +113,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         label="Chiết khấu"
         name="discountPrice"
         placeholder="Nhập chiết khấu"
-        max={props.values.price}
+        // max={props.values.price}
         locale="vi-VN"
         rules={[
           {

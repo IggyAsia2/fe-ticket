@@ -187,7 +187,7 @@ const OrderList: React.FC = () => {
   };
 
   // const handleSendEmail = async (record: any) => {
-  //   const hide = message.loading('Adding');
+  //   const hide = message.loading('Đang tạo');
   //   try {
   //     await sendMailOrder({
   //       email: record.customerEmail,
@@ -195,11 +195,11 @@ const OrderList: React.FC = () => {
   //       html: `<button>asdaskdlk</button>`
   //     });
   //     hide();
-  //     message.success('Added successfully');
+  //     message.success('Tạo thành công');
   //     return true;
   //   } catch (error) {
   //     hide();
-  //     message.error('Adding failed, please try again!');
+  //     message.error('Tạo thất bại, xin vui lòng thử lại!');
   //     return false;
   //   }
   // };

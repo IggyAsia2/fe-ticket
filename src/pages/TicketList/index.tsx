@@ -48,21 +48,21 @@ const unit: any = {
 };
 
 const handleAdd = async (fields: TICKET_API.TicketListItem) => {
-  const hide = message.loading('Adding');
+  const hide = message.loading('Đang tạo');
   try {
     await addTicket({ ...fields });
     hide();
-    message.success('Added successfully');
+    message.success('Tạo thành công');
     return true;
   } catch (error) {
     hide();
-    message.error('Adding failed, please try again!');
+    message.error('Tạo thất bại, xin vui lòng thử lại!');
     return false;
   }
 };
 
 const handleRemove = async (selectedRows: TICKET_API.TicketListItem[]) => {
-  const hide = message.loading('Deleting');
+  const hide = message.loading('Đang xóa');
   if (!selectedRows) return true;
   try {
     if (selectedRows.length > 1) {
@@ -73,11 +73,11 @@ const handleRemove = async (selectedRows: TICKET_API.TicketListItem[]) => {
       await removeTicket(selectedRows[0]);
     }
     hide();
-    message.success('Deleted successfully and will refresh soon');
+    message.success('Đã xóa thành công');
     return true;
   } catch (error) {
     hide();
-    message.error('Delete failed, please try again');
+    message.error('Xóa thất bại, vui lòng thử lại!');
     return false;
   }
 };
@@ -128,11 +128,11 @@ const TicketList: React.FC = () => {
         });
         hide();
 
-        message.success('Update is successful');
+        message.success('Cập nhật thành công');
         return true;
       } catch (error) {
         hide();
-        message.error('Update failed, please try again!');
+        message.error('Cập nhật thất bại, xin vui lòng thử lại!');
         return false;
       }
     } else {

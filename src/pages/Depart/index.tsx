@@ -25,44 +25,44 @@ export type TableListItem = {
 };
 
 const handleAdd = async (fields: DEPART_API.DepartListItem) => {
-  const hide = message.loading('Adding');
+  const hide = message.loading('Đang tạo');
   try {
     await addDepart({ ...fields });
     hide();
-    message.success('Added successfully');
+    message.success('Tạo thành công');
     return true;
   } catch (error) {
     hide();
-    message.error('Adding failed, please try again!');
+    message.error('Tạo thất bại, xin vui lòng thử lại!');
     return false;
   }
 };
 
 const handleRemove = async (selectedRows: PRODUCT_API.ProductListItem[]) => {
-  const hide = message.loading('Deleting');
+  const hide = message.loading('Đang xóa');
   if (!selectedRows) return true;
   try {
     await removeDepart(selectedRows[0]);
     hide();
-    message.success('Deleted successfully and will refresh soon');
+    message.success('Xóa thàng công');
     return true;
   } catch (error) {
     hide();
-    message.error('Delete failed, please try again');
+    message.error('Xóa thất bại vui lòng thử lại');
     return false;
   }
 };
 
 const handleRemoveCashier = async (departID: string, cashierID: string) => {
-  const hide = message.loading('Deleting');
+  const hide = message.loading('Đang xóa');
   try {
     await removeCashier({ departID, cashierID });
     hide();
-    message.success('Deleted successfully and will refresh soon');
+    message.success('Xóa thàng công');
     return true;
   } catch (error) {
     hide();
-    message.error('Delete failed, please try again');
+    message.error('Xóa thất bại vui lòng thử lại');
     return false;
   }
 };
@@ -95,11 +95,11 @@ export default () => {
           method,
         });
         hide();
-        message.success('Update is successful');
+        message.success('Cập nhật thành công');
         return true;
       } catch (error) {
         hide();
-        message.error('Update failed, please try again!');
+        message.error('Cập nhật thất bại, xin vui lòng thử lại!');
         return false;
       }
     } else {
@@ -123,11 +123,11 @@ export default () => {
           cashierID: _id,
         });
         hide();
-        message.success('Update is successful');
+        message.success('Cập nhật thành công');
         return true;
       } catch (error) {
         hide();
-        message.error('Update failed, please try again!');
+        message.error('Cập nhật thất bại, xin vui lòng thử lại!');
         return false;
       }
     } else {

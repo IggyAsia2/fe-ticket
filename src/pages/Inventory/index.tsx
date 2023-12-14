@@ -35,7 +35,7 @@ const state: any = {
 };
 
 const handleRemove = async (selectedRows: INVEN_API.InvenListItem[]) => {
-  const hide = message.loading('Deleting');
+  const hide = message.loading('Đang xóa');
   if (!selectedRows) return true;
   try {
     if (selectedRows.length > 1) {
@@ -46,11 +46,11 @@ const handleRemove = async (selectedRows: INVEN_API.InvenListItem[]) => {
       await removeInven(selectedRows[0]);
     }
     hide();
-    message.success('Deleted successfully and will refresh soon');
+    message.success('Xóa thàng công');
     return true;
   } catch (error) {
     hide();
-    message.error('Delete failed, please try again');
+    message.error('Xóa thất bại vui lòng thử lại');
     return false;
   }
 };

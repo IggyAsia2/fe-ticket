@@ -26,11 +26,11 @@ const handleAdd = async (fields: API.RuleListItem) => {
   try {
     await addRule({ ...fields });
     hide();
-    message.success('Added successfully');
+    message.success('Tạo thành công');
     return true;
   } catch (error) {
     hide();
-    message.error('Adding failed, please try again!');
+    message.error('Tạo thất bại, xin vui lòng thử lại!');
     return false;
   }
 };
@@ -74,11 +74,11 @@ const handleRemove = async (selectedRows: API.RuleListItem[]) => {
       key: selectedRows.map((row) => row.key),
     });
     hide();
-    message.success('Deleted successfully and will refresh soon');
+    message.success('Xóa thàng công');
     return true;
   } catch (error) {
     hide();
-    message.error('Delete failed, please try again');
+    message.error('Xóa thất bại vui lòng thử lại');
     return false;
   }
 };

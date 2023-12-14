@@ -111,7 +111,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
           disabled: price === 0,
         }}
         placeholder="Nhập chiết khấu"
-        max={price}
+        // max={price}
         name="discountPrice"
         locale="vi-VN"
         rules={[
