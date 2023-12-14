@@ -147,9 +147,9 @@ const ExcelReader: React.FC<CreateFormProps> = (props) => {
         }}
         onRemove={() => setIsFile(true)}
       >
-        <Button hidden={!access.canDad} icon={<UploadOutlined />}>Chọn File nhập vé</Button>
+        <Button hidden={!access.canAdmin} icon={<UploadOutlined />}>Chọn File nhập vé</Button>
       </Upload>
-      <Input hidden={!access.canDad} disabled={isFile} type="submit" value="Nhập vé" onClick={handleFile} />
+      <Input hidden={!access.canAdmin} disabled={isFile} type="submit" value="Nhập vé" onClick={handleFile} />
     </Space>
   );
 };

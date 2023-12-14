@@ -148,16 +148,41 @@ const ReportList: React.FC = () => {
         return `${record.groupTicket.name} - ${unit[record.groupTicket.unit].name}`;
       },
     },
+
+
     {
       title: 'Số lượng',
+      dataIndex: 'quantity',
       hideInSearch: true,
-      render: (_, record: any) => `${record.quantity} x ${getPrice(record.price)}`,
     },
     {
-      title: 'Tổng',
+      title: 'Giá',
+      dataIndex: 'price',
+      hideInSearch: true,
+      renderText:(val) => getPrice(val)
+    },
+    {
+      title: 'Tổng tiền',
       dataIndex: 'subTotal',
       hideInSearch: true,
       renderText: (value) => getPrice(value),
+    },
+    {
+      title: 'Chiết khấu',
+      dataIndex: 'discountPrice',
+      hideInSearch: true,
+      renderText:(val) => getPrice(val)
+    },
+    {
+      title: 'Tổng CK',
+      dataIndex: 'discountSubtotal',
+      hideInSearch: true,
+      renderText: (value) => getPrice(value),
+    },
+    {
+      title: 'Tổng thu',
+      hideInSearch: true,
+      render: (_, record: any) => getPrice(record.subTotal - record.discountSubtotal),
     },
     // {
     //   title: 'Ngày xuất vé',
@@ -316,9 +341,11 @@ const ReportList: React.FC = () => {
           summary={(pageData) => {
             let totalSub = 0;
             let totalQuantity = 0;
-            pageData.forEach(({ subTotal, quantity, state }: any) => {
+            let totalDis = 0;
+            pageData.forEach(({ subTotal, discountSubtotal, quantity, state }: any) => {
               totalQuantity += state === 'Finished' && quantity;
               totalSub += state === 'Finished' && subTotal;
+              totalDis += state === 'Finished' && discountSubtotal;
             });
 
             return (
@@ -330,8 +357,16 @@ const ReportList: React.FC = () => {
                   <Table.Summary.Cell index={0}>
                     <Text type="success">{totalQuantity} vé</Text>
                   </Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
                   <Table.Summary.Cell index={0}>
                     <Text type="success">{getPrice(totalSub)}</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}>
+                    <Text type="success">{getPrice(totalDis)}</Text>
+                  </Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}>
+                    <Text type="success">{getPrice(totalSub - totalDis)}</Text>
                   </Table.Summary.Cell>
                 </Table.Summary.Row>
               </>

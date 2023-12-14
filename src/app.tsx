@@ -88,7 +88,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
-      console.log(location);
       if (
         (!initialState?.currentUser && location.pathname !== loginPath)
       ) {

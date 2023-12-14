@@ -42,6 +42,7 @@ export default [
     icon: 'TagFilled',
     path: '/kho-ve',
     component: './TicketList',
+    access: 'canSeeInventory'
   },
   {
     name: 'list.inventory-list',
@@ -64,6 +65,23 @@ export default [
     path: '/quay-ve',
     component: './Depart',
     access: 'canAdmin',
+  },
+  {
+    name: 'list.agent-list',
+    icon: 'LayoutFilled',
+    access: 'canDad',
+    path: '/agent',
+    routes: [
+      {
+        path: '/agent/agent-list',
+        name: 'Danh sách đại lý',
+        component: './AgentList',
+        access: 'canDad',
+      },
+      {
+        component: './404',
+      },
+    ],
   },
   {
     name: 'list.user-list',

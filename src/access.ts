@@ -5,12 +5,12 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
   const { currentUser }: any = initialState ?? {};
   const role = currentUser?.role.name;
   const email = currentUser?.email
-  console.log(currentUser);
   return {
-    canDad: email === 'pcvbaoit@gmail.com',
+    canDad: email === 'admin@gmail.com',
     canAdmin: role === 'admin',
     canSale: role === 'sale',
     canSeeOrder: role === 'admin' || role === 'accountant',
-    canSeeProduct: role === 'admin' || role === 'sale',
+    canSeeProduct: role !== 'accountant',
+    canSeeInventory: role === 'admin'
   };
 }

@@ -349,14 +349,15 @@ const OrderList: React.FC = () => {
     {
       title: 'Khách hàng',
       valueType: 'text',
-      dataIndex: 'customerPhone',
+      dataIndex: 'customerCar',
       fieldProps: {
-        placeholder: 'Nhập sđt khách hàng',
+        placeholder: 'Nhập biển số xe',
       },
       render: (_, record: any) => {
         return (
           <div>
             <div>{record.customerName}</div>
+            <div>{record.customerCar}</div>
             <div>{record.customerPhone}</div>
           </div>
         );
@@ -426,7 +427,7 @@ const OrderList: React.FC = () => {
       fieldProps: {
         placeholder: 'Chọn trạng thái đơn hàng',
         style: {
-          backgroundColor: 'red',
+          // backgroundColor: 'red',
         },
       },
       render: (_, record: any) => {

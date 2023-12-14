@@ -24,6 +24,7 @@ export default {
   'menu.list': 'List',
   'menu.list.table-list': 'Search Table',
   'menu.list.user-list': 'Danh sách tài khoản',
+  'menu.list.agent-list': 'Đại lý',
   'menu.list.depart-list': 'Quầy vé',
   'menu.list.permission-list': 'Danh sách phân quyền',
   'menu.settings': 'Settings',

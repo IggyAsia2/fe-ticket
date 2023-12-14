@@ -45,7 +45,7 @@ const BillTemplate: React.FC<any> = (props) => {
           <span style={{ fontSize: '16.5pt', fontWeight: 'bold' }}>
             {departInfo.name.toUpperCase()}
           </span>
-          <span style={{ fontSize: '12pt', fontWeight: 'bold' }}>SĐT: {departInfo.phone}</span>
+          {/* <span style={{ fontSize: '12pt', fontWeight: 'bold' }}>SĐT: {departInfo.phone}</span> */}
           <span style={{ fontSize: '15pt', fontWeight: 'bold' }}>HÓA ĐƠN BÁN HÀNG</span>
         </div>
         <div>
@@ -90,12 +90,12 @@ const BillTemplate: React.FC<any> = (props) => {
           <div style={{ display: 'flex', width: '50%', justifyContent: 'space-between' }}>
             <div style={{ textAlign: 'right' }}>
               <div>Tổng tiền hàng:</div>
-              <div>Chiết khấu:</div>
+              {isDiscount && <div>Chiết khấu:</div>}
               <div>Tổng cộng:</div>
             </div>
             <div style={{ textAlign: 'right' }}>
               <div>{getPrice(total)}</div>
-              <div>{isDiscount ? getPrice(takePrice.discount) : 0}</div>
+              <div>{isDiscount && getPrice(takePrice.discount)}</div>
               <strong>{isDiscount ? getPrice(total - takePrice.discount) : getPrice(total)}</strong>
             </div>
           </div>

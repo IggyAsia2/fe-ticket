@@ -1,6 +1,5 @@
-import { ristLole } from '@/api/role';
-import { addUser, removeManyUser, removeUser, updateUser, userList } from '@/api/user';
-import { getDateTime } from '@/helper/helper';
+import { addUser, removeManyUser, removeUser, updateUser, agentList } from '@/api/user';
+import { getPrice } from '@/helper/helper';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
@@ -10,9 +9,9 @@ import {
   ProTable,
   createIntl,
 } from '@ant-design/pro-components';
-import { useRequest, useAccess } from '@umijs/max';
+import { useAccess } from '@umijs/max';
 import { Button, Drawer, Popconfirm, message } from 'antd';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
@@ -27,7 +26,7 @@ import enLocale from '@/locales/table-en';
 const handleAdd = async (fields: USER_API.UserListItem) => {
   const hide = message.loading('Đang tạo');
   try {
-    await addUser({ ...fields });
+    await addUser({ ...fields, isAgent: true, role: '657919983a6e33398c0ab535' });
     hide();
     message.success('Thêm mới thành công');
     return true;
@@ -63,14 +62,6 @@ const UserList: React.FC = () => {
   const access = useAccess();
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
-  const { data, run } = useRequest(ristLole, {
-    manual: true,
-    formatResult: (res) => res,
-  });
-
-  useEffect(() => {
-    run();
-  }, []);
 
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
@@ -111,10 +102,10 @@ const UserList: React.FC = () => {
 
   const columns: ProColumns<USER_API.UserListItem>[] = [
     {
-      title: 'Tên',
+      title: 'Tên đại lý',
       dataIndex: 'name',
       fieldProps: {
-        placeholder: 'Nhập tên',
+        placeholder: 'Nhập tên đại lý',
       },
       render: (dom, entity) => {
         return (
@@ -164,39 +155,11 @@ const UserList: React.FC = () => {
       },
     },
     {
-      title: 'Ngày tạo',
-      dataIndex: 'createdAt',
+      title: 'Tài khoản',
+      dataIndex: 'moneny',
       hideInSearch: true,
-      renderText: (val: string) => {
-        return getDateTime(val);
-      },
-      // renderFormItem: (item, { defaultRender, ...rest }, form) => {
-      //   console.log(item);
-      //   const status = form.getFieldValue('status');
-      //   if (`${status}` === '0') {
-      //     return false;
-      //   }
-      //   if (`${status}` === '3') {
-      //     return (
-      //       <Input
-      //         {...rest}
-      //         placeholder={intl.formatMessage({
-      //           id: 'pages.searchTable.exception',
-      //           defaultMessage: 'Please enter the reason for the exception!',
-      //         })}
-      //       />
-      //     );
-      //   }
-      //   return defaultRender(item);
-      // },
-    },
-    {
-      title: 'Ngày cập nhật',
-      // sorter: true,
-      hideInSearch: true,
-      dataIndex: 'updatedAt',
-      renderText: (val: string) => {
-        return getDateTime(val);
+      renderText: (val: number) => {
+        return getPrice(val);
       },
     },
     {
@@ -205,7 +168,7 @@ const UserList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => [
         <a
-          hidden={record.email === 'admin@gmail.com' || !access.canDad}
+          hidden={record.email === 'pcvbaoit@gmail.com' || !access.canDad}
           key="config"
           onClick={() => {
             handleUpdateModalOpen(true);
@@ -216,7 +179,7 @@ const UserList: React.FC = () => {
         </a>,
         <>
           <Popconfirm
-            title="Bạn có chắc muốn xóa ?"
+            title="Bạn chắc chắn muốn xóa?"
             onConfirm={async () => {
               await handleRemove([record]);
               // setSelectedRows([]);
@@ -225,7 +188,7 @@ const UserList: React.FC = () => {
             cancelText="Hủy"
           >
             <a
-              hidden={record.email === 'admin@gmail.com' || !access.canDad}
+              hidden={record.email === 'pcvbaoit@gmail.com' || !access.canDad}
               key="subscribeAlert"
             >
               Xóa
@@ -269,7 +232,7 @@ const UserList: React.FC = () => {
           tableAlertRender={({ selectedRowKeys }) => {
             return <span>Chọn {selectedRowKeys.length}</span>;
           }}
-          request={userList}
+          request={agentList}
           columns={columns}
           // rowSelection={{
           //   onChange: (_, selectedRows) => {
@@ -316,7 +279,6 @@ const UserList: React.FC = () => {
         }}
         createModalOpen={createModalOpen}
         values={currentRow || {}}
-        roleList={data}
       />
       <UpdateForm
         onSubmit={async (value) => {
@@ -337,7 +299,6 @@ const UserList: React.FC = () => {
         }}
         updateModalOpen={updateModalOpen}
         values={currentRow || {}}
-        roleList={data}
       />
 
       <Drawer

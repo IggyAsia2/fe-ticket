@@ -35,6 +35,7 @@ const TicketPrintTemplate: any = (props: any) => {
             borderColor: '#ccc',
             pageBreakBefore: 'always',
             fontFamily: 'Arial',
+            color: '#000000'
           }}
           bodyStyle={{ padding: 0 }}
         >

@@ -15,7 +15,7 @@ export async function userList(
   },
   options?: { [key: string]: any },
 ) {
-  return request<USER_API.UserList>(`${API_URL}/users`, {
+  return request<USER_API.UserList>(`${API_URL}/users?isAgent=false`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${getAuth()}`
@@ -83,5 +83,28 @@ export async function removeManyUser(options?: { [key: string]: any }) {
     data: {
       ...(options || {}),
     }
+  });
+}
+
+export async function agentList(
+  params: {
+    // query
+    /** Current page number */
+    current?: number;
+    /** Page size */
+    pageSize?: number;
+    role?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<USER_API.UserList>(`${API_URL}/users?isAgent=true`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    params: {
+      ...params,
+    },
+    ...(options || {}),
   });
 }
