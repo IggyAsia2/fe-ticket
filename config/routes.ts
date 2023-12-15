@@ -35,7 +35,7 @@ export default [
     icon: 'BookFilled',
     path: '/bao-cao',
     component: './Report',
-    access: 'canSeeOrder',
+    // access: 'canSeeOrder',
   },
   {
     name: 'list.ticket-list',

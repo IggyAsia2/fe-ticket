@@ -34,6 +34,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         id: props.values._id,
         name: props.values.name,
         email: props.values.email,
+        phone: props.values.phone,
         role: props.values.role?._id,
       }}
       title="Cập nhật người dùng"
@@ -50,6 +51,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
           },
         ]}
       />
+      <ProFormText name="phone" label="Số điện thoại" placeholder="Nhập SĐT" width="md" />
       <ProFormText
         name="email"
         label="Email"

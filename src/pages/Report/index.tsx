@@ -148,8 +148,6 @@ const ReportList: React.FC = () => {
         return `${record.groupTicket.name} - ${unit[record.groupTicket.unit].name}`;
       },
     },
-
-
     {
       title: 'Số lượng',
       dataIndex: 'quantity',
@@ -159,7 +157,7 @@ const ReportList: React.FC = () => {
       title: 'Giá',
       dataIndex: 'price',
       hideInSearch: true,
-      renderText:(val) => getPrice(val)
+      renderText: (val) => getPrice(val),
     },
     {
       title: 'Tổng tiền',
@@ -171,7 +169,7 @@ const ReportList: React.FC = () => {
       title: 'Chiết khấu',
       dataIndex: 'discountPrice',
       hideInSearch: true,
-      renderText:(val) => getPrice(val)
+      renderText: (val) => getPrice(val),
     },
     {
       title: 'Tổng CK',
@@ -250,6 +248,18 @@ const ReportList: React.FC = () => {
     {
       title: 'Tổng',
       dataIndex: 'subTotal',
+    },
+    {
+      title: 'Chiết khấu',
+      dataIndex: 'discountPrice',
+    },
+    {
+      title: 'Tổng CK',
+      dataIndex: 'discountSubtotal',
+    },
+    {
+      title: 'Tổng thu',
+      render: (_: any, record: any) => record.subTotal - record.discountSubtotal,
     },
     {
       title: 'Trạng thái',

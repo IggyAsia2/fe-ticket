@@ -36,6 +36,12 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
         ]}
       />
       <ProFormText
+        name="phone"
+        label="Số điện thoại"
+        placeholder="Nhập SĐT"
+        width="md"
+      />
+      <ProFormText
         name="email"
         label="Email"
         placeholder="Nhập email"

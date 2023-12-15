@@ -94,6 +94,8 @@ const ExcelReader: React.FC<CreateFormProps> = (props) => {
       // });
 
       const newDete: any = [];
+      const newDate = new Date();
+      const timTem = newDate.getTime();
 
       dete.forEach((el: any) => {
         const groupTicketId: any = checkData.find((item: any) => item.sku === el.Sku);
@@ -102,7 +104,8 @@ const ExcelReader: React.FC<CreateFormProps> = (props) => {
             name: el['Tên SP'],
             serial: el.Serial,
             code: el.Code,
-            purchaseId: el.PurchaseId,
+            // purchaseId: el.PurchaseId,
+            purchaseId: timTem,
             activatedDate: el.ActivatedDate,
             expiredDate: el.ExpiredDate,
             importUser: email,
@@ -147,9 +150,17 @@ const ExcelReader: React.FC<CreateFormProps> = (props) => {
         }}
         onRemove={() => setIsFile(true)}
       >
-        <Button hidden={!access.canAdmin} icon={<UploadOutlined />}>Chọn File nhập vé</Button>
+        <Button hidden={!access.canAdmin} icon={<UploadOutlined />}>
+          Chọn File nhập vé
+        </Button>
       </Upload>
-      <Input hidden={!access.canAdmin} disabled={isFile} type="submit" value="Nhập vé" onClick={handleFile} />
+      <Input
+        hidden={!access.canAdmin}
+        disabled={isFile}
+        type="submit"
+        value="Nhập vé"
+        onClick={handleFile}
+      />
     </Space>
   );
 };

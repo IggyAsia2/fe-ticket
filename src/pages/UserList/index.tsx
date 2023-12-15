@@ -83,9 +83,10 @@ const UserList: React.FC = () => {
 
   const handleUpdate = async (fields: FormValueType) => {
     const hide = message.loading('Đang cập nhật');
-    let { _id, email, role, name }: any = currentRow;
+    let { _id, email, role, name, phone }: any = currentRow;
     const doc: any = {};
     if (name !== fields.name) doc.name = fields.name;
+    if (phone !== fields.phone) doc.phone = fields.phone;
     if (email !== fields.email) doc.email = fields.email;
     if (role?._id !== fields.role) doc.role = fields.role;
     if (Object.keys(doc).length) {
@@ -137,14 +138,11 @@ const UserList: React.FC = () => {
       },
       valueType: 'textarea',
     },
-    // {
-    //   title: 'SĐT',
-    //   dataIndex: 'phone',
-    //   fieldProps: {
-    //     placeholder: 'Nhập email',
-    //   },
-    //   hideInSearch: true,
-    // },
+    {
+      title: 'SĐT',
+      dataIndex: 'phone',
+      hideInSearch: true,
+    },
     {
       title: 'Role',
       dataIndex: 'role',

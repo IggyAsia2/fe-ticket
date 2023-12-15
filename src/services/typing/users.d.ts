@@ -11,6 +11,7 @@ declare namespace USER_API {
   type UserListItem = {
     _id?: string;
     name?: string;
+    phone?: string;
     email?: string;
     role?: RoleItem;
     active?: boolean;

@@ -13,6 +13,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canSale: role === 'sale',
     canSeeOrder: role === 'admin' || role === 'accountant',
     canSeeProduct: role !== 'accountant',
-    canSeeInventory: role === 'admin'
+    canSeeInventory: role === 'admin' || role === 'accountant',
   };
 }

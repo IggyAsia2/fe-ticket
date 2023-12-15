@@ -12,6 +12,7 @@ import {
   convertArrayToCascader,
   convertArrayToObject,
   convertArrayToObjectDepart,
+  convertDepartToCascader,
   getDate,
   getDateTime,
   getPrice,
@@ -307,6 +308,16 @@ const OrderList: React.FC = () => {
         },
       },
       render: () => null,
+    },
+    {
+      title: 'Quầy vé',
+      dataIndex: 'departID',
+      hideInTable: true,
+      valueType: 'select',
+      fieldProps: {
+        options: convertDepartToCascader(departList),
+        placeholder: 'Chọn quầy vé',
+      },
     },
     {
       title: 'Ngày xuất vé',
