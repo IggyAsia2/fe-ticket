@@ -11,8 +11,9 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canDeleteUser: userArr.includes(email),
     canAdmin: role === 'admin',
     canSale: role === 'sale',
-    canSeeOrder: role === 'admin' || role === 'accountant',
+    canSeeOrder: role !== 'agent',
     canSeeProduct: role !== 'accountant',
     canSeeInventory: role === 'admin' || role === 'accountant',
+    canAgent: role === 'agent',
   };
 }

@@ -13,6 +13,8 @@ declare namespace USER_API {
     name?: string;
     phone?: string;
     email?: string;
+    moneny?: number;
+    discountAgent?: number;
     role?: RoleItem;
     active?: boolean;
     avatar?: string;

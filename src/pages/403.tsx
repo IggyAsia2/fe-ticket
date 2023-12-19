@@ -2,11 +2,11 @@ import { history } from '@umijs/max';
 import { Button, Result } from 'antd';
 import React from 'react';
 
-const NoFoundPage: React.FC = () => (
+const NoAuthPage: React.FC = () => (
   <Result
-    status="404"
-    title="404"
-    subTitle="Xin lỗi, trang này không tồn tại!."
+    status="403"
+    title="403"
+    subTitle="Bạn không có quyền truy cập!"
     extra={
       <Button type="primary" onClick={() => history.push('/')}>
         Quay lại
@@ -15,4 +15,4 @@ const NoFoundPage: React.FC = () => (
   />
 );
 
-export default NoFoundPage;
+export default NoAuthPage;

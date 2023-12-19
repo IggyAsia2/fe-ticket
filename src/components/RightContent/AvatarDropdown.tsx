@@ -1,13 +1,14 @@
 import { LogoutOutlined, SettingOutlined } from '@ant-design/icons';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { history, useModel } from '@umijs/max';
-import { Spin } from 'antd';
+import { Space, Spin } from 'antd';
 import Cookies from 'js-cookie';
 import { stringify } from 'querystring';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import { flushSync } from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
+import { getPrice } from '@/helper/helper';
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -17,7 +18,15 @@ export type GlobalHeaderRightProps = {
 export const AvatarName = () => {
   const { initialState } = useModel('@@initialState');
   const { currentUser } = initialState || {};
-  return <span className="anticon">{currentUser?.name}</span>;
+  const moenry = currentUser?.moneny ? currentUser.moneny : 0;
+  return (
+    <>
+      <Space>
+        <span className="anticon">{currentUser?.name}</span>
+        <span className="anticon">{currentUser?.isAgent && getPrice(moenry)}</span>
+      </Space>
+    </>
+  );
 };
 
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, children }) => {

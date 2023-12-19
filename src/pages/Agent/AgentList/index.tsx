@@ -1,4 +1,4 @@
-import { addUser, removeManyUser, removeUser, updateUser, agentList } from '@/api/user';
+import { addUser, removeManyUser, removeUser, updateUser, agentList, getUser } from '@/api/user';
 import { getPrice } from '@/helper/helper';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
@@ -74,9 +74,13 @@ const UserList: React.FC = () => {
 
   const handleUpdate = async (fields: FormValueType) => {
     const hide = message.loading('Đang cập nhật');
-    let { _id, email, role, name }: any = currentRow;
+    let { _id, email, role, name, discountAgent }: any = currentRow;
+    const userData = await getUser({ userID: _id });
     const doc: any = {};
     if (name !== fields.name) doc.name = fields.name;
+    if (email !== fields.email) doc.email = fields.email;
+    if (fields.moneny) doc.moneny = userData.data.moneny + fields.moneny;
+    if (discountAgent !== fields.discountAgent) doc.discountAgent = fields.discountAgent;
     if (email !== fields.email) doc.email = fields.email;
     if (role?._id !== fields.role) doc.role = fields.role;
     if (Object.keys(doc).length) {
@@ -107,18 +111,6 @@ const UserList: React.FC = () => {
       fieldProps: {
         placeholder: 'Nhập tên đại lý',
       },
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
     },
     {
       title: 'Email',
@@ -127,16 +119,6 @@ const UserList: React.FC = () => {
         placeholder: 'Nhập email',
       },
       valueType: 'textarea',
-    },
-    {
-      title: 'Role',
-      dataIndex: 'role',
-      // sorter: true,
-      hideInForm: true,
-      hideInSearch: true,
-      renderText: (val: USER_API.RoleItem) => {
-        return val && val.name;
-      },
     },
     {
       title: 'Trạng thái',
@@ -157,6 +139,14 @@ const UserList: React.FC = () => {
     {
       title: 'Tài khoản',
       dataIndex: 'moneny',
+      hideInSearch: true,
+      renderText: (val: number) => {
+        return getPrice(val);
+      },
+    },
+    {
+      title: 'Chiết khấu',
+      dataIndex: 'discountAgent',
       hideInSearch: true,
       renderText: (val: number) => {
         return getPrice(val);

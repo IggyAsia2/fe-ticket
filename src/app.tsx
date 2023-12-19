@@ -1,4 +1,4 @@
-import { Footer, AvatarDropdown, AvatarName } from '@/components';
+import { AvatarDropdown, AvatarName } from '@/components';
 import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
@@ -10,6 +10,7 @@ import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
 import React from 'react';
 import Cookies from 'js-cookie';
 import { departListQuery } from './api/depart';
+import NoAuthPage from './pages/403';
 const isDev = process.env.NODE_ENV === 'developments';
 const loginPath = '/login';
 const linkOrderPath = '/agent/printticketlink/';
@@ -88,9 +89,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
-      if (
-        (!initialState?.currentUser && location.pathname !== loginPath)
-      ) {
+      if (!initialState?.currentUser && location.pathname !== loginPath) {
         history.push(loginPath);
       }
     },
@@ -147,6 +146,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         </>
       );
     },
+    unAccessible: <NoAuthPage />,
     ...initialState?.settings,
   };
 };

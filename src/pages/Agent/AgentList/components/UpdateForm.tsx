@@ -1,4 +1,4 @@
-import { ModalForm, ProFormText } from '@ant-design/pro-components';
+import { ModalForm, ProFormMoney, ProFormText } from '@ant-design/pro-components';
 import React from 'react';
 
 export type FormValueType = {
@@ -17,6 +17,9 @@ export type UpdateFormProps = {
 };
 
 const UpdateForm: React.FC<UpdateFormProps> = (props) => {
+  const moneny: any = props.values.moneny;
+  const minusMin = moneny * -1;
+
   return (
     <ModalForm
       width={380}
@@ -33,6 +36,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         id: props.values._id,
         name: props.values.name,
         email: props.values.email,
+        discountAgent: props.values.discountAgent,
       }}
       title="Cập nhật người dùng"
     >
@@ -61,6 +65,26 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         ]}
       />
 
+      <ProFormMoney
+        label="Chiết khấu"
+        name="discountAgent"
+        min={0}
+        placeholder="Nhập chiết khấu"
+        locale="vi-VN"
+        rules={[
+          {
+            required: true,
+            message: 'Bạn chưa nhập chiết khấu!',
+          },
+        ]}
+      />
+      <ProFormMoney
+        label="Nạp thêm"
+        name="moneny"
+        min={minusMin}
+        placeholder="Nhập số tiền nạp thêm"
+        locale="vi-VN"
+      />
     </ModalForm>
   );
 };

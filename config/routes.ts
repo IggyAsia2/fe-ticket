@@ -29,6 +29,14 @@ export default [
     icon: 'BookFilled',
     path: '/don-hang',
     component: './Order',
+    access: 'canSeeOrder',
+  },
+  {
+    name: 'list.order-agent-list',
+    icon: 'BookFilled',
+    path: '/don-hang-dl',
+    component: './Agent/AgentOrder',
+    access: 'canAgent'
   },
   {
     name: 'list.report-list',
@@ -75,7 +83,7 @@ export default [
       {
         path: '/agent/agent-list',
         name: 'Danh sách đại lý',
-        component: './AgentList',
+        component: './Agent/AgentList',
         access: 'canDad',
       },
       {

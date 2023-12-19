@@ -11,6 +11,7 @@ export async function userList(
     current?: number;
     /** Page size */
     pageSize?: number;
+    isAgent?: boolean;
     role?: string;
   },
   options?: { [key: string]: any },
@@ -24,6 +25,15 @@ export async function userList(
       ...params,
     },
     ...(options || {}),
+  });
+}
+
+export async function getUser(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(`${API_URL}/users/${options?.userID}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
   });
 }
 
@@ -74,6 +84,7 @@ export async function removeUser(options?: { [key: string]: any }) {
     },
   });
 }
+
 export async function removeManyUser(options?: { [key: string]: any }) {
   return request<Record<string, any>>(`${API_URL}/users/all`, {
     method: 'POST',

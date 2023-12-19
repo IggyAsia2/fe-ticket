@@ -7,7 +7,8 @@ declare namespace API {
     avatar?: string;
     userid?: string;
     email?: string;
-    signature?: string;
+    moneny?: number;
+    isAgent?: boolean;
     title?: string;
     group?: string;
     tags?: { key?: string; label?: string }[];

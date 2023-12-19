@@ -32,6 +32,7 @@ export default {
   'menu.list.ticket-list': 'Kho vé',
   'menu.list.inventory-list': 'Mã vé',
   'menu.list.order-list': 'Danh sách đơn hàng',
+  'menu.list.order-agent-list': 'Danh sách đơn hàng (ĐL)',
   'menu.list.report-list': 'Báo cáo xuất vé',
   'menu.list.setting-list': 'Cài đặt',
   'menu.list.accountant': 'Kế toán',
