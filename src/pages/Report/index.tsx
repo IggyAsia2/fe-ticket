@@ -10,7 +10,7 @@ import {
 } from '@/helper/helper';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProProvider, ProTable, createIntl } from '@ant-design/pro-components';
-import { request, useModel, useRequest } from '@umijs/max';
+import { request, useAccess, useModel, useRequest } from '@umijs/max';
 import { Button, Table, Tag, Typography } from 'antd';
 import moment from 'moment';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -52,6 +52,7 @@ const unit: any = {
 };
 
 const ReportList: React.FC = () => {
+  const access = useAccess();
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
   const { initialState } = useModel('@@initialState');
@@ -104,6 +105,7 @@ const ReportList: React.FC = () => {
       title: 'Tên người xuất',
       dataIndex: 'exportUser',
       valueType: 'select',
+      hideInSearch: access.canSale,
       valueEnum: userData && convertArrayToObject(userData, 'value'),
       fieldProps: {
         showSearch: true,
@@ -221,7 +223,7 @@ const ReportList: React.FC = () => {
     },
   ];
 
-  const columns2 = [
+  const columns2: any = [
     {
       title: 'Tên người xuất',
       dataIndex: 'exportUser',
