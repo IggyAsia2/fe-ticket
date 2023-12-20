@@ -608,7 +608,7 @@ const OrderList: React.FC = () => {
                 delete params[key];
               }
             });
-            const result: any = await request<ORDER_API.OrderList>(`${API_URL}/orders`, {
+            const result: any = await request<ORDER_API.OrderList>(`${API_URL}/orders?isAgent=false`, {
               method: 'GET',
               headers: {
                 Authorization: `Bearer ${getAuth()}`,

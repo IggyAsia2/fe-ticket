@@ -86,6 +86,18 @@ export async function exportGroupInven(options?: { [key: string]: any }) {
   });
 }
 
+export async function exportGroupAgentInven(options?: { [key: string]: any }) {
+  return request<INVEN_API.InvenListItem>(`${API_URL}/groupTickets/export-agent-group`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    data: {
+      ...(options || {}),
+    }
+  });
+}
+
 
 
 /** Add user POST /api/v1/groupTickets */

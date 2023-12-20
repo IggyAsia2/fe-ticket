@@ -5,7 +5,7 @@ import {
   removeProduct,
   updateProduct,
 } from '@/api/product';
-import { exportGroupInven } from '@/api/ticket';
+import { exportGroupAgentInven } from '@/api/ticket';
 import { CurrentUser } from '@/helper/helper';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
@@ -137,7 +137,7 @@ const ListProduct: React.FC = () => {
     if (groupNumberTicket.length) {
       const hide = message.loading('Đang xuất vé');
       try {
-        await exportGroupInven({
+        await exportGroupAgentInven({
           data: {
             customerName: fields.customerName,
             customerPhone: fields.customerPhone,
