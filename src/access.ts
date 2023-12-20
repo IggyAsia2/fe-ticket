@@ -12,7 +12,7 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canAdmin: role === 'admin',
     canSale: role === 'sale',
     canSeeOrder: role !== 'agent',
-    canSeeProduct: role !== 'accountant',
+    canSeeProduct: role !== 'agent',
     canSeeInventory: role === 'admin' || role === 'accountant',
     canAgent: role === 'agent',
   };

@@ -1,4 +1,3 @@
-// import { Footer } from '@/components';
 import { login } from '@/services/ant-design-pro/api';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginFormPage, ProFormText } from '@ant-design/pro-components';
@@ -26,9 +25,11 @@ const Login: React.FC = () => {
 
   const fetchUserInfo = async ({ token }: API.TokenAuth) => {
     const jwt: string = token || '';
+    const urlParams = new URL(window.location.href).searchParams;
     const userInfo = await initialState?.fetchUserInfo?.({ token: jwt });
     const departList = await initialState?.fetchDepart?.({ token: jwt });
     if (userInfo) {
+      history.push(urlParams.get('redirect') || userInfo?.isAgent ? '/san-pham-dl' : '/san-pham');
       flushSync(() => {
         setInitialState((s) => ({
           ...s,
@@ -47,8 +48,6 @@ const Login: React.FC = () => {
         const defaultLoginSuccessMessage = 'Đăng nhập thành công';
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo({ token: msg.token });
-        const urlParams = new URL(window.location.href).searchParams;
-        history.push(urlParams.get('redirect') || '/');
         return;
       }
       // If failed to set user error message
@@ -87,8 +86,8 @@ const Login: React.FC = () => {
           initialValues={{
             email: '',
             password: '',
-            // email: 'pcvbaoit@gmail.com',
-            // password: 'khovevintrip',
+            // email: 'thienkim@gmail.com',
+            // password: '123456',
           }}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);

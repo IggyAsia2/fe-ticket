@@ -29,6 +29,7 @@ export default {
   'menu.list.permission-list': 'Danh sách phân quyền',
   'menu.settings': 'Settings',
   'menu.list.product-list': 'Sản phẩm',
+  'menu.list.product-agent-list': 'Sản phẩm (ĐL)',
   'menu.list.ticket-list': 'Kho vé',
   'menu.list.inventory-list': 'Mã vé',
   'menu.list.order-list': 'Danh sách đơn hàng',

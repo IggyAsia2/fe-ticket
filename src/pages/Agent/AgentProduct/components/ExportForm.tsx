@@ -94,7 +94,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
               },
             ]}
           />
-          <ProFormText
+          {/* <ProFormText
             name="customerCar"
             label="Biển số xe"
             width="md"
@@ -107,7 +107,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
                 message: 'Xin nhập email khách hàng!',
               },
             ]}
-          />
+          /> */}
           <ProFormText
             name="customerPhone"
             label="Sđt khách hàng"
@@ -185,7 +185,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
                     alignItems: 'flex-end',
                   }}
                 >
-                  <ProFormSelect
+                  {/* <ProFormSelect
                     style={{ width: '200px' }}
                     name="departID"
                     label="Chọn quầy vé"
@@ -208,7 +208,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
                         message: 'Bạn chưa chọn quầy vé!',
                       },
                     ]}
-                  />
+                  /> */}
                   <div>Nhập số lượng vé</div>
                 </div>
               }

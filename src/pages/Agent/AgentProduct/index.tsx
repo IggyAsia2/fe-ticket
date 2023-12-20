@@ -131,7 +131,7 @@ const ListProduct: React.FC = () => {
 
   const exportTicket = async (fields: ExportFormValueType) => {
     const groupNumberTicket = Object.entries(
-      Object.fromEntries(Object.entries(fields).slice(5, Object.keys(fields).length)),
+      Object.fromEntries(Object.entries(fields).slice(3, Object.keys(fields).length)),
     );
     let { _id, groupTickets }: any = currentRow;
     if (groupNumberTicket.length) {
@@ -139,7 +139,6 @@ const ListProduct: React.FC = () => {
       try {
         await exportGroupInven({
           data: {
-            customerCar: fields.customerCar,
             customerName: fields.customerName,
             customerPhone: fields.customerPhone,
           },

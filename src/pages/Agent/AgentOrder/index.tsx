@@ -310,16 +310,6 @@ const OrderList: React.FC = () => {
       render: () => null,
     },
     {
-      title: 'Quầy vé',
-      dataIndex: 'departID',
-      hideInTable: true,
-      valueType: 'select',
-      fieldProps: {
-        options: convertDepartToCascader(departList),
-        placeholder: 'Chọn quầy vé',
-      },
-    },
-    {
       title: 'Ngày xuất vé',
       dataIndex: 'updatedAt',
       valueType: 'dateRange',
@@ -393,14 +383,6 @@ const OrderList: React.FC = () => {
       // hideInSearch: true,
     },
     {
-      title: 'Quầy',
-      dataIndex: 'departID',
-      width: '100px',
-      valueType: 'text',
-      renderText: (record: string) => departCheck[record],
-      hideInSearch: true,
-    },
-    {
       title: 'Loại vé',
       hideInSearch: true,
       render: (_, record: any) => {
@@ -438,7 +420,7 @@ const OrderList: React.FC = () => {
       render: (_, record: any) => {
         return (
           <div>
-            <div>{`${record.quantity} x ${getPrice(currentUser?.discountPrice)}`}</div>
+            <div>{`${record.quantity} x ${getPrice(record.discountPrice)}`}</div>
             <div>{getPrice(record.discountSubtotal)}</div>
           </div>
         );

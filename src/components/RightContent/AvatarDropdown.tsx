@@ -3,7 +3,6 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { history, useModel } from '@umijs/max';
 import { Space, Spin } from 'antd';
 import Cookies from 'js-cookie';
-import { stringify } from 'querystring';
 import type { MenuInfo } from 'rc-menu/lib/interface';
 import React, { useCallback } from 'react';
 import { flushSync } from 'react-dom';
@@ -35,17 +34,11 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
    */
   const loginOut = async () => {
     Cookies.remove('jwt');
-    const { search, pathname } = window.location;
     const urlParams = new URL(window.location.href).searchParams;
-    /** This method will jump to redirect 参数所在的位置 */
     const redirect = urlParams.get('redirect');
-    // Note: There may be security issues, please note
     if (window.location.pathname !== '/login' && !redirect) {
       history.replace({
         pathname: '/login',
-        search: stringify({
-          redirect: pathname + search,
-        }),
       });
     }
   };

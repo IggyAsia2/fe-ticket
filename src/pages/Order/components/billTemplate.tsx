@@ -42,12 +42,12 @@ const BillTemplate: React.FC<any> = (props) => {
   return (
     <>
       <div style={{ color: '#000000' }} className="print-bill" ref={actionBillRef}>
-        <div style={{ display: 'grid', justifyItems: 'center' }}>
-          <span style={{ fontSize: '16.5pt', fontWeight: 'bold' }}>
+        <div style={{ display: 'grid', textAlign: 'center' }}>
+          <span style={{ fontSize: '18px', fontWeight: 'bold' }}>
             {departInfo.name.toUpperCase()}
           </span>
           {/* <span style={{ fontSize: '12pt', fontWeight: 'bold' }}>SĐT: {departInfo.phone}</span> */}
-          <span style={{ fontSize: '15pt', fontWeight: 'bold' }}>HÓA ĐƠN BÁN HÀNG</span>
+          <span style={{ fontSize: '18px', fontWeight: 'bold' }}>HÓA ĐƠN BÁN HÀNG</span>
         </div>
         <div>
           <div>
@@ -110,18 +110,18 @@ const BillTemplate: React.FC<any> = (props) => {
               src={STATIC_URL + '/Qrcode/tpbank.png'}
               crossOrigin="anonymous"
             />
-            <Space direction="vertical" style={{ textAlign: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
               <strong>STK: 3552 5378 888</strong>
               <span>CTK: Cao Thị Cẩm Tú - TP Bank</span>
-            </Space>
+            </div>
           </Space>
         </div>
         <hr />
-        <div style={{textAlign: 'center'}}>
+        <div style={{ textAlign: 'center', fontSize: '12px' }}>
           <strong>Cảm ơn quý khách và hẹn gặp lại!!!</strong>
         </div>
         <hr />
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', fontSize: '12px' }}>
           <strong>CÔNG TY CỔ PHẦN ĐẦU TƯ VÀ PHÁT TRIỂN VINTRIP</strong>
           <div>Địa chỉ: 292/33/15A Bình Lợi, Phường 13, Quận Bình Thạnh, Thành phố Hồ Chí Minh</div>
           <div> SĐT: 070 472 9909 - 090 399 7705</div>
