@@ -69,6 +69,9 @@ const InventoryList: React.FC = () => {
       res.data.map((el: any) => {
         return {
           sku: el.sku,
+          name: el.name,
+          unit: el.unit,
+          bigTicket: el.bigTicket.name,
           id: el._id,
         };
       }),
@@ -76,7 +79,7 @@ const InventoryList: React.FC = () => {
 
   useEffect(() => {
     run({ current: 1, pageSize: 100 });
-    run2({ current: 1, pageSize: 100, fields: '_id,sku' });
+    run2({ current: 1, pageSize: 100, fields: '_id,sku,name,unit' });
   }, []);
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -198,7 +201,7 @@ const InventoryList: React.FC = () => {
             // pageSize: 10,
             showSizeChanger: true,
             showTotal: (total) => `Tổng ${total} vé`,
-            locale: { items_per_page: "" }
+            locale: { items_per_page: '' },
           }}
           dateFormatter="string"
           actionRef={actionRef}

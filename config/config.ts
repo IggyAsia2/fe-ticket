@@ -8,6 +8,8 @@ import routes from './routes';
 const { REACT_APP_ENV = 'dev' } = process.env;
 const API_URL = process.env.API_URL
 const STATIC_URL = process.env.STATIC_URL
+const SUN_URL = process.env.SUN_URL
+const swg = process.env.swg
 
 export default defineConfig({
   /**
@@ -20,6 +22,8 @@ export default defineConfig({
   define: {
     API_URL,
     STATIC_URL,
+    SUN_URL,
+    swg
     // API_URL: 'https://apa.vintrip.vn/api/v1',
     // STATIC_URL: 'https://apa.vintrip.vn/image',
     // API_URL: 'http://localhost:3000/api/v1',

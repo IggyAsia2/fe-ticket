@@ -62,6 +62,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
         label="Địa điểm"
         placeholder="Chọn địa điểm"
         options={props.productList}
+        showSearch
         rules={[
           {
             required: true,

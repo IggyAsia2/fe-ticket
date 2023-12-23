@@ -270,7 +270,7 @@ const OrderList: React.FC = () => {
       valueType: 'select',
       valueEnum: userData && convertArrayToObject(userData, 'value'),
       hideInTable: true,
-      hideInSearch: access.canSale,
+      hideInSearch: !access.canAdmin,
       fieldProps: {
         showSearch: true,
         // filterTreeNode: true,

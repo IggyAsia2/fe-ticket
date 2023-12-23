@@ -22,7 +22,7 @@ export const AvatarName = () => {
     <>
       <Space>
         <span className="anticon">{currentUser?.name}</span>
-        <span className="anticon">{currentUser?.isAgent && getPrice(moenry)}</span>
+        {currentUser?.isAgent && <span className="anticon">| Số dư: {getPrice(moenry)}</span>}
       </Space>
     </>
   );

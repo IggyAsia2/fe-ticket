@@ -14,6 +14,7 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canSeeOrder: role !== 'agent',
     canSeeProduct: role !== 'agent',
     canSeeInventory: role === 'admin' || role === 'accountant',
+    canSeeImportList: email === 'admin@gmail.com' || role === 'accountant',
     canAgent: role === 'agent',
   };
 }

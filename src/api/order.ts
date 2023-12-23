@@ -161,3 +161,26 @@ export async function sendMailOrder(options?: { [key: string]: any }) {
     }
   });
 }
+
+export async function importHistoryList(
+  params: {
+    // query
+    /** Current page number */
+    current?: number;
+    /** Page size */
+    pageSize?: number;
+    importUser?: string;
+  },
+  options?: { [key: string]: any },
+) {
+  return request<any>(`${API_URL}/importHistory`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}

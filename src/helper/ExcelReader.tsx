@@ -36,11 +36,13 @@ const ExcelReader: React.FC<CreateFormProps> = (props) => {
   const { checkData, actionRef } = props;
   const email: string | undefined = CurrentUser()?.email;
 
-  const importTicket = async ({ data }: any) => {
+  const importTicket = async ({ data, importUser, purchaseId }: any) => {
     const hide = message.loading('Đang nhập vé');
     try {
       await importInven({
         data,
+        importUser,
+        purchaseId
       });
 
       hide();
@@ -98,23 +100,26 @@ const ExcelReader: React.FC<CreateFormProps> = (props) => {
       const timTem = newDate.getTime();
 
       dete.forEach((el: any) => {
-        const groupTicketId: any = checkData.find((item: any) => item.sku === el.Sku);
-        if (groupTicketId)
+        const groupTicket: any = checkData.find((item: any) => item.sku === el.Sku);
+        if (groupTicket)
           newDete.push({
             name: el['Tên SP'],
             serial: el.Serial,
             code: el.Code,
-            // purchaseId: el.PurchaseId,
             purchaseId: timTem,
             activatedDate: el.ActivatedDate,
             expiredDate: el.ExpiredDate,
             importUser: email,
-            groupTicket: groupTicketId?.id,
+            sku: el.Sku,
+            groupName: groupTicket.name,
+            bigTicket: groupTicket.bigTicket,
+            unit: groupTicket.unit,
+            quantity: 1,
+            groupTicket: groupTicket?.id,
             state: 'Pending',
           });
       });
-      // console.log(newDete);
-      const success = await importTicket({ data: newDete });
+      const success = await importTicket({ data: newDete, importUser: email, purchaseId: timTem });
       setFile({});
       if (success) {
         if (actionRef.current) {

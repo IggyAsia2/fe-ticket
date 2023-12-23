@@ -59,6 +59,13 @@ export default  [
     // access: 'canSeeOrder',
   },
   {
+    name: 'list.import-history-list',
+    icon: 'BookFilled',
+    path: '/lich-su-nhap-ve',
+    component: './ImportList',
+    access: 'canSeeImportList',
+  },
+  {
     name: 'list.ticket-list',
     icon: 'TagFilled',
     path: '/kho-ve',
@@ -97,6 +104,23 @@ export default  [
         path: '/agent/agent-list',
         name: 'Danh sách đại lý',
         component: './Agent/AgentList',
+        access: 'canDad',
+      },
+      {
+        component: './404',
+      },
+    ],
+  },
+  {
+    name: 'list.sun-list',
+    icon: 'LayoutFilled',
+    access: 'canDad',
+    path: '/sun-world',
+    routes: [
+      {
+        path: '/sun-world/site-list',
+        name: 'Danh sách Site',
+        component: './SunWorld/SiteList',
         access: 'canDad',
       },
       {

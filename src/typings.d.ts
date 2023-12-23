@@ -20,6 +20,8 @@ declare module 'bizcharts-plugin-slider';
 declare const REACT_APP_ENV: 'test' | 'dev' | 'pre' | false;
 declare const API_URL : string ;
 declare const STATIC_URL : string ;
+declare const SUN_URL : string ;
+declare const swg : string ;
 declare const EMAIL_USERNAME : string ;
 declare const EMAIL_PASSWORD : string ;
 declare const EMAIL_HOST : string ;
