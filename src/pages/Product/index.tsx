@@ -174,18 +174,6 @@ const ListProduct: React.FC = () => {
       fieldProps: {
         placeholder: 'Nhập tên sản phẩm',
       },
-      render: (dom, entity) => {
-        return (
-          <a
-            onClick={() => {
-              setCurrentRow(entity);
-              setShowDetail(true);
-            }}
-          >
-            {dom}
-          </a>
-        );
-      },
     },
     {
       title: 'Địa danh',
@@ -294,6 +282,7 @@ const ListProduct: React.FC = () => {
           </>
           <a
             key="export"
+            hidden={access.canMelinh && record._id !== '6578175d4549961cf866ff61'}
             onClick={() => {
               handleExportModalOpen(true);
               setGroupQuan(record.groupTickets.map(() => 0));

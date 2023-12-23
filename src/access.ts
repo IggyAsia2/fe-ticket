@@ -16,5 +16,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canSeeInventory: role === 'admin' || role === 'accountant',
     canSeeImportList: email === 'admin@gmail.com' || role === 'accountant',
     canAgent: role === 'agent',
+    canMelinh: email === 'bachgia134@gmail.com'
   };
 }
