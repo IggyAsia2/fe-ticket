@@ -59,13 +59,6 @@ export default  [
     // access: 'canSeeOrder',
   },
   {
-    name: 'list.import-history-list',
-    icon: 'BookFilled',
-    path: '/lich-su-nhap-ve',
-    component: './ImportList',
-    access: 'canSeeImportList',
-  },
-  {
     name: 'list.ticket-list',
     icon: 'TagFilled',
     path: '/kho-ve',
@@ -95,14 +88,14 @@ export default  [
     access: 'canAdmin',
   },
   {
-    name: 'list.agent-list',
+    name: 'list.agent',
     icon: 'LayoutFilled',
     access: 'canDad',
     path: '/agent',
     routes: [
       {
+        name: 'list',
         path: '/agent/agent-list',
-        name: 'Danh sách đại lý',
         component: './Agent/AgentList',
         access: 'canDad',
       },
@@ -112,15 +105,21 @@ export default  [
     ],
   },
   {
-    name: 'list.sun-list',
+    name: 'list.sun',
     icon: 'LayoutFilled',
     access: 'canDad',
     path: '/sun-world',
     routes: [
       {
+        name: 'site',
         path: '/sun-world/site-list',
-        name: 'Danh sách Site',
         component: './SunWorld/SiteList',
+        access: 'canDad',
+      },
+      {
+        name: 'order',
+        path: '/sun-world/order-list',
+        component: './SunWorld/OrderList',
         access: 'canDad',
       },
       {
@@ -141,6 +140,13 @@ export default  [
     path: '/permission-list',
     component: './PermissionList',
     access: 'canAdmin',
+  },
+  {
+    name: 'list.import-history-list',
+    icon: 'HistoryOutlined',
+    path: '/lich-su-nhap-ve',
+    component: './ImportList',
+    access: 'canSeeImportList',
   },
   {
     name: 'list.setting-list',

@@ -1,6 +1,6 @@
 import {
-  updateOrder,
-  updateManyOrder,
+  updateAgentOrder,
+  updateManyAgentOrder,
   cancelOrder,
   cancelManyOrder,
   reduceOrder,
@@ -11,8 +11,6 @@ import { rangePresets } from '@/components/Table/constValue';
 import {
   convertArrayToCascader,
   convertArrayToObject,
-  convertArrayToObjectDepart,
-  convertDepartToCascader,
   getDate,
   getDateTime,
   getPrice,
@@ -74,13 +72,13 @@ const unit: any = {
 const OrderList: React.FC = () => {
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
-  const { initialState } = useModel('@@initialState');
+  const { initialState, setInitialState } = useModel('@@initialState');
   const { departList, currentUser }: any = initialState;
-  const newArrDepart = departList
-    .map((value: any) => value.cashiers.map((child: any) => ({ name: child.name, id: child._id })))
-    .flat();
+  // const newArrDepart = departList
+  //   .map((value: any) => value.cashiers.map((child: any) => ({ name: child.name, id: child._id })))
+  //   .flat();
 
-  const departCheck: any = convertArrayToObjectDepart(newArrDepart, 'id');
+  // const departCheck: any = convertArrayToObjectDepart(newArrDepart, 'id');
   const { data: productData, run: runProduct } = useRequest(productList, {
     manual: true,
     formatResult: (res: any) => res.data,
@@ -131,12 +129,12 @@ const OrderList: React.FC = () => {
         message.success('Đã hủy đơn hàng!');
       } else {
         if (selectedRows.length > 1) {
-          await updateManyOrder({
+          await updateManyAgentOrder({
             key: selectedRows.map((row) => row._id),
           });
         } else {
           try {
-            await updateOrder({
+            await updateAgentOrder({
               oid: selectedRows[0]._id,
               state,
             });
@@ -506,10 +504,20 @@ const OrderList: React.FC = () => {
           <Popconfirm
             title="Bạn chắc chắn muốn xác nhận đơn hàng này?"
             onConfirm={async () => {
+              const realMoney = record.subTotal - record.discountSubtotal;
               const success = await handleFinished([record], 'Finished');
               if (success) {
                 setSelectedRows([]);
                 if (actionRef.current) {
+                  if (currentUser?.moneny > realMoney) {
+                    setInitialState((s: any) => ({
+                      ...s,
+                      currentUser: {
+                        ...s?.currentUser,
+                        moneny: s?.currentUser?.moneny - realMoney,
+                      },
+                    }));
+                  }
                   setSelectedRows([]);
                   actionRef.current?.reloadAndRest?.();
                 }
@@ -669,7 +677,7 @@ const OrderList: React.FC = () => {
         <FooterToolbar>
           {selectedRowsState.every((el) => el.state === 'Pending') && (
             <>
-              <Popconfirm
+              {/* <Popconfirm
                 title="Bạn chắc chắn muốn xác nhận đơn hàng này?"
                 onConfirm={async () => {
                   await handleFinished(selectedRowsState, 'Finished');
@@ -678,7 +686,7 @@ const OrderList: React.FC = () => {
                 }}
               >
                 <Button type="primary">Xác nhận</Button>
-              </Popconfirm>
+              </Popconfirm> */}
               <Popconfirm
                 title="Bạn chắc chắn muốn hủy đơn hàng này?"
                 onConfirm={async () => {

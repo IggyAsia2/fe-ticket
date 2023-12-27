@@ -334,7 +334,7 @@ const OrderList: React.FC = () => {
         transform: (value: any) => ({
           'updatedAt[gte]': timeStamp(value[0]),
           'updatedAt[lte]': moment(value[1], 'DD/MM/YYYY').add(1, 'days').toISOString(),
-          sort: 'updatedAt',
+          sort: '-updatedAt',
         }),
       },
       render: () => null,

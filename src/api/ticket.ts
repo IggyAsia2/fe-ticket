@@ -135,3 +135,15 @@ export async function removeManyTicket(options?: { [key: string]: any }) {
   });
 }
 
+export async function createMockData(options?: { [key: string]: any }) {
+  return request<any>(`${API_URL}/groupTickets/mock`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    data: {
+      ...(options || {}),
+    }
+  });
+}
+

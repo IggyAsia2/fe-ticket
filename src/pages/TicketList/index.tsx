@@ -6,6 +6,7 @@ import {
   removeTicket,
   ticketList,
   updateTicket,
+  createMockData,
 } from '@/api/ticket';
 import { convertArrayToObject, getPrice, CurrentUser } from '@/helper/helper';
 import { PlusOutlined } from '@ant-design/icons';
@@ -19,7 +20,7 @@ import {
   createIntl,
 } from '@ant-design/pro-components';
 import { useRequest } from '@umijs/max';
-import { Button, Drawer, Popconfirm, Table, message, Typography } from 'antd';
+import { Button, Drawer, Popconfirm, Table, message, Typography, InputNumber } from 'antd';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import ExportForm from './components/ExportForm';
@@ -102,6 +103,7 @@ const TicketList: React.FC = () => {
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   const [exportModalOpen, handleExportModalOpen] = useState<boolean>(false);
+  const [newQuan, setNewQuan] = useState<any>(null);
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
@@ -159,6 +161,21 @@ const TicketList: React.FC = () => {
     } catch (error) {
       hide();
       message.error('Xuất vé không thành công');
+      return false;
+    }
+  };
+
+  const handleMockData = async (groupTicket: string, newQuan: number) => {
+    const hide = message.loading('Đang xử lý');
+    try {
+      await createMockData({ groupTicket, count: newQuan });
+      hide();
+      message.success(`Tạo thành công ${newQuan} mã vé`);
+      return true;
+    } catch (error) {
+      setNewQuan(null);
+      hide();
+      message.error('Tạo mã vé thất bại, xin vui lòng thử lại!');
       return false;
     }
   };
@@ -293,16 +310,42 @@ const TicketList: React.FC = () => {
             </a>
           </Popconfirm>
         </>,
-        // <a
-        //   hidden={record.pending === 0}
-        //   key="export"
-        //   onClick={() => {
-        //     handleExportModalOpen(true);
-        //     setCurrentRow(record);
-        //   }}
-        // >
-        //   Xuất
-        // </a>,
+        <>
+          <Popconfirm
+            title={
+              <>
+                <Typography.Title level={5}>Nhập số vé cần tạo</Typography.Title>
+                <InputNumber
+                  style={{ width: '100%' }}
+                  placeholder="Nhập số lượng"
+                  min={1}
+                  max={1000}
+                  value={newQuan}
+                  onChange={(e) => setNewQuan(e)}
+                />
+              </>
+            }
+            onCancel={() => setNewQuan(null)}
+            cancelText="Hủy"
+            onConfirm={async () => {
+              if (newQuan) {
+                const success = await handleMockData(record._id, newQuan);
+                if (success) {
+                  setNewQuan(null);
+                  if (actionRef.current) {
+                    actionRef.current?.reloadAndRest?.();
+                  }
+                }
+              } else {
+                message.warning('Bạn chưa nhập số lượng');
+              }
+            }}
+          >
+            <a hidden={!access.canDad} key="create">
+              Tạo code
+            </a>
+          </Popconfirm>
+        </>,
       ],
     },
   ];

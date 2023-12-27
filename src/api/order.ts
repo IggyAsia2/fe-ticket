@@ -101,6 +101,30 @@ export async function updateManyOrder(options?: { [key: string]: any }) {
   });
 }
 
+export async function updateAgentOrder(options?: { [key: string]: any }) {
+  return request<ORDER_API.OrderListItem>(`${API_URL}/orders/agent/${options?.oid}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    data: {
+      ...(options || {}),
+    }
+  });
+}
+
+export async function updateManyAgentOrder(options?: { [key: string]: any }) {
+  return request<ORDER_API.OrderListItem>(`${API_URL}/orders/agent/all`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    data: {
+      ...(options || {}),
+    }
+  });
+}
+
 export async function reduceOrder(options?: { [key: string]: any }) {
   return request<ORDER_API.OrderListItem>(`${API_URL}/orders/reduce`, {
     method: 'POST',

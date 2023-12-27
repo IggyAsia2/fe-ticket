@@ -1,4 +1,4 @@
-import { sunWorldList } from '@/api/sunWorld/sun';
+import { createSunOrder, sunWorldList } from '@/api/sunWorld/sun';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
 import {
   PageContainer,
@@ -7,17 +7,18 @@ import {
   ProTable,
   createIntl,
 } from '@ant-design/pro-components';
-import { Drawer } from 'antd';
+import { Drawer, message } from 'antd';
 import React, { useContext, useRef, useState } from 'react';
-import { useAccess } from '@umijs/max';
+// import { useAccess } from '@umijs/max';
 import enLocale from '@/locales/table-en';
+import ExportForm from './components/ExportForm';
 
 /**
  * @param fields
  */
 
 const SunSiteList: React.FC = () => {
-  const access = useAccess();
+  // const access = useAccess();
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
 
@@ -25,6 +26,7 @@ const SunSiteList: React.FC = () => {
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<SUN_SITE_API.SunSiteItem>();
+  const [exportModalOpen, handleExportModalOpen] = useState<boolean>(false);
 
   const columns: ProColumns<SUN_SITE_API.SunSiteItem>[] = [
     {
@@ -57,9 +59,41 @@ const SunSiteList: React.FC = () => {
       title: 'Tùy chọn',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [<></>],
+      render: (_, record) => [
+        <>
+          <a
+            key="export"
+            onClick={() => {
+              handleExportModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            Đặt vé
+          </a>
+        </>,
+      ],
     },
   ];
+
+  const createTicket = async (dataSubmit: string[]) => {
+    if (dataSubmit.length) {
+      const hide = message.loading('Đang tạo vé');
+      try {
+        await createSunOrder({
+          products: dataSubmit,
+        });
+        hide();
+        message.success('Đã tạo vé thành công');
+        return true;
+      } catch (error) {
+        hide();
+        message.error('Tạo vé không thành công');
+        return false;
+      }
+    } else {
+      message.warning('Bạn chưa nhập số lượng vé');
+    }
+  };
 
   return (
     <PageContainer>
@@ -109,6 +143,27 @@ const SunSiteList: React.FC = () => {
           />
         )}
       </Drawer>
+      <ExportForm
+        onSubmit={async (values, dataSubmit) => {
+          const success = await createTicket(dataSubmit);
+          console.log(success);
+          if (success) {
+            handleExportModalOpen(false);
+            setCurrentRow(undefined);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
+        onCancel={() => {
+          handleExportModalOpen(false);
+          if (!showDetail) {
+            setCurrentRow(undefined);
+          }
+        }}
+        exportModalOpen={exportModalOpen}
+        values={currentRow || {}}
+      />
     </PageContainer>
   );
 };
