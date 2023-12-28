@@ -26,6 +26,7 @@ export default {
   'menu.list.user-list': 'Danh sách tài khoản',
   'menu.list.agent': 'Đại lý',
   'menu.list.agent.list': 'Danh sách đại lý',
+  'menu.list.agent.history': 'Lịch sử topup',
   'menu.list.sun': 'Sun World',
   'menu.list.sun.site': 'Danh sách Site',
   'menu.list.sun.order': 'Danh sách Order',

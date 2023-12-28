@@ -100,6 +100,12 @@ export default  [
         access: 'canDad',
       },
       {
+        name: 'history',
+        path: '/agent/history',
+        component: './Agent/HistoryTopup',
+        access: 'canDad',
+      },
+      {
         component: './404',
       },
     ],
