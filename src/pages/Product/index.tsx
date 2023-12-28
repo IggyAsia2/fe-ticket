@@ -139,7 +139,7 @@ const ListProduct: React.FC = () => {
       try {
         await exportGroupInven({
           data: {
-            customerCar: fields.customerCar,
+            customerCar: fields.customerCar?.toLocaleLowerCase(),
             customerName: fields.customerName,
             customerPhone: fields.customerPhone,
           },
