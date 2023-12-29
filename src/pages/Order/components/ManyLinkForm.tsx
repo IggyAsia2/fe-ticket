@@ -219,25 +219,30 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                       flexDirection: 'row',
                     }}
                   >
-                    {bigItem.allOfTicket.map((item: any, index: any) => (
-                      <>
-                        <TicketPrintTemplate
-                          item={item}
-                          index={index}
-                          logo={logo}
-                          groupTicket={groupTicket}
-                          itnu={itnu}
-                          heightNote={heightNote}
-                          place={place}
-                          bookDate={bookDate}
-                          price={price}
-                          manual={manual}
-                          note={note}
-                          orderId={orderId}
-                          bigItem={bigItem}
-                        />
-                      </>
-                    ))}
+                    {bigItem.allOfTicket.map((item: any, index: any) => {
+                      const excludeArr = ['CNL0001', 'CNL0002'];
+                      if (!excludeArr.includes(groupTicket.sku)) {
+                        return (
+                          <>
+                            <TicketPrintTemplate
+                              item={item}
+                              index={index}
+                              logo={logo}
+                              groupTicket={groupTicket}
+                              itnu={itnu}
+                              heightNote={heightNote}
+                              place={place}
+                              bookDate={bookDate}
+                              price={price}
+                              manual={manual}
+                              note={note}
+                              orderId={orderId}
+                              bigItem={bigItem}
+                            />
+                          </>
+                        );
+                      } else return <></>;
+                    })}
                   </div>
                 </>
               );

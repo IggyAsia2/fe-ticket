@@ -24,9 +24,13 @@ export type ExportFormProps = {
 const ExportForm: React.FC<ExportFormProps> = (props) => {
   const formRef = useRef<ProFormInstance>();
   const [sample, setSample] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
   const { run: sunProductRun } = useRequest(sunProductList, {
     manual: true,
-    formatResult: (res: any) => setSample(res.data),
+    formatResult: (res: any) => {
+      setSample(res.data);
+      setLoading(false);
+    },
   });
 
   const { code, name }: any = props.values;
@@ -49,6 +53,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
         onCancel: () => {
           setSample([]);
           props.onCancel();
+          setLoading(true);
         },
         cancelText: 'Hủy',
         // okText: 'OK',
@@ -75,6 +80,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
           };
         });
         await props.onSubmit(values, newArr);
+        setLoading(true);
       }}
       initialValues={
         {
@@ -105,6 +111,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
                 <div>Loại vé</div>
               </div>
             }
+            loading={loading}
             className="demo-loadmore-list"
             itemLayout="horizontal"
             dataSource={sample}

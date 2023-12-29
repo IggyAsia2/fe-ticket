@@ -89,8 +89,10 @@ const UserList: React.FC = () => {
           ...doc,
           userId: _id,
         });
-        hide();
+        if(doc.moneny) {
 
+        }
+        hide();
         message.success('Cập nhật thành công!');
         return true;
       } catch (error) {
