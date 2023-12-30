@@ -372,6 +372,12 @@ const OrderList: React.FC = () => {
       fieldProps: {
         placeholder: 'Nhập biển số xe',
       },
+      search: {
+        transform: (value: any) => ({
+          'customerCar[regex]': value,
+          sort: '-updatedAt',
+        }),
+      },
     },
     {
       title: 'Khách hàng',
