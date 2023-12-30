@@ -155,7 +155,7 @@ const ListProduct: React.FC = () => {
         });
         hide();
         message.success('Đã xuất vé thành công');
-        return true;
+        // return true;
       } catch (error) {
         hide();
         message.error('Xuất vé không thành công');
