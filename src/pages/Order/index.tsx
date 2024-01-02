@@ -4,6 +4,7 @@ import {
   cancelOrder,
   cancelManyOrder,
   reduceOrder,
+  updateOrderThor,
   // sendMailOrder,
 } from '@/api/order';
 import { productList } from '@/api/product';
@@ -31,11 +32,14 @@ import { Button, InputNumber, Popconfirm, Space, Tag, Typography, message } from
 import { Excel } from 'antd-table-saveas-excel';
 import moment from 'moment';
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import type { FormValueType } from './components/UpdateForm';
 // import LinkForm from './components/LinkForm';
 import { getAuth } from '@/services/authHelper';
 import { userList } from '@/api/user';
 import ManyLinkForm from './components/ManyLinkForm';
 import enLocale from '@/locales/table-en';
+import UpdateForm from './components/UpdateForm';
+import UpdateThor from './components/UpdateForm';
 
 /**
  * @param fields
@@ -107,11 +111,59 @@ const OrderList: React.FC = () => {
   const [excelData, setExcelData] = useState<string[]>([]);
   // const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
-  // const [currentRow, setCurrentRow] = useState<ORDER_API.OrderListItem>();
+  const [currentRow, setCurrentRow] = useState<ORDER_API.OrderListItem>();
   const [selectedRowsState, setSelectedRows] = useState<ORDER_API.OrderListItem[]>([]);
   const [linkRow, setLinkRow] = useState<ORDER_API.OrderListItem[]>([]);
   // const [linkModalOpen, handleLinkModalOpen] = useState<boolean>(false);
   const [manyLinkModalOpen, handleManyLinkModalOpen] = useState<boolean>(false);
+  const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [updateThor, handleUpdateThor] = useState<boolean>(false);
+
+  const handleUpdate = async (fields: FormValueType) => {
+    const hide = message.loading('Đang cập nhật');
+    let { _id, customerName, customerCar, customerPhone }: any = currentRow;
+    const doc: any = {
+      isUp: true,
+    };
+    if (customerName !== fields.customerName) doc.customerName = fields.customerName;
+    if (customerCar !== fields.customerCar) doc.customerCar = fields.customerCar;
+    if (customerPhone !== fields.customerPhone) doc.customerPhone = fields.customerPhone;
+    if (Object.keys(doc).length > 1) {
+      try {
+        await updateOrder({
+          ...doc,
+          oid: _id,
+        });
+        hide();
+        message.success('Cập nhật thành công!');
+        return true;
+      } catch (error) {
+        hide();
+        message.error('Cập nhật thất bại, xin vui lòng thử lại!');
+        return false;
+      }
+    } else {
+      hide();
+      return true;
+    }
+  };
+
+  const handleUpdateT = async (fields: FormValueType) => {
+    const hide = message.loading('Đang cập nhật');
+    try {
+      await updateOrderThor({
+        ...fields,
+        key: linkRow.map((el) => el._id),
+      });
+      hide();
+      message.success('Cập nhật thành công!');
+      return true;
+    } catch (error) {
+      hide();
+      message.error('Cập nhật thất bại, xin vui lòng thử lại!');
+      return false;
+    }
+  };
 
   const handleFinished = async (selectedRows: ORDER_API.OrderListItem[], state: string) => {
     const hide = message.loading('Đang xử lý');
@@ -529,6 +581,7 @@ const OrderList: React.FC = () => {
         <>
           <Popconfirm
             title="Bạn chắc chắn muốn xác nhận đơn hàng này?"
+            cancelText="Hủy"
             onConfirm={async () => {
               const success = await handleFinished([record], 'Finished');
               if (success) {
@@ -565,12 +618,22 @@ const OrderList: React.FC = () => {
         </>,
         <a
           hidden={record.state !== 'Finished'}
-          key="mail"
+          key="finis"
           href={`/agent/printticketlink/${record._id}-${record.groupTicket.bigTicket.id}`}
           target="_blank"
           rel="noreferrer"
         >
           Link
+        </a>,
+        <a
+          hidden={record.state !== 'Finished'}
+          key="upda"
+          onClick={() => {
+            handleUpdateModalOpen(true);
+            setCurrentRow(record);
+          }}
+        >
+          Cập nhật
         </a>,
       ],
     },
@@ -614,16 +677,19 @@ const OrderList: React.FC = () => {
                 delete params[key];
               }
             });
-            const result: any = await request<ORDER_API.OrderList>(`${API_URL}/orders?isAgent=false`, {
-              method: 'GET',
-              headers: {
-                Authorization: `Bearer ${getAuth()}`,
+            const result: any = await request<ORDER_API.OrderList>(
+              `${API_URL}/orders?isAgent=false`,
+              {
+                method: 'GET',
+                headers: {
+                  Authorization: `Bearer ${getAuth()}`,
+                },
+                params: {
+                  ...params,
+                },
+                ...(options || {}),
               },
-              params: {
-                ...params,
-              },
-              ...(options || {}),
-            });
+            );
             setExcelData(result?.data);
             return result;
           }}
@@ -663,6 +729,16 @@ const OrderList: React.FC = () => {
                     }}
                   >
                     Link
+                  </Button>
+                  <Button
+                    type="default"
+                    color="#34ebc0"
+                    onClick={() => {
+                      setLinkRow(selectedRowsState);
+                      handleUpdateThor(true);
+                    }}
+                  >
+                    Cập nhật
                   </Button>
                 </Space>
               );
@@ -760,6 +836,41 @@ const OrderList: React.FC = () => {
         departList={departList}
       />
 
+      <UpdateForm
+        onSubmit={async (value) => {
+          const success = await handleUpdate(value);
+          if (success) {
+            handleUpdateModalOpen(false);
+            setCurrentRow(undefined);
+            if (actionRef.current) {
+              actionRef.current?.reloadAndRest?.();
+            }
+          }
+        }}
+        onCancel={() => {
+          handleUpdateModalOpen(false);
+          setCurrentRow(undefined);
+        }}
+        updateModalOpen={updateModalOpen}
+        values={currentRow || {}}
+      />
+      <UpdateThor
+        onSubmit={async (value) => {
+          const success = await handleUpdateT(value);
+          if (success) {
+            handleUpdateThor(false);
+            if (actionRef.current) {
+              actionRef.current?.reloadAndRest?.();
+            }
+          }
+        }}
+        onCancel={() => {
+          handleUpdateThor(false);
+          setLinkRow([]);
+        }}
+        updateModalOpen={updateThor}
+        values={{}}
+      />
       {/* <Drawer
         width={600}
         open={showDetail}

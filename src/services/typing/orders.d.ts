@@ -7,6 +7,7 @@ declare namespace ORDER_API {
     orderId?: string;
     customerName?: string;
     customerEmail?: string;
+    customerCar?: string;
     customerPhone?: string;
     quantity?: number;
     price?: number;

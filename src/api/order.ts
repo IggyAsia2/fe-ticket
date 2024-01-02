@@ -89,6 +89,18 @@ export async function updateOrder(options?: { [key: string]: any }) {
   });
 }
 
+export async function updateOrderThor(options?: { [key: string]: any }) {
+  return request<ORDER_API.OrderListItem>(`${API_URL}/orders/thor`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    data: {
+      ...(options || {}),
+    }
+  });
+}
+
 export async function updateManyOrder(options?: { [key: string]: any }) {
   return request<ORDER_API.OrderListItem>(`${API_URL}/orders/all`, {
     method: 'POST',
