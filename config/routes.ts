@@ -113,20 +113,20 @@ export default  [
   {
     name: 'list.sun',
     icon: 'LayoutFilled',
-    access: 'canDad',
+    access: 'canDeleteUser',
     path: '/sun-world',
     routes: [
       {
         name: 'site',
         path: '/sun-world/site-list',
         component: './SunWorld/SiteList',
-        access: 'canDad',
+        access: 'canDeleteUser',
       },
       {
         name: 'order',
         path: '/sun-world/order-list',
         component: './SunWorld/OrderList',
-        access: 'canDad',
+        access: 'canDeleteUser',
       },
       {
         component: './404',
