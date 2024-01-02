@@ -126,7 +126,7 @@ const OrderList: React.FC = () => {
       isUp: true,
     };
     if (customerName !== fields.customerName) doc.customerName = fields.customerName;
-    if (customerCar !== fields.customerCar) doc.customerCar = fields.customerCar;
+    if (customerCar !== fields.customerCar) doc.customerCar = fields.customerCar?.toLowerCase();
     if (customerPhone !== fields.customerPhone) doc.customerPhone = fields.customerPhone;
     if (Object.keys(doc).length > 1) {
       try {
