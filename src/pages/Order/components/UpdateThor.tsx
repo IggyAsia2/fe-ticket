@@ -25,6 +25,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
       modalProps={{
         destroyOnClose: true,
         cancelText: 'Hủy',
+        okText: 'OK',
         onCancel: () => props.onCancel(),
       }}
       onFinish={props.onSubmit}
