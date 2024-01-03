@@ -56,7 +56,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
           setLoading(true);
         },
         cancelText: 'Hủy',
-        // okText: 'OK',
+        okText: 'OK',
       }}
       // onValuesChange={(changeValues, values) => console.log(values)}
       // submitter={{

@@ -64,7 +64,8 @@ export function convertDepartToCascader(array: string[]) {
   const initialValue = {};
   return array.map((item: any) => {
     const cashier = item.cashiers.map((el: any) => {
-      return { label: `${el.name} - ${el.order}`, value: el._id };
+      // return { label: `${el.name} - ${el.order}`, value: el._id };
+      return { label: `${el.name}`, value: el._id };
     });
     return {
       label: item.name,

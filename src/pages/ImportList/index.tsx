@@ -67,6 +67,11 @@ export default () => {
       hideInSearch: true,
     },
     {
+      title: 'Loại nhập',
+      dataIndex: 'importType',
+      hideInSearch: true,
+    },
+    {
       title: 'Ngày tạo',
       dataIndex: 'createdAt',
       hideInSearch: true,

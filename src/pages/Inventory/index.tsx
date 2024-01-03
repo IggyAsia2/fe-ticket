@@ -149,6 +149,7 @@ const InventoryList: React.FC = () => {
     },
     {
       title: 'Mã vé',
+      dataIndex:'purchaseId',
       valueType: 'text',
       render: (_, record: any) => {
         return (
@@ -157,7 +158,7 @@ const InventoryList: React.FC = () => {
           </div>
         );
       },
-      hideInSearch: true,
+      // hideInSearch: true,
     },
     {
       title: 'Hiệu lực',
