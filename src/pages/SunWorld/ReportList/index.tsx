@@ -57,6 +57,23 @@ const ReportSunList: React.FC = () => {
         options={false}
         dataSource={record.items}
         pagination={false}
+        summary={(pageData) => {
+          let totalQuan = 0;
+          pageData.forEach(({ products }: any) => {
+            totalQuan += products.quantity;
+          });
+
+          return (
+            <>
+              <Table.Summary.Row>
+                <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                <Table.Summary.Cell index={0}>
+                  <Text type="success">{totalQuan}</Text>
+                </Table.Summary.Cell>
+              </Table.Summary.Row>
+            </>
+          );
+        }}
       />
     );
   };
@@ -71,6 +88,28 @@ const ReportSunList: React.FC = () => {
         showSearch: true,
         placeholder: 'Chọn người xuất',
       },
+    },
+    {
+      title: 'Tên khu',
+      dataIndex: 'sunName',
+      fieldProps: {
+        placeholder: 'Nhập tên khu',
+      },
+      hideInSearch: true,
+    },
+    {
+      title: 'Mã khu',
+      dataIndex: 'siteCode',
+      fieldProps: {
+        placeholder: 'Nhập mã khu',
+      },
+      hideInSearch: true,
+    },
+    {
+      title: 'Số vé',
+      hideInSearch: true,
+      render: (val: any) =>
+        val.items.reduce((acc: any, o: any) => acc + parseInt(o.products.quantity), 0),
     },
     {
       title: 'Tổng tiền',
@@ -141,8 +180,14 @@ const ReportSunList: React.FC = () => {
           expandable={{ expandedRowRender, defaultExpandAllRows: true }}
           summary={(pageData) => {
             let totalSub = 0;
-            pageData.forEach(({ totalOrderPrice }: any) => {
+            let totalQuan = 0;
+            pageData.forEach(({ totalOrderPrice, items }: any) => {
+              const sum = items.reduce(
+                (acc: any, o: any) => acc + parseInt(o.products.quantity),
+                0,
+              );
               totalSub += totalOrderPrice;
+              totalQuan += sum;
             });
 
             return (
@@ -150,7 +195,11 @@ const ReportSunList: React.FC = () => {
                 <Table.Summary.Row>
                   <Table.Summary.Cell index={0}></Table.Summary.Cell>
                   <Table.Summary.Cell index={0}></Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
                   <Table.Summary.Cell index={0}>Tổng cộng</Table.Summary.Cell>
+                  <Table.Summary.Cell index={0}>
+                    <Text type="success">{totalQuan}</Text>
+                  </Table.Summary.Cell>
                   <Table.Summary.Cell index={0}>
                     <Text type="success">{getPrice(totalSub)}</Text>
                   </Table.Summary.Cell>
