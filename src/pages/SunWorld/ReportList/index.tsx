@@ -1,11 +1,11 @@
-import { orderSunList } from '@/api/sunWorld/sun';
+import { reportSunList } from '@/api/sunWorld/sun';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { PageContainer, ProProvider, ProTable, createIntl } from '@ant-design/pro-components';
 import { Typography, Table } from 'antd';
 import React, { useContext, useEffect, useRef } from 'react';
 // import { useAccess } from '@umijs/max';
 import enLocale from '@/locales/table-en';
-import { convertArrayToObject, getDateTime, getPrice, timeStamp } from '@/helper/helper';
+import { convertArrayToObject, getPrice, timeStamp } from '@/helper/helper';
 import { useRequest } from '@umijs/max';
 import { userList } from '@/api/user';
 import { rangePresets } from '@/components/Table/constValue';
@@ -17,13 +17,12 @@ const { Text } = Typography;
  * @param fields
  */
 
-const OrderSunList: React.FC = () => {
+const ReportSunList: React.FC = () => {
   // const access = useAccess();
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
 
   const actionRef = useRef<ActionType>();
-  // const [currentRow, setCurrentRow] = useState<SUN_SITE_API.SunSiteItem>();
 
   const { data: userData, run: runUser } = useRequest(userList, {
     manual: true,
@@ -64,29 +63,6 @@ const OrderSunList: React.FC = () => {
 
   const columns: ProColumns<SUN_SITE_API.SunSiteItem>[] = [
     {
-      title: 'Mã Order',
-      dataIndex: 'orderCode',
-      fieldProps: {
-        placeholder: 'Nhập mã',
-      },
-    },
-    {
-      title: 'Tên khu',
-      dataIndex: 'sunName',
-      fieldProps: {
-        placeholder: 'Nhập tên khu',
-      },
-      hideInSearch: true
-    },
-    {
-      title: 'Mã khu',
-      dataIndex: 'siteCode',
-      fieldProps: {
-        placeholder: 'Nhập mã khu',
-      },
-      hideInSearch: true
-    },
-    {
       title: 'Người tạo',
       dataIndex: 'orderUser',
       valueType: 'select',
@@ -101,12 +77,6 @@ const OrderSunList: React.FC = () => {
       dataIndex: 'totalOrderPrice',
       hideInSearch: true,
       renderText: (val) => getPrice(val),
-    },
-    {
-      title: 'Ngày tạo',
-      dataIndex: 'orderDate',
-      hideInSearch: true,
-      renderText: (val) => getDateTime(val),
     },
     {
       title: 'Ngày tạo',
@@ -180,8 +150,6 @@ const OrderSunList: React.FC = () => {
                 <Table.Summary.Row>
                   <Table.Summary.Cell index={0}></Table.Summary.Cell>
                   <Table.Summary.Cell index={0}></Table.Summary.Cell>
-                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
-                  <Table.Summary.Cell index={0}></Table.Summary.Cell>
                   <Table.Summary.Cell index={0}>Tổng cộng</Table.Summary.Cell>
                   <Table.Summary.Cell index={0}>
                     <Text type="success">{getPrice(totalSub)}</Text>
@@ -191,7 +159,7 @@ const OrderSunList: React.FC = () => {
             );
           }}
           toolBarRender={() => []}
-          request={orderSunList}
+          request={reportSunList}
           columns={columns}
         />
       </ProProvider.Provider>
@@ -199,4 +167,4 @@ const OrderSunList: React.FC = () => {
   );
 };
 
-export default OrderSunList;
+export default ReportSunList;

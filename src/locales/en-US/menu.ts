@@ -30,6 +30,7 @@ export default {
   'menu.list.sun': 'Sun World',
   'menu.list.sun.site': 'Danh sách Site',
   'menu.list.sun.order': 'Danh sách Order',
+  'menu.list.sun.report': 'Báo cáo đặt vé',
   'menu.list.depart-list': 'Quầy vé',
   'menu.list.permission-list': 'Danh sách phân quyền',
   'menu.settings': 'Settings',

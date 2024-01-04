@@ -80,7 +80,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
           };
         });
         await props.onSubmit(values, newArr);
-        setLoading(true);
+        setLoading(false);
       }}
       initialValues={
         {

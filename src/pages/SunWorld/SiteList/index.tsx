@@ -81,14 +81,16 @@ const SunSiteList: React.FC = () => {
       try {
         await createSunOrder({
           products: dataSubmit,
+          sunName: currentRow?.name,
+          siteCode: currentRow?.code,
         });
         hide();
         message.success('Đã tạo vé thành công');
-        return true;
+        // return true;
       } catch (error) {
         hide();
         message.error('Tạo vé không thành công');
-        return false;
+        // return false;
       }
     } else {
       message.warning('Bạn chưa nhập số lượng vé');
@@ -145,15 +147,14 @@ const SunSiteList: React.FC = () => {
       </Drawer>
       <ExportForm
         onSubmit={async (values, dataSubmit) => {
-          const success = await createTicket(dataSubmit);
-          console.log(success);
-          if (success) {
-            handleExportModalOpen(false);
-            setCurrentRow(undefined);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
+          await createTicket(dataSubmit);
+          // if (success) {
+          //   handleExportModalOpen(false);
+          //   setCurrentRow(undefined);
+          //   if (actionRef.current) {
+          //     actionRef.current.reload();
+          //   }
+          // }
         }}
         onCancel={() => {
           handleExportModalOpen(false);

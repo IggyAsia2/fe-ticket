@@ -129,6 +129,13 @@ export default  [
         access: 'canDeleteUser',
       },
       {
+        name: 'report',
+        path: '/sun-world/report-list',
+        component: './SunWorld/ReportList',
+        // access: 'canDeleteUser',
+        access: 'canDad',
+      },
+      {
         component: './404',
       },
     ],
