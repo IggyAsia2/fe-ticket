@@ -16,7 +16,7 @@ export async function userList(
   },
   options?: { [key: string]: any },
 ) {
-  return request<USER_API.UserList>(`${API_URL}/users?isAgent=false`, {
+  return request<USER_API.UserList>(`${API_URL}/users`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${getAuth()}`

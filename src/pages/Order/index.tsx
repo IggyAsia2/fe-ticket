@@ -75,7 +75,13 @@ const unit: any = {
   },
 };
 
+const valueEnum = {
+  false: { text: 'Vintrip' },
+  true: { text: 'Đại Lý' },
+};
+
 const OrderList: React.FC = () => {
+  const [isAgent, setIsAgent] = useState<boolean>(false);
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
   const { initialState } = useModel('@@initialState');
@@ -99,8 +105,11 @@ const OrderList: React.FC = () => {
 
   useEffect(() => {
     runProduct({ current: 1, pageSize: 100 });
-    runUser({ current: 1, pageSize: 100 });
   }, []);
+
+  useEffect(() => {
+    runUser({ current: 1, pageSize: 100, isAgent: isAgent });
+  }, [isAgent]);
 
   const access = useAccess();
   const [takePrice, setTakePrice] = useState<any>({
@@ -330,6 +339,20 @@ const OrderList: React.FC = () => {
         placeholder: 'Chọn người xuất',
       },
       render: () => null,
+    },
+    {
+      // title: 'Lọc',
+      dataIndex: 'isAgent',
+      hideInTable: true,
+      valueType: 'radioButton',
+      initialValue: 'false',
+      fieldProps: {
+        onChange: (e: any) => {
+          setIsAgent(e.target.value);
+        },
+      },
+      width: 100,
+      valueEnum,
     },
     {
       title: 'Địa điểm',
@@ -678,7 +701,7 @@ const OrderList: React.FC = () => {
               }
             });
             const result: any = await request<ORDER_API.OrderList>(
-              `${API_URL}/orders?isAgent=false`,
+              `${API_URL}/orders`,
               {
                 method: 'GET',
                 headers: {

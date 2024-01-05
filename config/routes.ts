@@ -49,6 +49,7 @@ export default  [
     icon: 'BookFilled',
     path: '/don-hang-dl',
     component: './Agent/AgentOrder',
+    // access: 'canDeleteUser'
     access: 'canAgent'
   },
   {

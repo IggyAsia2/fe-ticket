@@ -51,6 +51,11 @@ const unit: any = {
   },
 };
 
+const valueEnum = {
+  false: { text: 'Vintrip' },
+  true: { text: 'Đại Lý' },
+};
+
 const ReportList: React.FC = () => {
   const access = useAccess();
   const enUSIntl = createIntl('en_US', enLocale);
@@ -58,6 +63,7 @@ const ReportList: React.FC = () => {
   const { initialState } = useModel('@@initialState');
   const { departList }: any = initialState;
   const [excelData, setExcelData] = useState<string[]>([]);
+  const [isAgent, setIsAgent] = useState<boolean>(false);
   const { data: userData, run: runUser } = useRequest(userList, {
     manual: true,
     formatResult: (res: any) =>
@@ -73,9 +79,11 @@ const ReportList: React.FC = () => {
 
   useEffect(() => {
     // runReport({ current: 1, pageSize: 1000 });
-    runUser({ current: 1, pageSize: 100 });
     runProduct({ current: 1, pageSize: 100 });
   }, []);
+  useEffect(() => {
+    runUser({ current: 1, pageSize: 100, isAgent: isAgent });
+  }, [isAgent]);
 
   const actionRef = useRef<ActionType>();
 
@@ -105,12 +113,27 @@ const ReportList: React.FC = () => {
       title: 'Tên người xuất',
       dataIndex: 'exportUser',
       valueType: 'select',
-      hideInSearch: access.canSale,
+      hideInSearch: !access.canAdmin,
       valueEnum: userData && convertArrayToObject(userData, 'value'),
       fieldProps: {
         showSearch: true,
         placeholder: 'Chọn người xuất vé',
       },
+    },
+    {
+      // title: 'Lọc',
+      dataIndex: 'isAgent',
+      hideInTable: true,
+      hideInSearch: !access.canAdmin,
+      valueType: 'radioButton',
+      initialValue: 'false',
+      fieldProps: {
+        onChange: (e: any) => {
+          setIsAgent(e.target.value);
+        },
+      },
+      width: 100,
+      valueEnum,
     },
     {
       title: 'Địa điểm',
@@ -220,6 +243,7 @@ const ReportList: React.FC = () => {
         options: convertDepartToCascader(departList),
         placeholder: 'Chọn quầy vé',
       },
+      hideInSearch: access.canAgent,
     },
   ];
 

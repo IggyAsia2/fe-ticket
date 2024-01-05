@@ -95,7 +95,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
             <Button type="primary" icon={<PrinterFilled />} onClick={async () => handlePrint()}>
               In vé
             </Button>
-            <Button
+            {/* <Button
               icon={<PrinterFilled />}
               onClick={async () => {
                 handlePrintBill(false);
@@ -110,8 +110,8 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
               }}
             >
               Bill ck
-            </Button>
-            <Space direction="horizontal">
+            </Button> */}
+            {/* <Space direction="horizontal">
               <ProFormSelect
                 style={{ width: '200px' }}
                 name="departID"
@@ -161,11 +161,11 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                 width="xs"
                 min={1}
               />
-            </Space>
+            </Space> */}
           </Space>
         }
       >
-        <div style={{ display: 'none' }}>
+        {/* <div style={{ display: 'none' }}>
           <BillTemplate
             options={{ nl, te }}
             actionBillRef={actionBillRef}
@@ -184,7 +184,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
             isDiscount={true}
             takePrice={props.takePrice}
           />
-        </div>
+        </div> */}
         <div>
           <div ref={actionRef}>
             {props.values.map((bigItem: any, bigIndex: number) => {

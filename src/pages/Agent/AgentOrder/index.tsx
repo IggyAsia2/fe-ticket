@@ -353,14 +353,14 @@ const OrderList: React.FC = () => {
         placeholder: 'Nhập sđt khách hàng',
       },
     },
-    {
-      title: 'Biến số xe',
-      dataIndex: 'customerCar',
-      hideInTable: true,
-      fieldProps: {
-        placeholder: 'Nhập biển số xe',
-      },
-    },
+    // {
+    //   title: 'Biến số xe',
+    //   dataIndex: 'customerCar',
+    //   hideInTable: true,
+    //   fieldProps: {
+    //     placeholder: 'Nhập biển số xe',
+    //   },
+    // },
     {
       title: 'Khách hàng',
       width: '150px',
@@ -598,7 +598,7 @@ const OrderList: React.FC = () => {
                 delete params[key];
               }
             });
-            const result: any = await request<ORDER_API.OrderList>(`${API_URL}/orders`, {
+            const result: any = await request<ORDER_API.OrderList>(`${API_URL}/orders?isAgent=true`, {
               method: 'GET',
               headers: {
                 Authorization: `Bearer ${getAuth()}`,
