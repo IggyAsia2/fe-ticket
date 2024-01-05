@@ -91,14 +91,14 @@ export default  [
   {
     name: 'list.agent',
     icon: 'LayoutFilled',
-    access: 'canDad',
+    access: 'canDeleteUser',
     path: '/agent',
     routes: [
       {
         name: 'list',
         path: '/agent/agent-list',
         component: './Agent/AgentList',
-        access: 'canDad',
+        access: 'canDeleteUser',
       },
       // {
       //   name: 'history',

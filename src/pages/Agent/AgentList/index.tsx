@@ -160,7 +160,7 @@ const UserList: React.FC = () => {
       valueType: 'option',
       render: (_, record) => [
         <a
-          hidden={record.email === 'pcvbaoit@gmail.com' || !access.canDad}
+          hidden={!access.canDeleteUser}
           key="config"
           onClick={() => {
             handleUpdateModalOpen(true);
