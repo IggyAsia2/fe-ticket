@@ -86,11 +86,11 @@ const SunSiteList: React.FC = () => {
         });
         hide();
         message.success('Đã tạo vé thành công');
-        // return true;
+        return true;
       } catch (error) {
         hide();
         message.error('Tạo vé không thành công');
-        // return false;
+        return false;
       }
     } else {
       message.warning('Bạn chưa nhập số lượng vé');
