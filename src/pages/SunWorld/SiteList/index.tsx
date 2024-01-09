@@ -12,6 +12,7 @@ import React, { useContext, useRef, useState } from 'react';
 // import { useAccess } from '@umijs/max';
 import enLocale from '@/locales/table-en';
 import ExportForm from './components/ExportForm';
+import { useModel } from '@umijs/max';
 
 /**
  * @param fields
@@ -27,6 +28,8 @@ const SunSiteList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<SUN_SITE_API.SunSiteItem>();
   const [exportModalOpen, handleExportModalOpen] = useState<boolean>(false);
+  const { initialState, setInitialState } = useModel('@@initialState');
+  const { currentUser }: any = initialState;
 
   const columns: ProColumns<SUN_SITE_API.SunSiteItem>[] = [
     {
@@ -147,14 +150,37 @@ const SunSiteList: React.FC = () => {
       </Drawer>
       <ExportForm
         onSubmit={async (values, dataSubmit) => {
-          await createTicket(dataSubmit);
-          // if (success) {
-          //   handleExportModalOpen(false);
-          //   setCurrentRow(undefined);
-          //   if (actionRef.current) {
-          //     actionRef.current.reload();
-          //   }
-          // }
+          const newDataSubmit = dataSubmit.map((el: any) => {
+            return {
+              performanceId: el.performanceId,
+              productCode: el.productCode,
+              quantity: el.quantity,
+              siteCode: el.siteCode,
+              usageDate: el.usageDate,
+            };
+          });
+          const realMoney = dataSubmit.reduce(
+            (sum: any, cur: any) => sum + cur.unitPrice * cur.quantity,
+            0,
+          );
+          if (currentUser?.moneny >= realMoney) {
+            const success = await createTicket(newDataSubmit);
+            if (success) {
+              if (actionRef.current) {
+                if (currentUser.email === 'vsttravel@gmail.com')
+                  setInitialState((s: any) => ({
+                    ...s,
+                    currentUser: {
+                      ...s?.currentUser,
+                      moneny: s?.currentUser?.moneny - realMoney,
+                    },
+                  }));
+              }
+            }
+          } else {
+            // message.warning(`Tổng tiền là ${getPrice(realMoney)}`);
+            message.warning('Tài khoản không đủ tiền, vui lòng nạp thêm!');
+          }
         }}
         onCancel={() => {
           handleExportModalOpen(false);

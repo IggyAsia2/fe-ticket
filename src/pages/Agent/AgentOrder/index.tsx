@@ -517,7 +517,7 @@ const OrderList: React.FC = () => {
                         moneny: s?.currentUser?.moneny - realMoney,
                       },
                     }));
-                  }
+                  } 
                   setSelectedRows([]);
                   actionRef.current?.reloadAndRest?.();
                 }

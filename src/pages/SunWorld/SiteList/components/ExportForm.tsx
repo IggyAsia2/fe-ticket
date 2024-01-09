@@ -1,7 +1,7 @@
 import { sunProductList } from '@/api/sunWorld/sun';
 import { ModalForm, ProFormDigit } from '@ant-design/pro-components';
 import { useRequest } from '@umijs/max';
-import { Col, DatePicker, List, Space } from 'antd';
+import { Col, DatePicker, List, Space, message } from 'antd';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import React, { useEffect, useRef, useState } from 'react';
 import { getPrice } from '@/helper/helper';
@@ -30,11 +30,21 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
   const [sample, setSample] = useState<any>([]);
   const [loading, setLoading] = useState(false);
   const [usageDate, setUsageDate] = useState<string>('');
+  const [tempData, setTempData] = useState<[]>([]);
+  // const [total, setTotal] = useState<number>(0);
   const { run: sunProductRun } = useRequest(sunProductList, {
     manual: true,
     loadingDelay: 2,
     formatResult: (res: any) => {
       setSample(res.data);
+      const newArr = res.data.map((el: any) => {
+        return {
+          code: el.code,
+          unitPrice: el.unitPrice,
+          quantity: 0,
+        };
+      });
+      setTempData(newArr);
       setLoading(false);
     },
   });
@@ -85,20 +95,26 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
       //     return [...defaultDoms];
       //   },
       // }}
+      // onChange={(values) => console.log(values)}
       onFinish={async (values) => {
-        const valueArr = Object.keys(values);
-        const newSample = sample.filter((el: any) => valueArr.includes(el.code));
-        const newArr = newSample.map((el: any) => {
-          return {
-            productCode: el.code,
-            siteCode: el.site.code,
-            usageDate: newUsageDate(usageDate),
-            performanceId: el.performance[0].id,
-            quantity: values[el.code].quantity,
-          };
-        });
-        await props.onSubmit(values, newArr);
-        setLoading(false);
+        if (usageDate) {
+          const valueArr = Object.keys(values);
+          const newSample = sample.filter((el: any) => valueArr.includes(el.code));
+          const newArr = newSample.map((el: any) => {
+            return {
+              productCode: el.code,
+              unitPrice: el.unitPrice,
+              siteCode: el.site.code,
+              usageDate: newUsageDate(usageDate),
+              performanceId: el.performance[0].id,
+              quantity: values[el.code].quantity,
+            };
+          });
+          await props.onSubmit(values, newArr);
+          setLoading(false);
+        } else {
+          message.warning('Bạn chưa chọn ngày!');
+        }
       }}
       initialValues={
         {
@@ -106,12 +122,12 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
           // customerPhone: '0903997705',
         }
       }
-      title={`${name} | ${code} (${usageDate})`}
+      title={`${name} | ${code}`}
     >
       <Col>
         <div
           style={{
-            height: 500,
+            height: 560,
             overflow: 'auto',
             padding: '0 10px',
             border: '1px solid rgba(140, 140, 140, 0.35)',
@@ -137,6 +153,18 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
                 </Space>
               </div>
             }
+            footer={
+              <Space>
+                <div>
+                  <b>Tổng</b>
+                </div>
+                <div>
+                  {getPrice(
+                    tempData.reduce((sum, cur: any) => sum + cur.quantity * cur.unitPrice, 0),
+                  )}
+                </div>
+              </Space>
+            }
             loading={loading}
             className="demo-loadmore-list"
             itemLayout="horizontal"
@@ -149,6 +177,31 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
                       <ProFormDigit
                         key={item.id}
                         name={[item.code, 'quantity']}
+                        fieldProps={{
+                          onChange: (e) => {
+                            if (e) {
+                              const updateTicket = {
+                                code: item.code,
+                                unitPrice: item.unitPrice,
+                                quantity: e,
+                              };
+                              const updatedObject: any = tempData.map((el: any) =>
+                                el.code === item.code ? updateTicket : el,
+                              );
+                              setTempData(updatedObject);
+                            } else {
+                              const updateTicket = {
+                                code: item.code,
+                                unitPrice: item.unitPrice,
+                                quantity: 0,
+                              };
+                              const updatedObject: any = tempData.map((el: any) =>
+                                el.code === item.code ? updateTicket : el,
+                              );
+                              setTempData(updatedObject);
+                            }
+                          },
+                        }}
                         // disabled={!props.groupQuan[index]}
                         width="xs"
                         min={1}

@@ -52,6 +52,11 @@ const OrderSunList: React.FC = () => {
             title: 'Tổng',
             render: (el: any) => getPrice(el.products.quantity * el.products.unitPrice),
           },
+          {
+            title: 'Ngày sử dụng',
+            dataIndex: ['products', 'usageDate'],
+            renderText: (val) => val.split("-").reverse().join("/"),
+          },
         ]}
         headerTitle={false}
         search={false}
@@ -76,7 +81,7 @@ const OrderSunList: React.FC = () => {
       fieldProps: {
         placeholder: 'Nhập tên khu',
       },
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: 'Mã khu',
@@ -84,7 +89,7 @@ const OrderSunList: React.FC = () => {
       fieldProps: {
         placeholder: 'Nhập mã khu',
       },
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: 'Người tạo',
