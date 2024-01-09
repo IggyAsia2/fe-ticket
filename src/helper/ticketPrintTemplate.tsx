@@ -1,4 +1,4 @@
-import { Card, Divider, Row, Image, Typography } from 'antd';
+import { Card, Divider, Row, Image, Typography, QRCode } from 'antd';
 import { getDate, getPrice } from './helper';
 const { Text } = Typography;
 
@@ -67,10 +67,15 @@ const TicketPrintTemplate: any = (props: any) => {
                   alignItems: 'center',
                 }}
               >
-                <Image
+                {/* <Image
                   preview={false}
                   width={100}
                   src={`https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=${item.serial}`}
+                /> */}
+                <Image
+                  preview={false}
+                  width={100}
+                  src={`https://image-charts.com/chart?chs=150x150&cht=qr&chl=${item.serial}`}
                 />
                 {/* <QRCode
                   type="svg"
