@@ -296,14 +296,14 @@ const ListProduct: React.FC = () => {
           <a
             key="export"
             onClick={() => {
-              if (SubUser) {
+              // if (SubUser) {
                 handleExportModalOpen(true);
                 setGroupQuan(record.groupTickets.map(() => 0));
                 setQuan(record.groupTickets.map(() => ''));
                 setCurrentRow(record);
-              } else {
-                message.warning('Bạn chưa chọn người dùng!')
-              }
+              // } else {
+              //   message.warning('Bạn chưa chọn người dùng!')
+              // }
             }}
           >
             Xuất vé
