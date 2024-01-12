@@ -67,23 +67,23 @@ const TicketPrintTemplate: any = (props: any) => {
                   alignItems: 'center',
                 }}
               >
-                <Image
+                {/* <Image
                   preview={false}
                   width={100}
                   src={`https://chart.googleapis.com/chart?cht=qr&chs=150x150&chl=${item.serial}`}
-                />
+                /> */}
                 {/* <Image
                   preview={false}
                   width={100}
                   src={`https://image-charts.com/chart?chs=150x150&cht=qr&chl=${item.serial}`}
                 /> */}
-                {/* <QRCode
+                <QRCode
                   type="svg"
-                  style={{ padding: '0 12px 0 0' }}
+                  style={{ padding: '0 0 0 0' }}
                   size={100}
                   bordered={false}
                   value={item.serial}
-                ></QRCode> */}
+                ></QRCode>
                 <Text
                   style={{
                     fontSize: '13px',

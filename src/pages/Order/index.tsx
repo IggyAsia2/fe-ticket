@@ -314,8 +314,9 @@ const OrderList: React.FC = () => {
   ];
 
   const handleExporttoExcel = async () => {
-    const excel = await new Excel();
+    const excel = await new Excel({ File: STATIC_URL + '/mau-export.xlsx' });
     excel
+      // .file()
       .addSheet('Sheet')
       .addColumns(columns2)
       .addDataSource(excelData, {
@@ -700,19 +701,16 @@ const OrderList: React.FC = () => {
                 delete params[key];
               }
             });
-            const result: any = await request<ORDER_API.OrderList>(
-              `${API_URL}/orders`,
-              {
-                method: 'GET',
-                headers: {
-                  Authorization: `Bearer ${getAuth()}`,
-                },
-                params: {
-                  ...params,
-                },
-                ...(options || {}),
+            const result: any = await request<ORDER_API.OrderList>(`${API_URL}/orders`, {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${getAuth()}`,
               },
-            );
+              params: {
+                ...params,
+              },
+              ...(options || {}),
+            });
             setExcelData(result?.data);
             return result;
           }}

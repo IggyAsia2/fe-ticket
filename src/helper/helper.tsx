@@ -74,6 +74,16 @@ export function convertDepartToCascader(array: string[]) {
   }, initialValue);
 }
 
+export function convertSubUserToList(array: string[]) {
+  const initialValue = {};
+  return array.map((item: any) => {
+    return {
+      label: item.name,
+      value: item._id,
+    };
+  }, initialValue);
+}
+
 export function convertDepartToC(array: string[]) {
   const initialValue = {};
   return array.map((item: any) => {

@@ -4,20 +4,25 @@ import { Menu } from 'antd';
 import BaseView from './components/base';
 import SecurityView from './components/security';
 import styles from './style.less';
+import PinView from './components/pin';
+import { CurrentUser } from '@/helper/helper';
 
 const { Item } = Menu;
 
-type SettingsStateKeys = 'base' | 'security' | 'binding' | 'notification';
+type SettingsStateKeys = 'base' | 'security' | 'pin';
 type SettingsState = {
   mode: 'inline' | 'horizontal';
   selectKey: SettingsStateKeys;
 };
 
 const Account: React.FC = () => {
+  const currentUser: any = CurrentUser();
   const menuMap: Record<string, React.ReactNode> = {
     base: 'Cài đặt cơ bản',
     security: 'Bảo mật',
   };
+
+  if (currentUser.isAgent) Object.assign(menuMap, { pin: 'Mã Pin' });
 
   const [initConfig, setInitConfig] = useState<SettingsState>({
     mode: 'inline',
@@ -63,6 +68,8 @@ const Account: React.FC = () => {
         return <BaseView />;
       case 'security':
         return <SecurityView />;
+      case 'pin':
+        return <PinView />;
       default:
         return null;
     }

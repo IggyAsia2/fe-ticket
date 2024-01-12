@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 /**
  * @see https://umijs.org/zh-CN/plugins/plugin-access
  * */
@@ -5,6 +7,7 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
   const { currentUser }: any = initialState ?? {};
   const role = currentUser?.role.name;
   const email = currentUser?.email
+  const SubUser = Cookies.get('SubUser');
   const userArr = ['admin@gmail.com', 'vsttravel@gmail.com']
   return {
     canDad: email === 'admin@gmail.com',
@@ -16,6 +19,8 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canSeeInventory: role === 'admin' || role === 'accountant',
     canSeeImportList: email === 'admin@gmail.com' || role === 'accountant',
     canAgent: role === 'agent',
-    canMelinh: email === 'bachgia134@gmail.com'
+    canMelinh: email === 'bachgia134@gmail.com',
+    // canSubUser: SubUser === 'Admin'
+    canSubUser: email === 'admin@gmail.com'
   };
 }

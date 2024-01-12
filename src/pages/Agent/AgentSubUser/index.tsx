@@ -1,19 +1,10 @@
-import { addUser, removeManyUser, removeUser, updateUser, agentList, getUser } from '@/api/user';
-import { getPrice } from '@/helper/helper';
+import { createSubUser, removeSubUser, getSubUser, updateSubUser } from '@/api/user';
 import { PlusOutlined } from '@ant-design/icons';
-import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
-import {
-  PageContainer,
-  ProDescriptions,
-  ProProvider,
-  ProTable,
-  createIntl,
-} from '@ant-design/pro-components';
-import { useAccess } from '@umijs/max';
-import { Button, Drawer, Popconfirm, message } from 'antd';
+import type { ActionType, ProColumns } from '@ant-design/pro-components';
+import { PageContainer, ProProvider, ProTable, createIntl } from '@ant-design/pro-components';
+import { Button, Popconfirm, message } from 'antd';
 import React, { useContext, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
-import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 import enLocale from '@/locales/table-en';
 
@@ -26,7 +17,7 @@ import enLocale from '@/locales/table-en';
 const handleAdd = async (fields: USER_API.UserListItem) => {
   const hide = message.loading('Đang tạo');
   try {
-    await addUser({ ...fields, isAgent: true, role: '657919983a6e33398c0ab535' });
+    await createSubUser({ ...fields });
     hide();
     message.success('Thêm mới thành công');
     return true;
@@ -37,63 +28,45 @@ const handleAdd = async (fields: USER_API.UserListItem) => {
   }
 };
 
-const handleRemove = async (selectedRows: USER_API.UserListItem[]) => {
+const handleRemove = async (subID: string) => {
   const hide = message.loading('Đang xóa');
-  if (!selectedRows) return true;
   try {
-    if (selectedRows.length > 1) {
-      await removeManyUser({
-        key: selectedRows.map((row) => row._id),
-      });
-    } else {
-      await removeUser(selectedRows[0]);
-    }
+    await removeSubUser({ subID });
     hide();
-    message.success('Đã xóa thành công!');
+    message.success('Xóa thàng công');
     return true;
   } catch (error) {
     hide();
-    message.error('Xóa thất bại, xin vui lòng thử lại!');
+    message.error('Xóa thất bại vui lòng thử lại');
     return false;
   }
 };
 
-const UserList: React.FC = () => {
-  const access = useAccess();
+const SubUserList: React.FC = () => {
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
 
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
 
-  const [showDetail, setShowDetail] = useState<boolean>(false);
 
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<USER_API.UserListItem>();
-  // const [selectedRowsState, setSelectedRows] = useState<USER_API.UserListItem[]>([]);
 
-  const handleUpdate = async (fields: FormValueType) => {
-    const hide = message.loading('Đang cập nhật');
-    let { _id, email, role, name, discountAgent }: any = currentRow;
-    const userData = await getUser({ userID: _id });
+  const handleUpdate = async (fields: any) => {
+    const hide = message.loading('Đang xử lý');
+    let { _id, name, pin }: any = currentRow;
     const doc: any = {};
     if (name !== fields.name) doc.name = fields.name;
-    if (email !== fields.email) doc.email = fields.email;
-    if (fields.moneny) doc.moneny = userData.data.moneny + fields.moneny;
-    if (discountAgent !== fields.discountAgent) doc.discountAgent = fields.discountAgent;
-    if (email !== fields.email) doc.email = fields.email;
-    if (role?._id !== fields.role) doc.role = fields.role;
-    if (Object.keys(doc).length) {
+    if (pin !== fields.pin) doc.pin = fields.pin;
+    if (Object.keys(doc).length > 0) {
       try {
-        await updateUser({
+        await updateSubUser({
           ...doc,
-          userId: _id,
+          subID: _id,
         });
-        if(doc.moneny) {
-
-        }
         hide();
-        message.success('Cập nhật thành công!');
+        message.success('Cập nhật thành công');
         return true;
       } catch (error) {
         hide();
@@ -108,59 +81,23 @@ const UserList: React.FC = () => {
 
   const columns: ProColumns<USER_API.UserListItem>[] = [
     {
-      title: 'Tên đại lý',
+      title: 'Tên người dùng',
       dataIndex: 'name',
       fieldProps: {
-        placeholder: 'Nhập tên đại lý',
+        placeholder: 'Nhập tên người dùng',
       },
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      fieldProps: {
-        placeholder: 'Nhập email',
-      },
-      valueType: 'textarea',
-    },
-    // {
-    //   title: 'Trạng thái',
-    //   dataIndex: 'active',
-    //   hideInForm: true,
-    //   hideInSearch: true,
-    //   valueEnum: {
-    //     true: {
-    //       text: 'Hoạt động',
-    //       status: 'Success',
-    //     },
-    //     false: {
-    //       text: 'Hủy',
-    //       status: 'Error',
-    //     },
-    //   },
-    // },
-    {
-      title: 'Tài khoản',
-      dataIndex: 'moneny',
+      title: 'Mã Pin',
+      dataIndex: 'pin',
       hideInSearch: true,
-      renderText: (val: number) => {
-        return getPrice(val || 0);
-      },
-    },
-    {
-      title: 'Chiết khấu',
-      dataIndex: 'discountAgent',
-      hideInSearch: true,
-      renderText: (val: number) => {
-        return getPrice(val);
-      },
     },
     {
       title: 'Tùy chọn',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_, record) => [
+      render: (_, record: any) => [
         <a
-          hidden={!access.canDeleteUser}
           key="config"
           onClick={() => {
             handleUpdateModalOpen(true);
@@ -173,16 +110,13 @@ const UserList: React.FC = () => {
           <Popconfirm
             title="Bạn chắc chắn muốn xóa?"
             onConfirm={async () => {
-              await handleRemove([record]);
+              await handleRemove(record._id);
               // setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             }}
             cancelText="Hủy"
           >
-            <a
-              hidden={record.email === 'pcvbaoit@gmail.com' || !access.canDad}
-              key="subscribeAlert"
-            >
+            <a hidden={record.name === 'Admin'} key="delete">
               Xóa
             </a>
           </Popconfirm>
@@ -224,7 +158,7 @@ const UserList: React.FC = () => {
           tableAlertRender={({ selectedRowKeys }) => {
             return <span>Chọn {selectedRowKeys.length}</span>;
           }}
-          request={agentList}
+          request={getSubUser}
           columns={columns}
           // rowSelection={{
           //   onChange: (_, selectedRows) => {
@@ -265,9 +199,6 @@ const UserList: React.FC = () => {
         }}
         onCancel={() => {
           handleModalOpen(false);
-          if (!showDetail) {
-            setCurrentRow(undefined);
-          }
         }}
         createModalOpen={createModalOpen}
         values={currentRow || {}}
@@ -285,39 +216,12 @@ const UserList: React.FC = () => {
         }}
         onCancel={() => {
           handleUpdateModalOpen(false);
-          if (!showDetail) {
-            setCurrentRow(undefined);
-          }
         }}
         updateModalOpen={updateModalOpen}
         values={currentRow || {}}
       />
-
-      <Drawer
-        width={600}
-        open={showDetail}
-        onClose={() => {
-          setCurrentRow(undefined);
-          setShowDetail(false);
-        }}
-        closable={false}
-      >
-        {currentRow?.name && (
-          <ProDescriptions<USER_API.UserListItem>
-            column={2}
-            title={currentRow?.name}
-            request={async () => ({
-              data: currentRow || {},
-            })}
-            params={{
-              id: currentRow?.name,
-            }}
-            columns={columns as ProDescriptionsItemProps<USER_API.UserListItem>[]}
-          />
-        )}
-      </Drawer>
     </PageContainer>
   );
 };
 
-export default UserList;
+export default SubUserList;

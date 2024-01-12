@@ -11,6 +11,7 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { departListQuery } from './api/depart';
 import NoAuthPage from './pages/403';
+import { SubUserSelect } from './components/RightContent/AvatarDropdown';
 const isDev = process.env.NODE_ENV === 'developments';
 const loginPath = '/login';
 const linkOrderPath = '/agent/printticketlink/';
@@ -28,7 +29,7 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async ({ token }: API.TokenAuth) => {
     try {
-      const msg = await queryCurrentUser({
+      const msg: any = await queryCurrentUser({
         token,
       });
       return msg.data;
@@ -51,9 +52,9 @@ export async function getInitialState(): Promise<{
   };
 
   // If it is not the login page, execute
+
   const { location } = history;
   const jwt = Cookies.get('jwt');
-  // console.log(jwt);
   if (location.pathname !== loginPath && !location.pathname.includes(linkOrderPath)) {
     const currentUser = await fetchUserInfo({ token: jwt });
     const departList = await fetchDepart({ token: jwt });
@@ -65,6 +66,7 @@ export async function getInitialState(): Promise<{
       settings: defaultSettings as Partial<LayoutSettings>,
     };
   }
+
   return {
     fetchUserInfo,
     fetchDepart,
@@ -80,7 +82,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       src: initialState?.currentUser?.avatar,
       title: <AvatarName />,
       render: (_, avatarChildren) => {
-        return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
+        return (
+          <>
+            <SubUserSelect />
+            <AvatarDropdown>{avatarChildren}</AvatarDropdown>
+          </>
+        );
       },
     },
     // waterMarkProps: {

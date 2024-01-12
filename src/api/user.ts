@@ -119,3 +119,58 @@ export async function agentList(
     ...(options || {}),
   });
 }
+
+
+export async function getSubUser(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(`${API_URL}/users/sub-user`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+  });
+}
+
+export async function createSubUser(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(`${API_URL}/users/sub-user`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    data: {
+      ...(options || {}),
+    }
+  });
+}
+
+export async function removeSubUser(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(`${API_URL}/users/sub-user/${options?.subID}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+  });
+}
+
+export async function updateSubUser(options?: { [key: string]: any }) {
+  return request<DEPART_API.DepartList>(`${API_URL}/users/sub-user/${options?.subID}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    data: {
+      ...(options || {}),
+    }
+  });
+}
+
+export async function checkPinSubUser(options?: { [key: string]: any }) {
+  return request<Record<string, any>>(`${API_URL}/users/sub-user/check-pin`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    data: {
+      ...(options || {}),
+    }
+  });
+}

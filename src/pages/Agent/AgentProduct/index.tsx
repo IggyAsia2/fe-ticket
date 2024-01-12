@@ -87,6 +87,8 @@ const ListProduct: React.FC = () => {
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
+  const SubUser = Cookies.get('SubUser');
+
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<PRODUCT_API.ProductListItem>();
   const [selectedRowsState, setSelectedRows] = useState<PRODUCT_API.ProductListItem[]>([]);
@@ -294,10 +296,14 @@ const ListProduct: React.FC = () => {
           <a
             key="export"
             onClick={() => {
-              handleExportModalOpen(true);
-              setGroupQuan(record.groupTickets.map(() => 0));
-              setQuan(record.groupTickets.map(() => ''));
-              setCurrentRow(record);
+              if (SubUser) {
+                handleExportModalOpen(true);
+                setGroupQuan(record.groupTickets.map(() => 0));
+                setQuan(record.groupTickets.map(() => ''));
+                setCurrentRow(record);
+              } else {
+                message.warning('Bạn chưa chọn người dùng!')
+              }
             }}
           >
             Xuất vé

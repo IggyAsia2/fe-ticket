@@ -109,7 +109,6 @@ export default () => {
   };
 
   const handleUpdateCashier = async (fields: any, departID: any) => {
-    console.log(fields, currentCashier);
     const hide = message.loading('Đang xử lý');
     let { _id, name, order }: any = currentCashier;
     const doc: any = {};

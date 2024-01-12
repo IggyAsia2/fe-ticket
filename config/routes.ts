@@ -49,15 +49,22 @@ export default  [
     icon: 'BookFilled',
     path: '/don-hang-dl',
     component: './Agent/AgentOrder',
-    // access: 'canDeleteUser'
     access: 'canAgent'
   },
+
   {
     name: 'list.report-list',
     icon: 'BookFilled',
     path: '/bao-cao',
     component: './Report',
     // access: 'canSeeOrder',
+  },
+  {
+    name: 'list.user-agent-list',
+    icon: 'user',
+    path: '/nguoi-dung',
+    component: './Agent/AgentSubUser',
+    access: 'canSubUser'
   },
   {
     name: 'list.ticket-list',
