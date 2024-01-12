@@ -11,6 +11,8 @@ import { rangePresets } from '@/components/Table/constValue';
 import {
   convertArrayToCascader,
   convertArrayToObject,
+  convertArrayToObjectDepart,
+  convertSubUserToList,
   getDate,
   getDateTime,
   getPrice,
@@ -74,6 +76,7 @@ const OrderList: React.FC = () => {
   const values = useContext(ProProvider);
   const { initialState, setInitialState } = useModel('@@initialState');
   const { departList, currentUser }: any = initialState;
+  const subUserCheck: any = convertArrayToObjectDepart(currentUser.subUser, '_id');
   // const newArrDepart = departList
   //   .map((value: any) => value.cashiers.map((child: any) => ({ name: child.name, id: child._id })))
   //   .flat();
@@ -219,6 +222,11 @@ const OrderList: React.FC = () => {
       render: (_: any, record: any) => `${record.customerName} - ${record.customerPhone}`,
     },
     {
+      title: 'Người xuất',
+      dataIndex: 'departID',
+      render: (record: string) => `${subUserCheck[record]}`,
+    },
+    {
       title: 'Đia điểm',
       dataIndex: ['groupTicket', 'bigTicket', 'name'],
     },
@@ -308,6 +316,16 @@ const OrderList: React.FC = () => {
       render: () => null,
     },
     {
+      title: 'Người xuất',
+      dataIndex: 'departID',
+      hideInTable: true,
+      valueType: 'select',
+      fieldProps: {
+        options: convertSubUserToList(currentUser.subUser),
+        placeholder: 'Chọn quầy vé',
+      },
+    },
+    {
       title: 'Ngày xuất vé',
       dataIndex: 'updatedAt',
       valueType: 'dateRange',
@@ -381,6 +399,16 @@ const OrderList: React.FC = () => {
       // hideInSearch: true,
     },
     {
+      title: 'Người xuất',
+      dataIndex: 'departID',
+      width: '100px',
+      valueType: 'text',
+      renderText: (record: string) => {
+        return subUserCheck[record];
+      },
+      hideInSearch: true,
+    },
+    {
       title: 'Loại vé',
       hideInSearch: true,
       render: (_, record: any) => {
@@ -412,18 +440,18 @@ const OrderList: React.FC = () => {
         );
       },
     },
-    {
-      title: 'Chiết khấu',
-      hideInSearch: true,
-      render: (_, record: any) => {
-        return (
-          <div>
-            <div>{`${record.quantity} x ${getPrice(record.discountPrice)}`}</div>
-            <div>{getPrice(record.discountSubtotal)}</div>
-          </div>
-        );
-      },
-    },
+    // {
+    //   title: 'Chiết khấu',
+    //   hideInSearch: true,
+    //   render: (_, record: any) => {
+    //     return (
+    //       <div>
+    //         <div>{`${record.quantity} x ${getPrice(record.discountPrice)}`}</div>
+    //         <div>{getPrice(record.discountSubtotal)}</div>
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       title: 'Trạng thái',
       dataIndex: 'state',
@@ -517,7 +545,7 @@ const OrderList: React.FC = () => {
                         moneny: s?.currentUser?.moneny - realMoney,
                       },
                     }));
-                  } 
+                  }
                   setSelectedRows([]);
                   actionRef.current?.reloadAndRest?.();
                 }
@@ -598,16 +626,19 @@ const OrderList: React.FC = () => {
                 delete params[key];
               }
             });
-            const result: any = await request<ORDER_API.OrderList>(`${API_URL}/orders?isAgent=true`, {
-              method: 'GET',
-              headers: {
-                Authorization: `Bearer ${getAuth()}`,
+            const result: any = await request<ORDER_API.OrderList>(
+              `${API_URL}/orders?isAgent=true`,
+              {
+                method: 'GET',
+                headers: {
+                  Authorization: `Bearer ${getAuth()}`,
+                },
+                params: {
+                  ...params,
+                },
+                ...(options || {}),
               },
-              params: {
-                ...params,
-              },
-              ...(options || {}),
-            });
+            );
             setExcelData(result?.data);
             return result;
           }}

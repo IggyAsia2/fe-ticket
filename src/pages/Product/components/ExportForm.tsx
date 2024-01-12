@@ -12,13 +12,14 @@ import { Col, List, Row } from 'antd';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import dayjs from 'dayjs';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
 
 export type ExportFormValueType = {
   customerName?: string;
   customerCar?: string;
   customerPhone?: string;
+  departID?: string;
   quantity?: number;
   bookDate?: string;
 } & Partial<TICKET_API.TicketListItem>;
@@ -51,6 +52,15 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
 
   const { name, groupTickets }: any = props.values;
 
+  useEffect(() => {
+    const endDate = new Date();
+    if (props.values._id)
+      run({
+        bigTicket: props.values._id,
+        expiredDate: endDate.toISOString().split('T')[0],
+      });
+  }, [props.values._id]);
+
   return (
     <ModalForm
       width={800}
@@ -62,7 +72,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
         centered: true,
         onCancel: () => props.onCancel(),
         cancelText: 'Hủy',
-        okText: 'OK'
+        okText: 'OK',
       }}
       submitter={{
         render: (props, defaultDoms) => {
@@ -130,7 +140,9 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
             fieldProps={{
               format: 'DD/MM/YYYY',
               placeholder: 'Chọn ngày book vé',
+              defaultValue: dayjs(),
               disabledDate: disabledDate,
+              allowClear: false,
               onChange: async (_, record: string) => {
                 if (record) {
                   const endDate = record.split('/').reverse().join('/');
@@ -143,12 +155,12 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
                 }
               },
             }}
-            rules={[
-              {
-                required: true,
-                message: 'Xin nhập ngày xuất vé!',
-              },
-            ]}
+            // rules={[
+            //   {
+            //     required: true,
+            //     message: 'Xin nhập ngày xuất vé!',
+            //   },
+            // ]}
           />
 
           {/* <ProFormDigit

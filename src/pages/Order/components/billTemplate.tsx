@@ -10,6 +10,7 @@ const BillTemplate: React.FC<any> = (props) => {
   const tePrice = 5000;
   const newArr = [...data];
   let total = 0;
+  let bill = '';
 
   const isFound = (val: any, str: string) =>
     val.some((el: any) => {
@@ -71,6 +72,7 @@ const BillTemplate: React.FC<any> = (props) => {
           </tr>
           {newArr.map((el: any) => {
             total += el.subTotal;
+            bill += el.orderId + '%20';
             return (
               <>
                 <tr style={{ borderBottom: '1px dashed' }}>
@@ -107,7 +109,10 @@ const BillTemplate: React.FC<any> = (props) => {
             <Image
               width={70}
               preview={false}
-              src={STATIC_URL + '/Qrcode/tpbank.png'}
+              // src={STATIC_URL + '/Qrcode/tpbank.png'}
+              src={`https://img.vietqr.io/image/TPB-35525378888-qr_only.png?amount=${
+                isDiscount ? total - takePrice.discount : total
+              }&addInfo=thanh%20toan%20hoa%20don%20${bill}`}
               crossOrigin="anonymous"
             />
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>

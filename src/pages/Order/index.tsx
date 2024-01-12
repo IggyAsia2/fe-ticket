@@ -314,7 +314,7 @@ const OrderList: React.FC = () => {
   ];
 
   const handleExporttoExcel = async () => {
-    const excel = await new Excel({ File: STATIC_URL + '/mau-export.xlsx' });
+    const excel = await new Excel();
     excel
       // .file()
       .addSheet('Sheet')

@@ -26,6 +26,7 @@ import UpdateForm from './components/UpdateForm';
 import { useAccess } from '@umijs/max';
 import Cookies from 'js-cookie';
 import enLocale from '@/locales/table-en';
+import dayjs from 'dayjs';
 /**
  * @param fields
  */
@@ -130,21 +131,31 @@ const ListProduct: React.FC = () => {
   };
 
   const exportTicket = async (fields: ExportFormValueType) => {
+    const newField = {
+      ...fields,
+      bookDate: fields.bookDate ? fields.bookDate : dayjs().format('DD/MM/YYYY'),
+    };
+    delete fields.bookDate;
+    delete fields.customerCar;
+    delete fields.customerName;
+    delete fields.customerPhone;
+    delete fields.departID;
     const groupNumberTicket = Object.entries(
-      Object.fromEntries(Object.entries(fields).slice(5, Object.keys(fields).length)),
+      Object.fromEntries(Object.entries(fields).slice(0, Object.keys(fields).length)),
     );
+    console.log(groupNumberTicket);
     let { _id, groupTickets }: any = currentRow;
     if (groupNumberTicket.length) {
       const hide = message.loading('Đang xuất vé');
       try {
         await exportGroupInven({
           data: {
-            customerCar: fields.customerCar?.toLocaleLowerCase(),
-            customerName: fields.customerName,
-            customerPhone: fields.customerPhone,
+            customerCar: newField.customerCar?.toLocaleLowerCase(),
+            customerName: newField.customerName,
+            customerPhone: newField.customerPhone,
           },
           groupNumberTicket,
-          bookDate: fields.bookDate,
+          bookDate: newField.bookDate,
           departID: Cookies.get('departID'),
           exportUser: email,
           priceTicket: Object.fromEntries(groupTickets.map((el: any) => [el._id, el.price])),
