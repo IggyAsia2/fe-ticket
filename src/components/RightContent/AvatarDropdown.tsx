@@ -44,7 +44,7 @@ export const SubUserSelect = () => {
   const [status, setStatus] = useState<boolean>(SubUser ? true : false);
 
   const handleAdd = async (fields: any) => {
-    const hide = message.loading('Đang tạo');
+    const hide = message.loading('Đang xử lý');
     try {
       const check = await checkPinSubUser({ ...fields });
       hide();
