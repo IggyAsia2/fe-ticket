@@ -109,6 +109,8 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
    */
   const loginOut = async () => {
     Cookies.remove('jwt');
+    Cookies.remove('SubID');
+    Cookies.remove('SubUser');
     const urlParams = new URL(window.location.href).searchParams;
     const redirect = urlParams.get('redirect');
     if (window.location.pathname !== '/login' && !redirect) {

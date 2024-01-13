@@ -20,7 +20,7 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canSeeImportList: email === 'admin@gmail.com' || role === 'accountant',
     canAgent: role === 'agent',
     canMelinh: email === 'bachgia134@gmail.com',
-    // canSubUser: SubUser === 'Admin'
-    canSubUser:  email === 'admin@gmail.com'
+    canSubUser: SubUser === 'Admin'
+    // canSubUser:  email === 'admin@gmail.com'
   };
 }
