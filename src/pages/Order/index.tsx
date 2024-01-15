@@ -426,7 +426,7 @@ const OrderList: React.FC = () => {
         return (
           <div>
             <div>
-              {record.orderId} - {getDateTime(record.updatedAt)}
+              {record.orderId} - {getDateTime(record.createdAt)}
             </div>
             <div>{record.exportUser.split('@')[0]}</div>
           </div>
