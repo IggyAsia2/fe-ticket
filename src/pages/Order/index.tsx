@@ -434,6 +434,14 @@ const OrderList: React.FC = () => {
       },
     },
     {
+      title: 'Tên KH',
+      dataIndex: 'customerName',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: 'Nhập tên khách hàng',
+      },
+    },
+    {
       title: 'Sđt KH',
       dataIndex: 'customerPhone',
       hideInTable: true,
