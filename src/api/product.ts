@@ -14,7 +14,7 @@ export async function productList(
   },
   options?: { [key: string]: any },
 ) {
-  return request<PRODUCT_API.ProductList>(`${API_URL}/bigTickets?sort=name`, {
+  return request<PRODUCT_API.ProductList>(`${API_URL}/bigTickets?sort=-order`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${getAuth()}`
