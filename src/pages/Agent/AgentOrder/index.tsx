@@ -36,6 +36,7 @@ import { getAuth } from '@/services/authHelper';
 import { userList } from '@/api/user';
 import ManyLinkForm from './components/ManyLinkForm';
 import enLocale from '@/locales/table-en';
+import Cookies from 'js-cookie';
 
 /**
  * @param fields
@@ -72,6 +73,7 @@ const unit: any = {
 };
 
 const OrderList: React.FC = () => {
+  const SubUser = Cookies.get('SubUser');
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -322,8 +324,10 @@ const OrderList: React.FC = () => {
       valueType: 'select',
       fieldProps: {
         options: convertSubUserToList(currentUser.subUser),
-        placeholder: 'Chọn quầy vé',
+        placeholder: 'Chọn người xuất',
       },
+      hideInSearch: SubUser !== 'Admin',
+
     },
     {
       title: 'Ngày xuất vé',
@@ -356,11 +360,19 @@ const OrderList: React.FC = () => {
         return (
           <div>
             <div>
-              {record.orderId} - {getDateTime(record.updatedAt)}
+              {record.orderId} - {getDateTime(record.createdAt)}
             </div>
             <div>{record.exportUser.split('@')[0]}</div>
           </div>
         );
+      },
+    },
+    {
+      title: 'Tên KH',
+      dataIndex: 'customerName',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: 'Nhập tên khách hàng',
       },
     },
     {
@@ -626,19 +638,21 @@ const OrderList: React.FC = () => {
                 delete params[key];
               }
             });
-            const result: any = await request<ORDER_API.OrderList>(
-              `${API_URL}/orders?isAgent=true`,
-              {
-                method: 'GET',
-                headers: {
-                  Authorization: `Bearer ${getAuth()}`,
-                },
-                params: {
-                  ...params,
-                },
-                ...(options || {}),
+            let url = `${API_URL}/orders?isAgent=true`;
+            const subUrl = `&departID=${Cookies.get('SubID')}`;
+            if (SubUser !== 'Admin') {
+              url = url + subUrl;
+            }
+            const result: any = await request<ORDER_API.OrderList>(url, {
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${getAuth()}`,
               },
-            );
+              params: {
+                ...params,
+              },
+              ...(options || {}),
+            });
             setExcelData(result?.data);
             return result;
           }}
