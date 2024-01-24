@@ -62,7 +62,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
         centered: true,
         onCancel: () => props.onCancel(),
         cancelText: 'Hủy',
-        okText: 'OK'
+        okText: 'OK',
       }}
       submitter={{
         render: (props, defaultDoms) => {
@@ -214,7 +214,8 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
               }
               className="demo-loadmore-list"
               itemLayout="horizontal"
-              dataSource={groupTickets}
+              dataSource={groupTickets && groupTickets.filter((el: any) => el.price !== 1)}
+              // dataSource={groupTickets}
               renderItem={(item: any, index) => (
                 <List.Item
                   actions={[
