@@ -214,8 +214,8 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
               }
               className="demo-loadmore-list"
               itemLayout="horizontal"
-              dataSource={groupTickets && groupTickets.filter((el: any) => el.price !== 1)}
-              // dataSource={groupTickets}
+              // dataSource={groupTickets && groupTickets.filter((el: any) => el.price !== 1)}
+              dataSource={groupTickets}
               renderItem={(item: any, index) => (
                 <List.Item
                   actions={[
