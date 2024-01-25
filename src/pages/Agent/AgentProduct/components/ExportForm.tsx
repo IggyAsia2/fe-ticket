@@ -1,13 +1,12 @@
 import { availableGroupInven } from '@/api/inventory';
-import { convertDepartToCascader, getPrice, unit } from '@/helper/helper';
+import { getPrice, unit } from '@/helper/helper';
 import {
   ModalForm,
   ProFormDatePicker,
   ProFormDigit,
-  ProFormSelect,
   ProFormText,
 } from '@ant-design/pro-components';
-import { useModel, useRequest } from '@umijs/max';
+import { useRequest } from '@umijs/max';
 import { Col, List, Row } from 'antd';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import type { ProFormInstance } from '@ant-design/pro-components';
@@ -35,11 +34,16 @@ export type ExportFormProps = {
 };
 
 const ExportForm: React.FC<ExportFormProps> = (props) => {
-  const { initialState } = useModel('@@initialState');
-  const { departList }: any = initialState;
+  const { name, groupTickets }: any = props.values;
   const { run } = useRequest(availableGroupInven, {
     manual: true,
-    formatResult: (res: any) => props.setGroupQuan(res.data),
+    formatResult: (res: any) => {
+      const newArr = [];
+      for (let i = 0; i < groupTickets.length; i++) {
+        if (groupTickets[i].price !== 1) newArr.push(res.data[i]);
+      }
+      props.setGroupQuan(newArr);
+    },
   });
   const formRef = useRef<ProFormInstance>();
 
@@ -48,8 +52,6 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
     // Can not select days before today and today
     return current && current < dayjs().startOf('day');
   };
-
-  const { name, groupTickets }: any = props.values;
 
   return (
     <ModalForm
@@ -214,8 +216,8 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
               }
               className="demo-loadmore-list"
               itemLayout="horizontal"
-              // dataSource={groupTickets && groupTickets.filter((el: any) => el.price !== 1)}
-              dataSource={groupTickets}
+              dataSource={groupTickets && groupTickets.filter((el: any) => el.price !== 1)}
+              // dataSource={groupTickets}
               renderItem={(item: any, index) => (
                 <List.Item
                   actions={[
