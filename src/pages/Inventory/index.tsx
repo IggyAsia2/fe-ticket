@@ -148,8 +148,14 @@ const InventoryList: React.FC = () => {
       },
     },
     {
+      title: 'Lô vé',
+      dataIndex: 'purchaseId',
+      valueType: 'text',
+      hideInTable: true,
+    },
+    {
       title: 'Mã vé',
-      dataIndex:'purchaseId',
+      dataIndex: 'serial',
       valueType: 'text',
       render: (_, record: any) => {
         return (
