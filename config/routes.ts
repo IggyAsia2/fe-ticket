@@ -49,7 +49,7 @@ export default  [
     icon: 'BookFilled',
     path: '/don-hang-dl',
     component: './Agent/AgentOrder',
-    access: 'canAgent'
+    access: 'canSubUser'
   },
 
   {
@@ -64,7 +64,7 @@ export default  [
     icon: 'user',
     path: '/nguoi-dung',
     component: './Agent/AgentSubUser',
-    access: 'canSubUser'
+    access: 'canSubAdmin'
   },
   {
     name: 'list.ticket-list',
