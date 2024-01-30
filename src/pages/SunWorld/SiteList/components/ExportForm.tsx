@@ -173,7 +173,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
               <List.Item
                 actions={[
                   <>
-                    <Space>
+                    <Space> 
                       <ProFormDigit
                         key={item.id}
                         name={[item.code, 'quantity']}

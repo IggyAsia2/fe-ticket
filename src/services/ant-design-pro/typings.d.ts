@@ -11,6 +11,7 @@ declare namespace API {
     moneny?: number;
     isAgent?: boolean;
     title?: string;
+    discountList?: any;
     group?: string;
     tags?: { key?: string; label?: string }[];
     notifyCount?: number;

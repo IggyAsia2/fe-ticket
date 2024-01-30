@@ -452,18 +452,18 @@ const OrderList: React.FC = () => {
         );
       },
     },
-    // {
-    //   title: 'Chiết khấu',
-    //   hideInSearch: true,
-    //   render: (_, record: any) => {
-    //     return (
-    //       <div>
-    //         <div>{`${record.quantity} x ${getPrice(record.discountPrice)}`}</div>
-    //         <div>{getPrice(record.discountSubtotal)}</div>
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      title: 'Chiết khấu',
+      hideInSearch: true,
+      render: (_, record: any) => {
+        return (
+          <div>
+            <div>{`${record.quantity} x ${getPrice(record.discountPrice)}`}</div>
+            <div>{getPrice(record.discountSubtotal)}</div>
+          </div>
+        );
+      },
+    },
     {
       title: 'Trạng thái',
       dataIndex: 'state',
@@ -549,7 +549,7 @@ const OrderList: React.FC = () => {
               if (success) {
                 setSelectedRows([]);
                 if (actionRef.current) {
-                  if (currentUser?.moneny > realMoney) {
+                  if (currentUser?.moneny >= realMoney) {
                     setInitialState((s: any) => ({
                       ...s,
                       currentUser: {

@@ -36,7 +36,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         id: props.values._id,
         name: props.values.name,
         email: props.values.email,
-        discountAgent: props.values.discountAgent,
+        // discountAgent: props.values.discountAgent,
       }}
       title="Cập nhật người dùng"
     >
@@ -65,7 +65,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         ]}
       />
 
-      <ProFormMoney
+      {/* <ProFormMoney
         label="Chiết khấu"
         name="discountAgent"
         min={0}
@@ -77,7 +77,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
             message: 'Bạn chưa nhập chiết khấu!',
           },
         ]}
-      />
+      /> */}
       <ProFormMoney
         label="Nạp thêm"
         name="moneny"

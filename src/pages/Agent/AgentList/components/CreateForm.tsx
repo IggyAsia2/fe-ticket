@@ -1,4 +1,4 @@
-import { ModalForm, ProFormMoney, ProFormText } from '@ant-design/pro-components';
+import { ModalForm, ProFormText } from '@ant-design/pro-components';
 import React from 'react';
 
 export type CreateFormProps = {
@@ -46,7 +46,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
           },
         ]}
       />
-      <ProFormMoney
+      {/* <ProFormMoney
         label="Chiết khấu"
         name="discountAgent"
         placeholder="Nhập chiết khấu"
@@ -57,7 +57,7 @@ const CreateForm: React.FC<CreateFormProps> = (props) => {
             message: 'Bạn chưa nhập chiết khấu!',
           },
         ]}
-      />
+      /> */}
     </ModalForm>
   );
 };

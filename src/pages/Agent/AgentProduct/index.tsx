@@ -93,7 +93,7 @@ const ListProduct: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<PRODUCT_API.ProductListItem>();
   const [selectedRowsState, setSelectedRows] = useState<PRODUCT_API.ProductListItem[]>([]);
   const email: string | undefined = CurrentUser()?.email;
-
+  const discountList: any = CurrentUser()?.discountList;
   const handleUpdate = async (fields: FormValueType) => {
     const hide = message.loading('Đang xử lý');
     let { _id, name, manual, note, heightNote, country }: any = currentRow;
@@ -131,7 +131,7 @@ const ListProduct: React.FC = () => {
     }
   };
 
-  const exportTicket = async (fields: ExportFormValueType) => {
+  const exportTicket = async (fields: ExportFormValueType, discountList: any) => {
     const groupNumberTicket = Object.entries(
       Object.fromEntries(Object.entries(fields).slice(3, Object.keys(fields).length)),
     );
@@ -139,6 +139,7 @@ const ListProduct: React.FC = () => {
     if (groupNumberTicket.length) {
       const hide = message.loading('Đang xuất vé');
       try {
+        const disList = discountList.length ? discountList[0].list : {};
         await exportGroupAgentInven({
           data: {
             customerName: fields.customerName,
@@ -149,9 +150,7 @@ const ListProduct: React.FC = () => {
           departID: Cookies.get('SubID'),
           exportUser: email,
           priceTicket: Object.fromEntries(groupTickets.map((el: any) => [el._id, el.price])),
-          discountTicket: Object.fromEntries(
-            groupTickets.map((el: any) => [el._id, el.discountPrice]),
-          ),
+          discountTicket: disList,
           ticketId: _id,
         });
         hide();
@@ -302,7 +301,7 @@ const ListProduct: React.FC = () => {
                 setQuan(record.groupTickets.map(() => ''));
                 setCurrentRow(record);
               } else {
-                message.warning('Bạn chưa chọn người dùng!')
+                message.warning('Bạn chưa chọn người dùng!');
               }
             }}
           >
@@ -416,8 +415,8 @@ const ListProduct: React.FC = () => {
       />
 
       <ExportForm
-        onSubmit={async (value) => {
-          const success = await exportTicket(value);
+        onSubmit={async (value, discountList) => {
+          const success = await exportTicket(value, discountList);
           if (success) {
             handleExportModalOpen(false);
             setCurrentRow(undefined);
@@ -433,6 +432,7 @@ const ListProduct: React.FC = () => {
           }
         }}
         exportModalOpen={exportModalOpen}
+        discountList={discountList.filter((el: any) => el.bigID === currentRow?._id)}
         values={currentRow || {}}
         groupQuan={groupQuan}
         setGroupQuan={setGroupQuan}

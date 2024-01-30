@@ -1,4 +1,13 @@
-import { addUser, removeManyUser, removeUser, updateUser, agentList, getUser } from '@/api/user';
+import {
+  addUser,
+  removeManyUser,
+  removeUser,
+  updateUser,
+  agentList,
+  getUser,
+  updateDiscount,
+} from '@/api/user';
+import { productList } from '@/api/product';
 import { getPrice } from '@/helper/helper';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
@@ -9,17 +18,16 @@ import {
   ProTable,
   createIntl,
 } from '@ant-design/pro-components';
-import { useAccess } from '@umijs/max';
+import { useAccess, useRequest } from '@umijs/max';
 import { Button, Drawer, Popconfirm, message } from 'antd';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import CreateForm from './components/CreateForm';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
+import DiscountForm from './components/DiscountForm';
 import enLocale from '@/locales/table-en';
 
 /**
- * @en-US Add node
- * @zh-CN 添加节点
  * @param fields
  */
 
@@ -59,12 +67,17 @@ const handleRemove = async (selectedRows: USER_API.UserListItem[]) => {
 };
 
 const UserList: React.FC = () => {
+  const { data: productData, run: runProduct } = useRequest(productList, {
+    manual: true,
+    formatResult: (res: any) => res.data,
+  });
   const access = useAccess();
   const enUSIntl = createIntl('en_US', enLocale);
   const values = useContext(ProProvider);
 
   const [createModalOpen, handleModalOpen] = useState<boolean>(false);
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [discountModalOpen, handleDiscountModalOpen] = useState<boolean>(false);
 
   const [showDetail, setShowDetail] = useState<boolean>(false);
 
@@ -89,8 +102,7 @@ const UserList: React.FC = () => {
           ...doc,
           userId: _id,
         });
-        if(doc.moneny) {
-
+        if (doc.moneny) {
         }
         hide();
         message.success('Cập nhật thành công!');
@@ -146,14 +158,14 @@ const UserList: React.FC = () => {
         return getPrice(val || 0);
       },
     },
-    {
-      title: 'Chiết khấu',
-      dataIndex: 'discountAgent',
-      hideInSearch: true,
-      renderText: (val: number) => {
-        return getPrice(val);
-      },
-    },
+    // {
+    //   title: 'Chiết khấu',
+    //   dataIndex: 'discountAgent',
+    //   hideInSearch: true,
+    //   renderText: (val: number) => {
+    //     return getPrice(val);
+    //   },
+    // },
     {
       title: 'Tùy chọn',
       dataIndex: 'option',
@@ -187,9 +199,41 @@ const UserList: React.FC = () => {
             </a>
           </Popconfirm>
         </>,
+        <a
+          hidden={!access.canDeleteUser}
+          key="discount"
+          onClick={() => {
+            handleDiscountModalOpen(true);
+            setCurrentRow(record);
+          }}
+        >
+          Chiết khấu
+        </a>,
       ],
     },
   ];
+
+  useEffect(() => {
+    runProduct({ current: 1, pageSize: 100 });
+  }, []);
+
+  const handleUpdateDiscount = async (value: any, curNum: number, bigID: string) => {
+    if (Object.keys(value).length === curNum) {
+      const hide = message.loading('Đang cập nhật');
+      try {
+        await updateDiscount({ bigID, list: value, userID: currentRow?._id });
+        hide();
+        message.success('Cập nhật thành công!');
+        return true;
+      } catch (error) {
+        hide();
+        message.error('Cập nhật thất bại, xin vui lòng thử lại!');
+        return false;
+      }
+    } else {
+      message.warning('Bạn chưa nhập đủ chiết khấu!');
+    }
+  };
 
   return (
     <PageContainer>
@@ -272,6 +316,28 @@ const UserList: React.FC = () => {
         createModalOpen={createModalOpen}
         values={currentRow || {}}
       />
+
+      <DiscountForm
+        onFinish={async (value, curNum, bigID) => {
+          const success = await handleUpdateDiscount(value, curNum, bigID);
+          if (success) {
+            handleModalOpen(false);
+            if (actionRef.current) {
+              actionRef.current.reload();
+            }
+          }
+        }}
+        onCancel={() => {
+          handleDiscountModalOpen(false);
+          if (!showDetail) {
+            setCurrentRow(undefined);
+          }
+        }}
+        discountModalOpen={discountModalOpen}
+        values={productData}
+        currentRow={currentRow || {}}
+      />
+
       <UpdateForm
         onSubmit={async (value) => {
           const success = await handleUpdate(value);

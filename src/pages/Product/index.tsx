@@ -143,7 +143,6 @@ const ListProduct: React.FC = () => {
     const groupNumberTicket = Object.entries(
       Object.fromEntries(Object.entries(fields).slice(0, Object.keys(fields).length)),
     );
-    console.log(groupNumberTicket);
     let { _id, groupTickets }: any = currentRow;
     if (groupNumberTicket.length) {
       const hide = message.loading('Đang xuất vé');

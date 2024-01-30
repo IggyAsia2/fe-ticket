@@ -7,12 +7,14 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 import { useRequest } from '@umijs/max';
-import { Col, List, Row } from 'antd';
+import { Col, List, Row, Typography } from 'antd';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import dayjs from 'dayjs';
 import React, { useRef } from 'react';
 import Cookies from 'js-cookie';
+
+const { Text } = Typography;
 
 export type ExportFormValueType = {
   customerName?: string;
@@ -24,13 +26,14 @@ export type ExportFormValueType = {
 
 export type ExportFormProps = {
   onCancel: (flag?: boolean, formVals?: ExportFormValueType) => void;
-  onSubmit: (values: ExportFormValueType) => Promise<void>;
+  onSubmit: (values: ExportFormValueType, listDiscount: any) => Promise<void>;
   exportModalOpen: boolean;
   values: Partial<TICKET_API.TicketListItem>;
   groupQuan: any;
   setGroupQuan: any;
   quan: any;
   setQuan: any;
+  discountList: any;
 };
 
 const ExportForm: React.FC<ExportFormProps> = (props) => {
@@ -72,7 +75,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
           return [...defaultDoms];
         },
       }}
-      onFinish={props.onSubmit}
+      onFinish={(values) => props.onSubmit(values, props.discountList)}
       initialValues={{
         // customerName: 'Xuân Bảo',
         // customerPhone: '0903997705',
@@ -218,28 +221,38 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
               itemLayout="horizontal"
               dataSource={groupTickets && groupTickets.filter((el: any) => el.price !== 1)}
               // dataSource={groupTickets}
-              renderItem={(item: any, index) => (
-                <List.Item
-                  actions={[
-                    <>
-                      <ProFormDigit
-                        key={item._id}
-                        name={item._id}
-                        disabled={!props.groupQuan[index]}
-                        width="xs"
-                        min={1}
-                        max={props.groupQuan[index]}
-                        placeholder={`Còn ${props.groupQuan[index]} vé`}
-                      />
-                    </>,
-                  ]}
-                >
-                  <List.Item.Meta
-                    title={`- ${item.name}`}
-                    description={`${getPrice(item.price)} (${unit[item.unit].name})`}
-                  />
-                </List.Item>
-              )}
+              renderItem={(item: any, index) => {
+                const discountPrice =
+                  props.discountList.length && props.discountList[0].list[item._id];
+                const lastPrice = item.price - discountPrice;
+                return (
+                  <List.Item
+                    actions={[
+                      <>
+                        <ProFormDigit
+                          key={item._id}
+                          name={item._id}
+                          disabled={!props.groupQuan[index]}
+                          width="xs"
+                          min={1}
+                          max={props.groupQuan[index]}
+                          placeholder={`Còn ${props.groupQuan[index]} vé`}
+                        />
+                      </>,
+                    ]}
+                  >
+                    <List.Item.Meta
+                      title={`- ${item.name}`}
+                      description={
+                        <>
+                          {getPrice(lastPrice)} ({unit[item.unit].name}){' '}
+                          {lastPrice !== item.price && <Text delete>{getPrice(item.price)}</Text>}
+                        </>
+                      }
+                    />
+                  </List.Item>
+                );
+              }}
             />
           </div>
         </Col>

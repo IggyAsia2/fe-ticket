@@ -174,3 +174,15 @@ export async function checkPinSubUser(options?: { [key: string]: any }) {
     }
   });
 }
+
+export async function updateDiscount(options?: { [key: string]: any }) {
+  return request<USER_API.UserListItem>(`${API_URL}/users/discount`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${getAuth()}`
+    },
+    data: {
+      ...(options || {}),
+    }
+  });
+}
