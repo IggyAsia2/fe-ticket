@@ -5,6 +5,7 @@ import {
   cancelManyOrder,
   reduceOrder,
   updateOrderThor,
+  updateFixOrder,
   // sendMailOrder,
 } from '@/api/order';
 import { productList } from '@/api/product';
@@ -40,6 +41,7 @@ import ManyLinkForm from './components/ManyLinkForm';
 import enLocale from '@/locales/table-en';
 import UpdateForm from './components/UpdateForm';
 import UpdateThor from './components/UpdateForm';
+import FixForm from './components/FixForm';
 
 /**
  * @param fields
@@ -126,6 +128,7 @@ const OrderList: React.FC = () => {
   // const [linkModalOpen, handleLinkModalOpen] = useState<boolean>(false);
   const [manyLinkModalOpen, handleManyLinkModalOpen] = useState<boolean>(false);
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [fixModalOpen, handleFixModalOpen] = useState<boolean>(false);
   const [updateThor, handleUpdateThor] = useState<boolean>(false);
 
   const handleUpdate = async (fields: FormValueType) => {
@@ -140,6 +143,33 @@ const OrderList: React.FC = () => {
     if (Object.keys(doc).length > 1) {
       try {
         await updateOrder({
+          ...doc,
+          oid: _id,
+        });
+        hide();
+        message.success('Cập nhật thành công!');
+        return true;
+      } catch (error) {
+        hide();
+        message.error('Cập nhật thất bại, xin vui lòng thử lại!');
+        return false;
+      }
+    } else {
+      hide();
+      return true;
+    }
+  };
+
+  const handleFix = async (fields: any) => {
+    const hide = message.loading('Đang cập nhật');
+    let { _id, price, discountPrice }: any = currentRow;
+    const doc: any = {};
+    if (price !== fields.price) doc.price = fields.price;
+    if (discountPrice !== fields.discountPrice) doc.discountPrice = fields.discountPrice;
+    console.log(doc);
+    if (Object.keys(doc).length > 0) {
+      try {
+        await updateFixOrder({
           ...doc,
           oid: _id,
         });
@@ -667,6 +697,18 @@ const OrderList: React.FC = () => {
         >
           Cập nhật
         </a>,
+        access.canDad && (
+          <a
+            hidden={record.state !== 'Finished'}
+            key="fixx"
+            onClick={() => {
+              handleFixModalOpen(true);
+              setCurrentRow(record);
+            }}
+          >
+            Sửa giá
+          </a>
+        ),
       ],
     },
   ];
@@ -899,6 +941,24 @@ const OrderList: React.FC = () => {
         }}
         updateModalOpen={updateThor}
         values={{}}
+      />
+
+      <FixForm
+        onSubmit={async (value) => {
+          const success = await handleFix(value);
+          if (success) {
+            handleFixModalOpen(false);
+            if (actionRef.current) {
+              actionRef.current?.reloadAndRest?.();
+            }
+          }
+        }}
+        onCancel={() => {
+          handleFixModalOpen(false);
+          setCurrentRow(undefined);
+        }}
+        updateModalOpen={fixModalOpen}
+        values={currentRow || {}}
       />
       {/* <Drawer
         width={600}
