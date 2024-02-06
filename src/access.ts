@@ -21,6 +21,7 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canAgent: role === 'agent',
     canMelinh: email === 'bachgia134@gmail.com',
     canSubAdmin: SubUser === 'Admin',
-    canSubUser: role === 'agent' && SubUser !== undefined
+    canSubUser: role === 'agent' && SubUser !== undefined,
+    notAgent: role !== 'agent'
   };
 }

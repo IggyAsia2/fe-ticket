@@ -11,7 +11,7 @@
  * @doc https://umijs.org/docs/guides/routes
  */
 
-export default  [
+export default [
   {
     path: '/',
     hideInMenu: true,
@@ -51,21 +51,28 @@ export default  [
     component: './Agent/AgentOrder',
     access: 'canSubUser'
   },
-
+  {
+    name: 'list.agent-report-list',
+    icon: 'BookFilled',
+    path: '/bao-cao-dl',
+    component: './Agent/AgentReport',
+    access: 'canSubAdmin'
+  },
   {
     name: 'list.report-list',
     icon: 'BookFilled',
     path: '/bao-cao',
     component: './Report',
-    // access: 'canSeeOrder',
+    access: 'notAgent',
   },
   {
     name: 'list.user-agent-list',
     icon: 'user',
-    path: '/nguoi-dung',
+    path: '/nguoi-dung-dl',
     component: './Agent/AgentSubUser',
     access: 'canSubAdmin'
   },
+
   {
     name: 'list.ticket-list',
     icon: 'TagFilled',

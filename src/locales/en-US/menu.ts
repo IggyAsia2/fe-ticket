@@ -41,6 +41,7 @@ export default {
   'menu.list.order-list': 'Danh sách đơn hàng',
   'menu.list.order-agent-list': 'Danh sách đơn hàng (ĐL)',
   'menu.list.user-agent-list': 'Danh sách người dùng',
+  'menu.list.agent-report-list': 'Báo cáo xuất vé (ĐL)',
   'menu.list.report-list': 'Báo cáo xuất vé',
   'menu.list.import-history-list': 'Lịch sử nhập vé',
   'menu.list.setting-list': 'Cài đặt',
