@@ -274,6 +274,12 @@ const TicketList: React.FC = () => {
       hideInSearch: true,
     },
     {
+      title: 'Hết hạn',
+      dataIndex: 'invalidPending',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
       title: 'Tổng',
       valueType: 'text',
       render: (_, record: any) => {
