@@ -12,8 +12,14 @@ import { Col, List, Row } from 'antd';
 import type { RangePickerProps } from 'antd/es/date-picker';
 import type { ProFormInstance } from '@ant-design/pro-components';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import React, { useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('Asia/Ho_Chi_Minh');
 
 export type ExportFormValueType = {
   customerName?: string;
@@ -53,12 +59,13 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
   const { name, groupTickets }: any = props.values;
 
   useEffect(() => {
-    const endDate = new Date();
-    if (props.values._id)
+    const endDate = dayjs().format('YYYY/MM/DD');
+    if (props.values._id) {
       run({
         bigTicket: props.values._id,
-        expiredDate: endDate.toISOString().split('T')[0],
+        expiredDate: endDate,
       });
+    }
   }, [props.values._id]);
 
   return (
