@@ -283,7 +283,7 @@ const TicketList: React.FC = () => {
       title: 'Tổng',
       valueType: 'text',
       render: (_, record: any) => {
-        return record.delivered + record.pending;
+        return record.delivered + record.pending + record.invalidPending;
       },
       hideInSearch: true,
     },
