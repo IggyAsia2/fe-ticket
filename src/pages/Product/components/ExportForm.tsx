@@ -56,7 +56,11 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
     return current && current < dayjs().startOf('day');
   };
 
-  const { name, groupTickets }: any = props.values;
+  const { name, groupTickets, _id }: any = props.values;
+  let newGroupTickets = groupTickets;
+  if (_id === '65407895cb7fa743fc7b4e33') {
+    newGroupTickets = groupTickets.sort((a: any, b: any) => a.stt - b.stt);
+  }
 
   useEffect(() => {
     const endDate = dayjs().format('YYYY/MM/DD');
@@ -233,7 +237,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
               }
               className="demo-loadmore-list"
               itemLayout="horizontal"
-              dataSource={groupTickets}
+              dataSource={newGroupTickets}
               renderItem={(item: any, index) => (
                 <List.Item
                   actions={[
