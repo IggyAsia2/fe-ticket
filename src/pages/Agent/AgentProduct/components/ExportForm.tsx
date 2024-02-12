@@ -37,7 +37,11 @@ export type ExportFormProps = {
 };
 
 const ExportForm: React.FC<ExportFormProps> = (props) => {
-  const { name, groupTickets }: any = props.values;
+  const { name, groupTickets, _id }: any = props.values;
+  let newGroupTickets = groupTickets;
+  if (_id === '65407895cb7fa743fc7b4e33') {
+    newGroupTickets = groupTickets.sort((a: any, b: any) => a.stt - b.stt);
+  }
   const { run } = useRequest(availableGroupInven, {
     manual: true,
     formatResult: (res: any) => {
@@ -219,7 +223,7 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
               }
               className="demo-loadmore-list"
               itemLayout="horizontal"
-              dataSource={groupTickets && groupTickets.filter((el: any) => el.price !== 1)}
+              dataSource={groupTickets && newGroupTickets.filter((el: any) => el.price !== 1)}
               // dataSource={groupTickets}
               renderItem={(item: any, index) => {
                 const discountPrice =
