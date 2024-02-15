@@ -1,4 +1,4 @@
-import { ModalForm, ProFormSelect, ProFormText } from '@ant-design/pro-components';
+import { ModalForm, ProFormSelect, ProFormSwitch, ProFormText } from '@ant-design/pro-components';
 import React from 'react';
 
 export type FormValueType = {
@@ -34,6 +34,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
         id: props.values._id,
         name: props.values.name,
         email: props.values.email,
+        active: props.values.active,
         phone: props.values.phone,
         role: props.values.role?._id,
       }}
@@ -64,6 +65,7 @@ const UpdateForm: React.FC<UpdateFormProps> = (props) => {
           },
         ]}
       />
+      <ProFormSwitch name="active" label="Kích hoạt" />
       <ProFormSelect<ROLE_API.RistLole>
         name="role"
         label="Role"

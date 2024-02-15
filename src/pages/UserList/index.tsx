@@ -83,11 +83,12 @@ const UserList: React.FC = () => {
 
   const handleUpdate = async (fields: FormValueType) => {
     const hide = message.loading('Đang cập nhật');
-    let { _id, email, role, name, phone }: any = currentRow;
+    let { _id, email, role, name, phone, active }: any = currentRow;
     const doc: any = {};
     if (name !== fields.name) doc.name = fields.name;
     if (phone !== fields.phone) doc.phone = fields.phone;
     if (email !== fields.email) doc.email = fields.email;
+    if (active !== fields.active) doc.active = fields.active;
     if (role?._id !== fields.role) doc.role = fields.role;
     if (Object.keys(doc).length) {
       try {
