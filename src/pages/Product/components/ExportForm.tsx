@@ -255,7 +255,11 @@ const ExportForm: React.FC<ExportFormProps> = (props) => {
                   ]}
                 >
                   <List.Item.Meta
-                    title={`- ${item.name}`}
+                    title={
+                      <div style={{ color: item.name.includes('Buffet') ? 'red' : 'black' }}>
+                        - {item.name}
+                      </div>
+                    }
                     description={`${getPrice(item.price)} (${unit[item.unit].name})`}
                   />
                 </List.Item>
