@@ -80,7 +80,7 @@ const TicketPrintTemplate: any = (props: any) => {
                 <QRCode
                   type="svg"
                   style={{ padding: '0 0 0 0' }}
-                  size={100}
+                  size={75}
                   bordered={false}
                   value={item.serial}
                 ></QRCode>
