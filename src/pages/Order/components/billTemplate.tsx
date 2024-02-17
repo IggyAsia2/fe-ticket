@@ -2,6 +2,12 @@ import { getDateTime, getPrice } from '@/helper/helper';
 import { Image, Space } from 'antd';
 import React from 'react';
 
+const itnu: any = {
+  Adult: 'NL',
+  Child: 'TE',
+  Elder: 'NLT',
+};
+
 const BillTemplate: React.FC<any> = (props) => {
   const { actionBillRef, departInfo, data, takePrice, isDiscount, options } = props;
   const { customerName, customerPhone, customerCar, exportUser } = data[0];
@@ -77,7 +83,9 @@ const BillTemplate: React.FC<any> = (props) => {
               <>
                 <tr style={{ borderBottom: '1px dashed' }}>
                   <td style={{ paddingBottom: '30px' }}>
-                    <div>{el.groupTicket.name}</div>
+                    <div>
+                      {el.groupTicket.name} ({itnu[el.groupTicket.unit]})
+                    </div>
                     <div>{getPrice(el.price)}</div>
                   </td>
                   <td style={{ paddingBottom: '30px' }}>{el.quantity}</td>
