@@ -5,7 +5,7 @@ import React from 'react';
 const itnu: any = {
   Adult: 'NL',
   Child: 'TE',
-  Elder: 'NLT',
+  Elder: 'NCT',
 };
 
 const BillTemplate: React.FC<any> = (props) => {
