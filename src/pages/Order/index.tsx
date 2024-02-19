@@ -464,6 +464,15 @@ const OrderList: React.FC = () => {
       },
     },
     {
+      title: 'Mã vé',
+      dataIndex: 'allOfTicket',
+      valueType: 'digit',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: 'Nhập mã vé',
+      },
+    },
+    {
       title: 'Tên KH',
       dataIndex: 'customerName',
       hideInTable: true,
