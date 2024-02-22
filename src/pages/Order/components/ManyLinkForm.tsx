@@ -139,7 +139,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                   },
                 ]}
               />
-              {/* <ProFormDigit
+              <ProFormDigit
                 name="nl"
                 label="Vé cổng NL"
                 fieldProps={{
@@ -160,7 +160,7 @@ const ManyLinkForm: React.FC<CreateFormProps> = (props) => {
                 // disabled={!props.groupQuan[index]}
                 width="xs"
                 min={1}
-              /> */}
+              />
             </Space>
           </Space>
         }

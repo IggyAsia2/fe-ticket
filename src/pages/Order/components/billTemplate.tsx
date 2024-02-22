@@ -84,7 +84,8 @@ const BillTemplate: React.FC<any> = (props) => {
                 <tr style={{ borderBottom: '1px dashed' }}>
                   <td style={{ paddingBottom: '30px' }}>
                     <div>
-                      {el.groupTicket.name} ({itnu[el.groupTicket.unit]})
+                      {el.groupTicket.name}{' '}
+                      {el.groupTicket.unit && `(${itnu[el.groupTicket.unit]})`}
                     </div>
                     <div>{getPrice(el.price)}</div>
                   </td>
