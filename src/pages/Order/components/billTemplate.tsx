@@ -119,14 +119,14 @@ const BillTemplate: React.FC<any> = (props) => {
               width={70}
               preview={false}
               // src={STATIC_URL + '/Qrcode/tpbank.png'}
-              src={`https://img.vietqr.io/image/TPB-35525378888-qr_only.png?amount=${
+              src={`https://img.vietqr.io/image/ICB-101820013939-qr_only.png?amount=${
                 isDiscount ? total - takePrice.discount : total
               }&addInfo=thanh%20toan%20hoa%20don%20${bill}`}
               crossOrigin="anonymous"
             />
             <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-              <strong>STK: 3552 5378 888</strong>
-              <span>CTK: Cao Thị Cẩm Tú - TP Bank</span>
+              <strong>STK: 101820013939</strong>
+              <span>CTK: Cao Thị Cẩm Tú - Vietinbank – CN 2 – TP HCM – HỘI SỞ</span>
             </div>
           </Space>
         </div>
