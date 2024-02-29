@@ -136,7 +136,7 @@ const ReportList: React.FC = () => {
       valueEnum,
     },
     {
-      title: 'Địa điểm',
+      title: 'Loại vé',
       dataIndex: 'groupTicket',
       valueType: 'cascader',
       fieldProps: {
