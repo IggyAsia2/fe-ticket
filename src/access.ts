@@ -23,5 +23,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canSubAdmin: SubUser === 'Admin',
     canSubUser: role === 'agent' && SubUser !== undefined,
     notAgent: role !== 'agent'
+    // asd
   };
 }
